@@ -1,0 +1,60 @@
+language: cpp
+compiler: gcc
+os:
+  - linux
+dist: trusty
+sudo: false
+matrix:
+  include:
+    # works on Precise and Trusty
+    - os: linux
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - g++-7
+          cache:
+            directories:
+              - $HOME/boost_1_58_0/boost
+              - $HOME/boost_1_58_0/stage/lib
+      env:
+        - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
+        - BUILD_DIR=build
+        - PROJECT_NAME=queue
+before_install:
+  - eval "${MATRIX_EVAL}"
+install:
+  - sudo apt-get install -qq doxygen graphviz
+  - wget http://posyo.ru/install_boost.py  
+  - python install_boost.py --directory ~ --boost-version 1.58.0 filesystem system test
+before_script:
+  - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
+  - sudo apt-get update -qq
+script:
+  - mkdir ${BUILD_DIR}
+  - cd ${BUILD_DIR}
+  - cmake .. -DBOOST_ROOT=~/boost_1_58_0 -DBOOST_INCLUDEDIR=~/boost_1_58_0 -DBOOST_LIBRARYDIR=~/boost_1_58_0/stage/lib
+  - cmake --build .
+  - cmake --build . --target package
+after_success:
+  # Generate the docs only if master, and the TRAVIS_BUILD_DOCS is not zero
+  - >-
+    if [[ "$TRAVIS_BRANCH" = "master" && -n "$TRAVIS_BUILD_DOCS" ]] ; then
+      cd $TRAVIS_BUILD_DIR
+      echo 'Generating Doxygen code documentation...'
+      # Redirect both stderr and stdout to the log file AND the console.
+      doxygen doc/Doxyfile 2>&1 | tee doxygen.log
+    fi
+deploy:
+  - provider: script
+    skip_cleanup: true
+    script:
+    - curl -T ${TRAVIS_BUILD_DIR}/${BUILD_DIR}/${PROJECT_NAME}-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb -umgorshkov:$BINTRAY_API_KEY "https://api.bintray.com/content/mgorshkov/otus/${PROJECT_NAME}/1/${PROJECT_NAME}-0.0.$TRAVIS_BUILD_NUMBER-Linux.deb;deb_distribution=trusty;deb_component=main;deb_architecture=amd64;publish=1"
+  - provider: pages
+    skip-cleanup: true
+    github-token: $GITHUB_TOKEN
+    keep-history: true
+    local-dir: doc/html
+    on:
+      branch: master
