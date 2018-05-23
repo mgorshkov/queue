@@ -12,19 +12,19 @@ public:
             }
         }
 
-        auto block = PgConnectionBlock{new PgConnection, true};
-        m_pool.push_back(block);
+        auto block = ThreadInfo{std::make_unique(std::thread), true};
+        mPool.push_back(block);
 
         return block.connection;
     }
 
-    void put(PgConnection* object)
+    void put(ThreadInfo* object)
     {
-        for (size_t i = 0; i < m_pool.size(); ++i)
+        for (size_t i = 0; i < mPool.size(); ++i)
         {
-            if (m_pool[i].connection == object)
+            if (mPool[i].connection == object)
             {
-                m_pool[i].busy = false;
+                mPool[i].busy = false;
                 break;
             }
         }

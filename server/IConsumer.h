@@ -6,5 +6,5 @@ class IConsumer
 {
 public:
 	virtual ~IConsumer() = default;
-	virtual void Consume(ItemPtr&& aItem) = 0;
+	virtual ItemPtr Consume();
 };

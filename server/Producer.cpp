@@ -1,12 +1,11 @@
-#include "stdafx.h"
+#include "Producer.h"
 
-Producer::Producer(IStopperPtr aStopper)
-	: mStopper(aStopper)
+Producer::Producer()
 {
 }
 
-TaskPtr Producer::Produce(const std::string& aStr) const
+void Producer::Produce(ItemPtr aItem) const
 {
-	return std::make_unique<Task>(aStr);
+	return std::make_unique<Item>(aItem);
 }
 

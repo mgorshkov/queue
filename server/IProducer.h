@@ -6,6 +6,6 @@ class IProducer
 {
 public:
 	virtual ~IProducer() = default;
-	virtual ItemPtr Produce() const = 0;
+	virtual void Produce(ItemPtr aItem) = 0;
 };
 

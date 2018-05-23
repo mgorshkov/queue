@@ -6,7 +6,7 @@ Server::Server(boost::asio::io_service& aIoService, const boost::asio::ip::tcp::
     , mSocket(aIoService)
     , mIoService(aIoService)
 {
-    mCommandExecutor = std::make_shared<CommandExecutor>(&mTableManager);
+    mCommandExecutor = std::make_shared<CommandExecutor>();
     DoAccept();
 }
 
