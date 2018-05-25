@@ -1,10 +1,11 @@
-#include "Consumer.h"
+#include "stdafx.h"
 
-Consumer::Consumer()
+Consumer::Consumer(IStopperPtr aStopper)
+	: mStopper(aStopper)
 {
 }
 
-void Consumer::Consume(ItemPtr&& aItem)
+void Consumer::Consume(TaskPtr&& aTask)
 {
 	Original::ProcessRequest(aTask->mRequest, mStopper);
 }

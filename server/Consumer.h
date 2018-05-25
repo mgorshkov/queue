@@ -2,7 +2,7 @@
 
 #include "IConsumer.h"
 #include "IStopper.h"
-#include "Item.h"
+#include "Task.h"
 
 class Consumer : public IConsumer
 {
