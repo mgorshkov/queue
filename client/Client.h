@@ -1,27 +1,23 @@
-#include <deque>
-#include <iostream>
-#include <thread>
-#include <boost/asio.hpp>
+#include <string>
 
-#include "structs.h"
-
-using boost::asio::ip::tcp;
+#include "Defines.h"
 
 class Client
 {
 public:
-    Client(boost::asio::io_service& aIoService, tcp::endpoint aEndPoint, const std::string& aMode);
+    Client(ServerData aServerData, ConsumerProducerMode aConsumerProducerMode, SyncAsyncMode aSyncAsyncMode);
 
     void Run();
 
 private:
-    void DoConnect(tcp::endpoint aEndPoint);
+    void DoConnect(ba::ip::tcp::endpoint aEndPoint);
     void Write(const std::string& aMsg);
     void Read();
 
 private:
-    boost::asio::io_service& mIoService;
-    tcp::socket mSocket;
-    std::string mMode;
+    std::unique_ptr<IApiClient> mApiClient;
+    ServerData mServerData;
+    ConsumerProducerMode mConsumerProducerMode;
+    SyncAsyncMode mSyncAsyncMode;
 };
 

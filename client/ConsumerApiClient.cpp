@@ -1,6 +1,6 @@
 #include "ConsumerApiClient.h"
 
-// async client
+// sync client
 void ConsumerApiClientSync::Connect(const ServerData& aServerData)
 {
     boost::asio::ip::tcp::endpoint endPoint(
@@ -10,23 +10,19 @@ void ConsumerApiClientSync::Connect(const ServerData& aServerData)
 
 std::vector<std::string> ConsumerApiClientSync::GetQueueList()
 {
-    ba::write(sock, ba::buffer("ping", 4));
-    char data[4];
-    size_t len = sock.read_some(ba::buffer(data));
-    std::cout << "receive " << len << "=" << std::string{data, len} << std::endl;
-}
-
-void ComsumerApiClientSync::StartQueueSession(const std::string& aQueueName, std::size_t aOffset)
-{
-    ba::write(sock, ba::buffer("ping", 4));
+    mSocket.write(ProtocolSerializer::Serialize(ProtocolSerializer::Message::QueueList));
+    return ProtocolSerializer::Deserialize(mSocket, ProtocolSerializer::Message::QueueList);
 }
 
 Item ConsumerApiClientSync::Dequeue()
 {
-    ba::write(sock, ba::buffer("ping", 4));
-    char data[4];
-    size_t len = sock.read_some(ba::buffer(data));
-    std::cout << "receive " << len << "=" << std::string{data, len} << std::endl;
+    mSocket.write(ProtocolSerializer::Serialize(ProtocolSerializer::Message::Dequeue));
+    return ProtocolSerializer::Deserialize(mSocket, ProtocolSerializer::Message::Dequeue);
+}
+
+void ComsumerApiClientSync::StartQueueSession(const std::string& aQueueName, std::size_t aOffset)
+{
+    mSocket.write(ProtocolSerializer::Serialize(Protocol::Message::StartQueueSession, aQueueName, aOffset));
 }
 
 void ConsumerApiClientSync::Disconnect()
@@ -34,34 +30,74 @@ void ConsumerApiClientSync::Disconnect()
     mSocket.close();
 }
 
-// sync client
+// async client
 void ConsumerApiClientAsync::Connect(const ServerData& aServerData)
 {
+    boost::asio::ip::tcp::endpoint endPoint(
+        boost::asio::ip::address::from_string(aServerData.mServerIp), aServerData.mServerPort);
+    mSocket.connect(endPoint);
 }
 
-void ConsumerApiClientAsync::GetQueueList(std::function<std::vector<std::string>()> aCallback)
+void ConsumerApiClientAsync::GetQueueList(std::function<void (std::vector<std::string>)> aCallback)
 {
     mIoService.post(
         [this, msg]()
         {
-          bool write_in_progress = !write_msgs_.empty();
-          write_msgs_.push_back(msg);
-          if (!write_in_progress)
-          {
-            do_write();
-          }
+            bool writeInProgress = !mWriteMsgs.empty();
+            auto msg = ProtocolSerializer::Serialize(ProtocolSerializer::Message::QueueList);
+            mWriteMsgs.push_back(msg);
+            if (!writeInProgress)
+            {
+                DoWrite();
+                DoRead();
+            }
         });
 }
 
 void ConsumerApiClientAsync::StartQueueSession(const std::string& aQueueName, std::size_t aOffset)
 {
+   mIoService.post(
+        [this, msg]()
+        {
+            bool writeInProgress = !mWriteMsgs.empty();
+            auto msg = ProtocolSerializer::Serialize(ProtocolSerializer::Message::StartQueueSession, aQueueName, aOffset);
+            mWriteMsgs.push_back(msg);
+            if (!writeInProgress)
+            {
+                DoWrite();
+                DoRead();
+            }
+        });
 }
 
-void ConsumerApiClientAsync::Dequeue(std::function<Item()> aCallback)
+void ConsumerApiClientAsync::Dequeue(std::function<void (const Item&)> aCallback)
 {
+   mIoService.post(
+        [this, msg]()
+        {
+            bool writeInProgress = !mWriteMsgs.empty();
+            auto msg = ProtocolSerializer::Serialize(ProtocolSerializer::Message::Dequeue);
+            mWriteMsgs.push_back(msg);
+            if (!writeInProgress)
+            {
+                DoWrite();
+                DoRead();
+            }
+        });
 }
 
 void ConsumerApiClientAsync::Disconnect()
 {
-    io_service_.post([this]() { socket_.close(); });
+    mIoService.post([this]()
+        {
+            mSocket.close();
+        });
+}
+
+void ConsumerApiClientAsync::DoWrite()
+{
+}
+
+void ConsumerApiClientAsync::DoRead()
+{
 }

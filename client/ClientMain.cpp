@@ -1,6 +1,4 @@
-#include <boost/asio.hpp>
-
-#include "client.h"
+#include "Client.h"
 
 int main(int argc, char* argv[])
 {
@@ -8,7 +6,7 @@ int main(int argc, char* argv[])
     {
         if (argc != 4)
         {
-            std::cerr << "Usage: queue_client <host> <port> <mode>" << std::endl;
+            std::cerr << "Usage: queue_client <host> <port> <consumer|producer> <sync|async>" << std::endl << "Ex.: queue_client localhost 9000 consumer async" << std::endl;
             return 1;
         }
 
@@ -21,15 +19,20 @@ int main(int argc, char* argv[])
             std::cerr << "Incorrect port: " << port << std::endl;
             return 1;
         }
-        auto mode = std::atoi(argv[3]);
-        if (mode != "producer" && mode != "consumer")
+        auto actorMode = argv[3];
+        if (actorMode != "producer" && actorMode != "consumer")
         {
-            std::cerr << "Unknown mode: " << mode << std::endl;
+            std::cerr << "Unknown mode: " << actorMode << std::endl;
             return 1;
         }
+        auto syncAsyncMode = argv[4];
+        if (syncAsyncMode != "sync" && syncAsyncMode != "async")
+        {
+            std::cerr << "Unknown sync/async mode: " << syncAsyncMode << std::endl;
+        }
 
-        boost::asio::ip::tcp::endpoint endPoint(boost::asio::ip::address::from_string(host), port);
-        Client client(ioService, endPoint, mode);
+        ServerData serverData{host, port};
+        Client client(serverData, actorMode, syncAsyncMode);
         client.Run();
     }
     catch (std::exception& e)

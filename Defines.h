@@ -4,6 +4,9 @@
 #include <memory>
 #include <string>
 
+#include <boost/asio.h>
+
+namespace ba = boost::asio;
 using DataType = std::string;
 
 struct Item
@@ -19,4 +22,16 @@ struct ServerData
 {
     std::string mServerIp;
     int mServerPort;
+};
+
+enum class SyncAsyncMode
+{
+    modeSync,
+    modeAsync
+};
+
+enum class ConsumerProducerMode
+{
+    modeConsumer,
+    modeProducer
 };

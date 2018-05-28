@@ -1,19 +1,23 @@
 #include <iostream>
 
-#include "client.h"
+#include "Client.h"
 
-using boost::asio::ip::tcp;
-
-Client::Client(boost::asio::io_service& aIoService, tcp::endpoint aEndPoint, const std::string& aMode)
-    : mIoService(aIoService)
-    , mSocket(aIoService)
-    , mMode(aMode)
+Client::Client(const ServerData& aServerData, ConsumerProducerMode aConsumerProducerMode, SyncAsyncMode aSyncAsyncMode))
+    : mServerData(aServerData)
+    , mConsumerProducerMode(aConsumerProducerMode)
+    , mSyncAsyncMode(aSyncAsyncMode)
 {
-    DoConnect(aEndPoint);
 }
 
 void Client::Run()
 {
+    switch (mConsumerProducerMode)
+    {
+    case ConsumerProducerMode::ModeConsumer:
+        switch (mSyncAsyncMode)
+        {
+        case SyncAsyncMode::ModeSync:
+            mApi = make_unique<ConsumerSyncApiClient>(
     Write("INSERT A 0 lean\n");
     Write("INSERT A 0 understand\n");
     Write("INSERT A 1 sweater\n");

@@ -1,10 +1,8 @@
 #pragma once
 
-#include <boost/asio.hpp>
+#include "Defines.h"
 
 #include "IConsumerApiClient.h"
-
-namespace ba = boost::asio;
 
 class ConsumerApiClientSync : public IConsumerApiClientSync
 {
