@@ -1,5 +1,19 @@
 #include "ProducerApiClient.h"
 
+// sync client
+ProducerApiClientSync::ProducerApiClientSync()
+    : mProtocolSerializer(
+        [&mSocket](ba::buffer& aBuffer)
+        {
+            mSocket.read_some(aBuffer);
+        },
+        [&mSocket](const ba::buffer& aBuffer)
+        {
+            mSocket.write(aBuffer);
+        })
+{
+}
+
 void ProducerApiClient::Connect(const ServerData& aServerData, const std::string& aQueueName)
 {
     boost::asio::ip::tcp::endpoint endPoint(boost::asio::ip::address::from_string(aServerIp), aServerPort);

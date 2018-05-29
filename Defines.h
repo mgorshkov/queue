@@ -18,6 +18,8 @@ struct Item
 using ItemPtr = std::unique_ptr<Item>;
 using ItemQueue = std::queue<ItemPtr>;
 
+using QueueList = std::vector<DataType>;
+
 struct ServerData
 {
     std::string mServerIp;

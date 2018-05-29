@@ -10,9 +10,7 @@ public:
     void Run();
 
 private:
-    void DoConnect(ba::ip::tcp::endpoint aEndPoint);
-    void Write(const std::string& aMsg);
-    void Read();
+    void CreateApiClient();
 
 private:
     std::unique_ptr<IApiClient> mApiClient;

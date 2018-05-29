@@ -7,8 +7,10 @@
 class ConsumerApiClientSync : public IConsumerApiClientSync
 {
 public:
+    ConsumerApiClientSync();
+
     void Connect(const ServerData& aServerData);
-    std::vector<std::string> GetQueueList();
+    QueueList GetQueueList();
     void StartQueueSession(const std::string& aQueueName, std::size_t aOffset);
     Item Dequeue();
     void Disconnect();
@@ -22,7 +24,7 @@ class ConsumerApiClientAsync : public IConsumerApiClientAsync
 {
 public:
     void Connect(const ServerData& aServerData);
-    void GetQueueList(std::function<std::vector<std::string>()> aCallback) = 0;
+    void GetQueueList(std::function<QueueList()> aCallback) = 0;
     void StartQueueSession(const std::string& aQueueName, std::size_t aOffset) = 0;
     void Dequeue(std::function<Item()> aCallback) = 0;
     void Disconnect() = 0;

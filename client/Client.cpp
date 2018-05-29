@@ -9,7 +9,7 @@ Client::Client(const ServerData& aServerData, ConsumerProducerMode aConsumerProd
 {
 }
 
-void Client::Run()
+void CreateApiClient()
 {
     switch (mConsumerProducerMode)
     {
@@ -17,33 +17,35 @@ void Client::Run()
         switch (mSyncAsyncMode)
         {
         case SyncAsyncMode::ModeSync:
-            mApi = make_unique<ConsumerSyncApiClient>(
-    Write("INSERT A 0 lean\n");
-    Write("INSERT A 0 understand\n");
-    Write("INSERT A 1 sweater\n");
-    Write("INSERT A 2 frank\n");
-    Write("INSERT B 0 flour\n");
-    Write("INSERT B 2 wonder\n");
-    Write("INSERT B 2 selection\n");
-    Write("INTERSECTION\n");
-    Read();
-    mSocket.close();
+            mApi = make_unique<ConsumerSyncApiClient>();
+            break;
+        case SyncAsyncMode::ModeAsync:
+            mApi = make_unique<ConsumerAsyncApiClient>();
+            break;
+        }
+        break;
+    case ConsumerProducerMode::ModeProducer:
+        switch (mSyncAsyncMode)
+        {
+        case SyncAsyncMode::ModeSync:
+            mApi = make_unique<ProducerSyncApiClient>();
+            break;
+        case SyncAsyncMode::ModeAsync:
+            mApi = make_unique<ProducerAsyncApiClient>();
+            break;
+        }
+        break;
+    }
 }
 
-void Client::Write(const std::string& aMsg)
+void Client::Run()
 {
-    boost::asio::write(mSocket, boost::asio::buffer(aMsg.c_str(), aMsg.length()));
-}
-
-void Client::DoConnect(tcp::endpoint aEndPoint)
-{
-    mSocket.connect(aEndPoint);
-}
-
-void Client::Read()
-{
-    char data[256];
-    std::cout << "Client::Read" << std::endl;
-    size_t len = mSocket.read_some(boost::asio::buffer(data));
-    std::cout << "receive " << len << "=" << std::string{data, len} << std::endl;
+    CreateApiClient();
+    switch (mConsumerProducerMode)
+    {
+    case ConsumerProducerMode::ModeConsumer:
+        break;
+    case ConsumerProducerMode::ModeProducer:
+        break;
+    }
 }
