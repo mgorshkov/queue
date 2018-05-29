@@ -1,5 +1,8 @@
 #pragma once
 
+#include <functional>
+
+#include "Defines.h"
 #include "Message.h"
 
 class ProtocolSerializer

@@ -1,5 +1,3 @@
-#pragma once
-
 #include "ProtocolSerializer.h"
 
 ProtocolSerializer::ProtocolSerializer(ReadFunc aReadFunc, WriteFunc aWriteFunc)
@@ -10,12 +8,14 @@ ProtocolSerializer::ProtocolSerializer(ReadFunc aReadFunc, WriteFunc aWriteFunc)
 
 void ProtocolSerializer::Serialize(MessagePtr aMessage)
 {
-    ba::buffer buffer(&aMessage, sizeof(aMessage));
-    mWriteFunc(buffer);
+    ba::streambuf stream;
+    stream << aMessage;
+    mWriteFunc(stream);
 }
 
 MessagePtr ProtocolSerializer::Deserialize()
 {
-    ba::buffer buffer(&aMessage, sizeof(aMessage));
-    mWriteFunc(buffer);
+    ba::streambuf stream;
+    mReadFunc(stream);
+    make_shared<
 }
