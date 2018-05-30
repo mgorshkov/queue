@@ -1,24 +1,37 @@
 cmake_minimum_required(VERSION 3.5)
 
 add_executable(queue_server
+    CommandHandler.cpp
+    CommandHandler.h
+    CommandExecutor.cpp
+    CommandExecutor.h
     Context.cpp
     Context.h
     Consumer.cpp
     Consumer.h
+    DequeueCommandHandler.cpp
+    DequeueCommandHandler.h
+    EnqueueCommandHandler.cpp
+    EnqueueCommandHandler.h
     IConsumer.h
     IProducer.h
     IProducerApiServer.h
+    IQueueManager.h
     Producer.cpp
     Producer.h
     ProducerApiServer.cpp
     ProducerApiServer.h
     Queue.cpp
     Queue.h
+    QueueListCommandHandler.cpp
+    QueueListCommandHandler.h
     Server.cpp
     Server.h
     ServerMain.cpp
     Session.cpp
     Session.h
+    StartQueueSessionCommandHandler.cpp
+    StartQueueSessionCommandHandler.h
     ThreadPool.cpp
     ThreadPool.h
     ThreadedActor.cpp
@@ -40,7 +53,7 @@ set_target_properties(queue_server PROPERTIES
     CMAKE_CXX_STANDARD_REQUIRED ON
 )
 
-include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common)
+include_directories(${Boost_INCLUDE_DIR} common protocol)
 
 target_link_libraries(queue_server
     ${Boost_LIBRARIES}

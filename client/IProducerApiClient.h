@@ -3,7 +3,8 @@
 class IProducerApiClient
 {
 public:
-    virtual void Connect(const ServerData& aServerData, const std::string& aQueueName)
-    virtual void Enqueue(const DataType& aData);
-    virtual void Disconnect();
+    virtual void Connect(const ServerData& aServerData) = 0;
+    virtual void StartQueueSession(const std::string& aQueueName) = 0;
+    virtual void Enqueue(const DataType& aData) = 0;
+    virtual void Disconnect() = 0;
 };

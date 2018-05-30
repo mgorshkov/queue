@@ -14,10 +14,15 @@ ProducerApiClientSync::ProducerApiClientSync()
 {
 }
 
-void ProducerApiClient::Connect(const ServerData& aServerData, const std::string& aQueueName)
+void ProducerApiClient::Connect(const ServerData& aServerData)
 {
-    boost::asio::ip::tcp::endpoint endPoint(boost::asio::ip::address::from_string(aServerIp), aServerPort);
+    ba::ip::tcp::endpoint endPoint(ba::ip::address::from_string(aServerData.mServerIp), aServerData.mServerPort);
     mSocket.connect(endPoint);
+}
+
+void ProducerApiClient::StartQueueSession(const std::string& aQueueName)
+{
+    mProtocolSerializer.Serialize(Protocol::Message::StartQueueSession, aQueueName, aOffset);
 }
 
 void ProducerApiClient::Enqueue(const Item& aItem)

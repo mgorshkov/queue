@@ -14,6 +14,9 @@ public:
     ProtocolSerializer(ReadFunc aReadFunc, WriteFunc aWriteFunc);
 
     void Serialize(const QueueListMessage& aMessage);
+    void Serialize(const StartQueueSessionMessage& aMessage);
+    void Serialize(const EnqueueMessage& aMessage);
+    void Serialize(const DequeueMessage& aMessage);
 
     MessagePtr Deserialize();
 

@@ -26,7 +26,7 @@ set_target_properties(queue_client PROPERTIES
     CMAKE_CXX_STANDARD_REQUIRED ON
 )
 
-include_directories(${Boost_INCLUDE_DIR} common)
+include_directories(${Boost_INCLUDE_DIR} common protocol)
 
 target_link_libraries(queue_client
     ${Boost_LIBRARIES}

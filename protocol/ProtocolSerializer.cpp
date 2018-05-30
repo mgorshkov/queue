@@ -10,7 +10,34 @@ void ProtocolSerializer::Serialize(const QueueListMessage& aMessage)
 {
     ba::streambuf stream;
     std::ostream line(&stream);
-    line << MessageType::QueueList;
+    line << static_cast<int>(MessageType::QueueList);
+    line << aMessage;
+    mWriteFunc(stream);
+}
+
+void ProtocolSerializer::Serialize(const StartQueueSessionMessage& aMessage)
+{
+    ba::streambuf stream;
+    std::ostream line(&stream);
+    line << static_cast<int>(MessageType::StartQueueSession);
+    line << aMessage;
+    mWriteFunc(stream);
+}
+
+void ProtocolSerializer::Serialize(const EnqueueMessage& aMessage)
+{
+    ba::streambuf stream;
+    std::ostream line(&stream);
+    line << static_cast<int>(MessageType::Enqueue);
+    line << aMessage;
+    mWriteFunc(stream);
+}
+
+void ProtocolSerializer::Serialize(const DequeueMessage& aMessage)
+{
+    ba::streambuf stream;
+    std::ostream line(&stream);
+    line << static_cast<int>(MessageType::Dequeue);
     line << aMessage;
     mWriteFunc(stream);
 }
@@ -22,13 +49,31 @@ MessagePtr ProtocolSerializer::Deserialize()
     std::istream line(&stream);
     int messageType;
     line >> messageType;
-    switch (message.mMessageType)
+    switch (static_cast<MessageType>(messageType))
     {
     case MessageType::QueueList:
     {
         QueueListMessage message;
         line >> message;
         return std::make_shared<QueueListMessage>(message);
+    }
+    case MessageType::StartQueueSession:
+    {
+        StartQueueSessionMessage message;
+        line >> message;
+        return std::make_shared<StartQueueSessionMessage>(message);
+    }
+    case MessageType::Enqueue:
+    {
+        EnqueueMessage message;
+        line >> message;
+        return std::make_shared<EnqueueMessage>(message);
+    }
+    case MessageType::Dequeue:
+    {
+        DequeueMessage message;
+        line >> message;
+        return std::make_shared<DequeueMessage>(message);
     }
     }
 }

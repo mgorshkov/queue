@@ -8,11 +8,17 @@ enum class MessageType
 {
     QueueList,
     StartQueueSession,
-    Dequeue,
     Enqueue,
+    Dequeue,
 };
 
-struct QueueListMessage
+struct Message
+{
+};
+
+using MessagePtr = std::shared_ptr<Message>;
+
+struct QueueListMessage : Message
 {
     QueueList mQueueList;
 
@@ -36,6 +42,24 @@ struct QueueListMessage
     }
 };
 
+struct StartQueueSessionMessage : Message
+{
+    std::string mQueueName;
+    std::size_t mOffset;
+
+    friend std::istream& operator >> (std::istream& aStream, StartQueueSessionMessage& aMessage)
+    {
+        aStream >> aMessage.mQueueName;
+        aStream >> aMessage.mOffset;
+    }
+
+    friend std::ostream& operator << (std::ostream& aStream, const StartQueueSessionMessage& aMessage)
+    {
+        aStream << aMessage.mQueueName;
+        aStream << aMessage.mOffset;
+    }
+};
+
 struct DequeueMessage : Message
 {
     Item mItem;
@@ -51,25 +75,17 @@ struct DequeueMessage : Message
     }
 };
 
-struct StartQueueSessionMessage : Message
+struct EnqueueMessage : Message
 {
-    std::string mQueueName;
-    std::size_t mOffset;
+    DataType mData;
 
-    std::istream& operator >> (std::istream& aStream)
+    friend std::istream& operator >> (std::istream& aStream, EnqueueMessage& aMessage)
     {
-        Message::operator >> (aStream);
-
-        aStream >> mQueueName;
-        aStream >> mOffset;
+        aStream >> aMessage.mData;
     }
 
-    std::ostream& operator << (std::ostream& aStream)
+    friend std::ostream& operator << (std::ostream& aStream, const EnqueueMessage& aMessage)
     {
-        Message::operator << (aStream);
-
-        aStream << mQueueName;
-        aStream << mOffset;
+        aStream << aMessage.mData;
     }
 };
-
