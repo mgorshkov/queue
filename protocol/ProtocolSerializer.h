@@ -8,12 +8,12 @@
 class ProtocolSerializer
 {
 public:
-    using ReadFunc = std::function<std::size_t(ba::buffer& aBuffer)>;
-    using WriteFunc = std::function<void(const ba::buffer& aBuffer)>;
+    using ReadFunc = std::function<std::size_t(ba::streambuf&)>;
+    using WriteFunc = std::function<void(const ba::streambuf&)>;
 
     ProtocolSerializer(ReadFunc aReadFunc, WriteFunc aWriteFunc);
 
-    void Serialize(MessagePtr aMessage);
+    void Serialize(const QueueListMessage& aMessage);
 
     MessagePtr Deserialize();
 

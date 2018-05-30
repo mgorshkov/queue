@@ -6,10 +6,12 @@ ProtocolSerializer::ProtocolSerializer(ReadFunc aReadFunc, WriteFunc aWriteFunc)
 {
 }
 
-void ProtocolSerializer::Serialize(MessagePtr aMessage)
+void ProtocolSerializer::Serialize(const QueueListMessage& aMessage)
 {
     ba::streambuf stream;
-    stream << aMessage;
+    std::ostream line(&stream);
+    line << MessageType::QueueList;
+    line << aMessage;
     mWriteFunc(stream);
 }
 
@@ -17,5 +19,16 @@ MessagePtr ProtocolSerializer::Deserialize()
 {
     ba::streambuf stream;
     mReadFunc(stream);
-    make_shared<
+    std::istream line(&stream);
+    int messageType;
+    line >> messageType;
+    switch (message.mMessageType)
+    {
+    case MessageType::QueueList:
+    {
+        QueueListMessage message;
+        line >> message;
+        return std::make_shared<QueueListMessage>(message);
+    }
+    }
 }
