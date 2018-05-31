@@ -10,8 +10,8 @@
 #include <atomic>
 #include <queue>
 
-#include "commandexecutor.h"
-#include "structs.h"
+#include "CommandExecutor.h"
+#include "Defines.h"
 
 class Context
 {
@@ -31,7 +31,7 @@ public:
 private:
     CompleteOperationStatuses ProcessStream(std::shared_ptr<CommandExecutor> aCommandExecutor);
 
-    static void ThreadProc(Context* aContext, std::shared_ptr<CommandExecutor> aCommandExecutor);
+    void ThreadProc(std::shared_ptr<CommandExecutor> aCommandExecutor);
 
     std::shared_ptr<CommandExecutor> mCommandExecutor;
 

@@ -17,7 +17,7 @@ public:
 
 private:
     ba::io_service mIoService;
-    tcp::socket mSocket;
+    ba::ip::tcp::socket mSocket;
 };
 
 class ConsumerApiClientAsync : public IConsumerApiClientAsync
@@ -31,6 +31,6 @@ public:
 
 private:
     ba::io_service mIoService;
-    tcp::socket mSocket;
+    ba::ip::tcp::socket mSocket;
 };
 

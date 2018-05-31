@@ -164,64 +164,37 @@ CompleteOperationStatuses Context::ProcessStream(std::shared_ptr<CommandExecutor
             continue;
         auto result = aCommandExecutor->RunCommand(lineTrimmed);
         results.push_back(result);
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ProcessStream 7, result=" << result << std::endl;
-#endif
     }
     return results;
 }
 
-void Context::ThreadProc(Context* aContext, std::shared_ptr<CommandExecutor> aCommandExecutor)
+void Context::ThreadProc(std::shared_ptr<CommandExecutor> aCommandExecutor)
 {
-#ifdef DEBUG_PRINT
-    std::cout << "Context::ThreadProc start, this==" << aContext << std::endl;
-#endif
     try
     {
-        while (!aContext->mDone.load())
+        while (!mDone.load())
         {
-#ifdef DEBUG_PRINT
-            std::cout << "Context::ThreadProc0, this==" << aContext << std::endl;
-#endif
-            std::unique_lock<std::mutex> lk(aContext->mStreamMutex);
-            while (!aContext->mNotified.load())
-                aContext->mCondition.wait(lk);
-#ifdef DEBUG_PRINT
-            std::cout << "Context::ThreadProc01, this==" << aContext << std::endl;
-#endif
+            std::unique_lock<std::mutex> lk(mStreamMutex);
+            while (!mNotified.load())
+                mCondition.wait(lk);
             lk.unlock();
             {
-#ifdef DEBUG_PRINT
-                std::cout << "Context::ThreadProc02, this==" << aContext << std::endl;
-#endif
-                std::unique_lock<std::mutex> lk(aContext->mQueueMutex);
-#ifdef DEBUG_PRINT
-                std::cout << "Context::ThreadProc03, this==" << aContext << std::endl;
-#endif
-                aContext->mOutboundStatuses.push(aContext->ProcessStream(aCommandExecutor));
+                std::unique_lock<std::mutex> lk(mQueueMutex);
+                mOutboundStatuses.push(ProcessStream(aCommandExecutor));
             }
-            aContext->mQueueCondition.notify_one();
-            aContext->mNotified = false;
-            aContext->mQueueNotified = true;
+            mQueueCondition.notify_one();
+            mNotified = false;
+            mQueueNotified = true;
         }
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ThreadProc1, this==" << aContext << std::endl;
-#endif
         {
-            std::unique_lock<std::mutex> lk(aContext->mQueueMutex);
-            aContext->mOutboundStatuses.push(aContext->ProcessStream(aCommandExecutor));
+            std::unique_lock<std::mutex> lk(mQueueMutex);
+            mOutboundStatuses.push(ProcessStream(aCommandExecutor));
         }
-        aContext->mQueueCondition.notify_one();
-        aContext->mQueueNotified = true;
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ThreadProc2, this==" << aContext << std::endl;
-#endif
+        mQueueCondition.notify_one();
+        mQueueNotified = true;
     }
     catch (const std::exception &e)
     {
         std::cerr << e.what() << std::endl;
     }
-#ifdef DEBUG_PRINT
-    std::cout << "Context::ThreadProc end, this==" << aContext << std::endl;
-#endif
 }

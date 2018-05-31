@@ -1,11 +1,15 @@
 #include <string>
+#include <memory>
 
 #include "Defines.h"
+#include "IApiClient.h"
 
 class Client
 {
 public:
-    Client(ServerData aServerData, ConsumerProducerMode aConsumerProducerMode, SyncAsyncMode aSyncAsyncMode);
+    Client(const ServerData& aServerData,
+        ConsumerProducerMode aConsumerProducerMode,
+        SyncAsyncMode aSyncAsyncMode);
 
     void Run();
 

@@ -4,16 +4,16 @@
 #include <map>
 #include <memory>
 
-#include "itablemanager.h"
-#include "structs.h"
-#include "commandhandler.h"
+#include "IQueueManager.h"
+#include "Defines.h"
+#include "CommandHandler.h"
 
 class CommandExecutor
 {
 public:
-    CommandExecutor(ITableManager* aTableManager);
+    CommandExecutor(IQueueManager* aQueueManager);
 
-    CompleteOperationStatus RunCommand(const std::string& aLine);
+    CompleteOperationStatus RunCommand(const CompleteCommand& aCommand);
 
 private:
     void RegisterHandler(Command aCommand, std::unique_ptr<CommandHandler> aCommandHandler);

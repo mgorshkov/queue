@@ -1,17 +1,17 @@
 #pragma once
 
 #include "IConsumer.h"
-#include "IStopper.h"
-#include "Task.h"
+#include "Defines.h"
+#include "Queue.h"
 
 class Consumer : public IConsumer
 {
 public:
-	explicit Consumer(IStopperPtr aStopper);
+    explicit Consumer(Queue& aQueue);
 
-	void Consume(TaskPtr&& aTask) override;
+    ItemPtr Consume() override;
 
 private:
-	IStopperPtr mStopper;
+    Queue& mQueue;
 };
 

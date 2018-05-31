@@ -7,7 +7,7 @@ add_library(queue_lib
     ProtocolSerializer.h)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 

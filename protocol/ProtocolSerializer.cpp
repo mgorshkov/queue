@@ -1,5 +1,7 @@
 #include "ProtocolSerializer.h"
 
+#include "assert.h"
+
 ProtocolSerializer::ProtocolSerializer(ReadFunc aReadFunc, WriteFunc aWriteFunc)
     : mReadFunc(aReadFunc)
     , mWriteFunc(aWriteFunc)
@@ -74,6 +76,11 @@ MessagePtr ProtocolSerializer::Deserialize()
         DequeueMessage message;
         line >> message;
         return std::make_shared<DequeueMessage>(message);
+    }
+    default:
+    {
+        assert(false && "unknown message");
+        return nullptr;
     }
     }
 }

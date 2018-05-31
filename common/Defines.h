@@ -19,12 +19,14 @@ struct Item
     {
         aStream >> aItem.mData;
         aStream >> aItem.mOffset;
+        return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const Item& aItem)
     {
         aStream << aItem.mData;
         aStream << aItem.mOffset;
+        return aStream;
     }
 };
 
@@ -41,12 +43,36 @@ struct ServerData
 
 enum class SyncAsyncMode
 {
-    modeSync,
-    modeAsync
+    Sync,
+    Async,
 };
 
 enum class ConsumerProducerMode
 {
-    modeConsumer,
-    modeProducer
+    Consumer,
+    Producer,
 };
+
+enum class Command
+{
+    QueueList,
+    StartQueueSession,
+    Enqueue,
+    Dequeue,
+};
+
+struct CompleteCommand
+{
+    Command mCommand;
+    std::string mQueueName;
+    std::size_t mOffset;
+    DataType mData;
+};
+
+struct CompleteOperationStatus
+{
+    QueueList mQueueList;
+    Item mItem;
+};
+
+using CompleteOperationStatuses = std::list<CompleteOperationStatus>;

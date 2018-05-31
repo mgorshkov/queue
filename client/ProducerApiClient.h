@@ -14,5 +14,5 @@ public:
 private:
     ProtocolSerializer mProtocolSerializer;
     boost::asio::io_service mIoService;
-    tcp::socket mSocket;
+    ba::ip::tcp::socket mSocket;
 };

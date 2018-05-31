@@ -1,64 +1,28 @@
 #include <assert.h>
 #include <iostream>
 
-#include "commandexecutor.h"
-#include "insertcommandhandler.h"
-#include "truncatecommandhandler.h"
-#include "intersectcommandhandler.h"
-#include "symdiffcommandhandler.h"
+#include "CommandExecutor.h"
+#include "DequeueCommandHandler.h"
+#include "EnqueueCommandHandler.h"
+#include "QueueListCommandHandler.h"
+#include "StartQueueSessionCommandHandler.h"
 
-CommandExecutor::CommandExecutor(ITableManager* aTableManager)
+CommandExecutor::CommandExecutor(IQueueManager* aQueueManager)
 {
-    RegisterHandler(Command::Insert, std::make_unique<InsertCommandHandler>(aTableManager));
-    RegisterHandler(Command::Truncate, std::make_unique<TruncateCommandHandler>(aTableManager));
-    RegisterHandler(Command::Intersection, std::make_unique<IntersectionCommandHandler>(aTableManager));
-    RegisterHandler(Command::SymmetricDifference, std::make_unique<SymmetricDifferenceCommandHandler>(aTableManager));
+    RegisterHandler(Command::Dequeue, std::make_unique<DequeueCommandHandler>(aQueueManager));
+    RegisterHandler(Command::Enqueue, std::make_unique<EnqueueCommandHandler>(aQueueManager));
+    RegisterHandler(Command::QueueList, std::make_unique<QueueListCommandHandler>(aQueueManager));
+    RegisterHandler(Command::StartQueueSession, std::make_unique<StartQueueSessionCommandHandler>(aQueueManager));
 }
 
-CompleteOperationStatus CommandExecutor::RunCommand(const std::string& aLine)
+CompleteOperationStatus CommandExecutor::RunCommand(const CompleteCommand &aCommand)
 {
-#ifdef DEBUG_PRINT
-    std::cout << "CommandExecutor::RunCommand, line=" << aLine << ";" << std::endl;
-#endif
-    CompleteCommand command = Parse(aLine);
-#ifdef DEBUG_PRINT
-    std::cout << "CommandExecutor::RunCommand, command=" << command << ";" << std::endl;
-#endif
-    if (command.mCommand == Command::Error)
-    {
-        return CompleteOperationStatus{OperationStatus::UnknownCommand};
-    }
-    assert (mCommandHandlers.find(command.mCommand) != mCommandHandlers.end());
-    return mCommandHandlers[command.mCommand]->Handle(command);
+    assert (mCommandHandlers.find(aCommand.mCommand) != mCommandHandlers.end());
+    return mCommandHandlers[aCommand.mCommand]->Handle(aCommand);
 }
 
 void CommandExecutor::RegisterHandler(Command aCommand, std::unique_ptr<CommandHandler> aCommandHandler)
 {
     assert (mCommandHandlers.find(aCommand) == mCommandHandlers.end());
     mCommandHandlers.emplace(std::make_pair(aCommand, std::move(aCommandHandler)));
-}
-
-CompleteCommand CommandExecutor::Parse(const std::string& aLine)
-{
-#ifdef DEBUG_PRINT
-    std::cout << "CommandExecutor::Parse, aLine=" << aLine << ";" << std::endl;
-#endif
-
-    for (const auto& handler: mCommandHandlers)
-    {
-        auto commandName = handler.second->GetCommand();
-        auto pos = aLine.find(commandName);
-        if (pos != std::string::npos)
-        {
-            std::string commandBody;
-            if (aLine.length() > commandName.length())
-                commandBody = aLine.substr(commandName.length() + 1, aLine.length() - commandName.length());       
-#ifdef DEBUG_PRINT
-            std::cout << "CommandExecutor::Parse, commandBody=" << commandBody << ";" << std::endl;
-#endif
-            return handler.second->Parse(commandBody);
-        }
-    }   
-  
-    return CompleteCommand{Command::Error};
 }

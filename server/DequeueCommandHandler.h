@@ -1,14 +1,12 @@
 #pragma once
 
-#include "commandhandler.h"
-#include "itablemanager.h"
+#include "CommandHandler.h"
+#include "IQueueManager.h"
 
-class InsertCommandHandler : public CommandHandler
+class DequeueCommandHandler : public CommandHandler
 {
 public:
-    InsertCommandHandler(ITableManager* aTableManager);
+    DequeueCommandHandler(IQueueManager* aQueueManager);
 
-    virtual std::string GetCommand() const override;
-    virtual CompleteCommand Parse(const std::string& aLine) override;
     virtual CompleteOperationStatus Handle(const CompleteCommand& aCommand) override;
 };

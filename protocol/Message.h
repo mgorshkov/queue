@@ -32,6 +32,7 @@ struct QueueListMessage : Message
             aStream >> data;
             aMessage.mQueueList.emplace_back(data);
         }
+        return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const QueueListMessage& aMessage)
@@ -39,6 +40,7 @@ struct QueueListMessage : Message
         aStream << aMessage.mQueueList.size();
         for (auto item : aMessage.mQueueList)
             aStream << item;
+        return aStream;
     }
 };
 
@@ -51,12 +53,14 @@ struct StartQueueSessionMessage : Message
     {
         aStream >> aMessage.mQueueName;
         aStream >> aMessage.mOffset;
+        return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const StartQueueSessionMessage& aMessage)
     {
         aStream << aMessage.mQueueName;
         aStream << aMessage.mOffset;
+        return aStream;
     }
 };
 
@@ -67,11 +71,13 @@ struct DequeueMessage : Message
     friend std::istream& operator >> (std::istream& aStream, DequeueMessage& aMessage)
     {
         aStream >> aMessage.mItem;
+        return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const DequeueMessage& aMessage)
     {
         aStream << aMessage.mItem;
+        return aStream;
     }
 };
 
@@ -82,10 +88,12 @@ struct EnqueueMessage : Message
     friend std::istream& operator >> (std::istream& aStream, EnqueueMessage& aMessage)
     {
         aStream >> aMessage.mData;
+        return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const EnqueueMessage& aMessage)
     {
         aStream << aMessage.mData;
+        return aStream;
     }
 };

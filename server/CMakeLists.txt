@@ -40,12 +40,12 @@ add_executable(queue_server
     ThreadedProducer.h)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-set(Boost_USE_STATIC_LIBS OFF)
+set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
 
 find_package(Threads REQUIRED)
-find_package(Boost REQUIRED COMPONENTS system filesystem unit_test_framework)
+find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 set_target_properties(queue_server PROPERTIES
 #    COMPILE_OPTIONS -Wpedantic -Wall -Wextra
@@ -53,7 +53,7 @@ set_target_properties(queue_server PROPERTIES
     CMAKE_CXX_STANDARD_REQUIRED ON
 )
 
-include_directories(${Boost_INCLUDE_DIR} common protocol)
+include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOURCE_DIR}/protocol)
 
 target_link_libraries(queue_server
     ${Boost_LIBRARIES}
