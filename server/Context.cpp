@@ -1,8 +1,9 @@
 #include <iostream>
 #include <chrono>
 
-#include "context.h"
-#include "utils.h"
+#include "Context.h"
+#include "Defines.h"
+#include "ProtocolSerializer.h"
 
 using namespace std::chrono_literals;
 
@@ -39,10 +40,10 @@ void Context::Start()
     mStream.clear();
     mStream.str("");
 
-    mThread = std::move(std::thread(ThreadProc, this, mCommandExecutor));
+    mThread = std::move(std::thread(&Context::ThreadProc, this, mCommandExecutor));
 }
 
-void Context::ProcessData(boost::asio::streambuf* aStream)
+void Context::ProcessData(ba::streambuf* aStream)
 {
 #ifdef DEBUG_PRINT
     std::cout << "Context::ProcessData, this==" << this << ", aStream=" << aStream << ", mDone=" << mDone.load() << std::endl;
@@ -121,48 +122,23 @@ CompleteOperationStatuses Context::GetOutboundQueue()
 
 CompleteOperationStatuses Context::ProcessStream(std::shared_ptr<CommandExecutor> aCommandExecutor)
 {
-    std::list<std::string> text;
+    std::list<MessagePtr> messages;
     {
-        std::string line;
         std::lock_guard<std::mutex> lk(mStreamMutex);
         mStream.seekp(0);
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ProcessStream 1, pos = " << mStream.tellp() << ", str=" <<  mStream.str() << std::endl;
-#endif
-        while (!std::getline(mStream, line).eof())
+        while (mStream)
         {
-            if (line.length() > 0 && line[line.length() - 1] == '\r')
-            {
-                line = line.substr(0, line.length() - 1);
-            }
-#ifdef DEBUG_PRINT
-            std::cout << "Context::ProcessStream 2, line = " << line << ";" << std::endl;
-#endif
-            text.push_back(line);
+            auto message = ProtocolSerializer::Deserialize(mStream);
+            messages.push_back(message);
         }
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ProcessStream 3, pos = " << mStream.tellp() << std::endl;
-#endif
         mStream.clear();
         mStream.str("");
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ProcessStream 4, stream = " << mStream.str() << ", pos = " << mStream.tellp() << std::endl;
-#endif
-        mStream.write(line.c_str(), line.size());
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ProcessStream 5, pos = " << mStream.tellp() << ", line = " << line << std::endl;
-#endif
     }
     CompleteOperationStatuses results;
-    for (const auto& line: text)
+    for (const auto& message: messages)
     {
-        auto lineTrimmed = trim_copy(line);
-#ifdef DEBUG_PRINT
-        std::cout << "Context::ProcessStream 6, line=" << lineTrimmed << ";" << std::endl;
-#endif
-        if (lineTrimmed.empty())
-            continue;
-        auto result = aCommandExecutor->RunCommand(lineTrimmed);
+        CompleteCommand command{message};
+        auto result = aCommandExecutor->RunCommand(command);
         results.push_back(result);
     }
     return results;

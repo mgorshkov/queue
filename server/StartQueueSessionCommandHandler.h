@@ -8,5 +8,5 @@ class StartQueueSessionCommandHandler : public CommandHandler
 public:
     StartQueueSessionCommandHandler(IQueueManager* aQueueManager);
 
-    virtual CompleteOperationStatus Handle(const CompleteCommand& aCommand) override;
+    virtual CompleteOperationStatusPtr Handle(const CompleteCommand& aCommand) override;
 };

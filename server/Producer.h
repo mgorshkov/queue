@@ -1,17 +1,16 @@
 #pragma once
 
 #include "IProducer.h"
-#include "IStopper.h"
-#include "Task.h"
+#include "Queue.h"
 
 class Producer : public IProducer
 {
 public:
-	explicit Producer(IStopperPtr aStopper);
+    explicit Producer(Queue& aQueue);
 
-	TaskPtr Produce() const override;
+    void Produce(ItemPtr aItem) override;
 
 private:
-	IStopperPtr mStopper;
+    Queue& mQueue;
 };
 

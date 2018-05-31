@@ -2,79 +2,58 @@
 
 #include "assert.h"
 
-ProtocolSerializer::ProtocolSerializer(ReadFunc aReadFunc, WriteFunc aWriteFunc)
-    : mReadFunc(aReadFunc)
-    , mWriteFunc(aWriteFunc)
+void ProtocolSerializer::Serialize(const QueueListMessage& aMessage, std::ostream& aStream)
 {
+    aStream << static_cast<int>(MessageType::QueueList);
+    aStream << aMessage;
 }
 
-void ProtocolSerializer::Serialize(const QueueListMessage& aMessage)
+void ProtocolSerializer::Serialize(const StartQueueSessionMessage& aMessage, std::ostream& aStream)
 {
-    ba::streambuf stream;
-    std::ostream line(&stream);
-    line << static_cast<int>(MessageType::QueueList);
-    line << aMessage;
-    mWriteFunc(stream);
+    aStream << static_cast<int>(MessageType::StartQueueSession);
+    aStream << aMessage;
 }
 
-void ProtocolSerializer::Serialize(const StartQueueSessionMessage& aMessage)
+void ProtocolSerializer::Serialize(const EnqueueMessage& aMessage, std::ostream& aStream)
 {
-    ba::streambuf stream;
-    std::ostream line(&stream);
-    line << static_cast<int>(MessageType::StartQueueSession);
-    line << aMessage;
-    mWriteFunc(stream);
+    aStream << static_cast<int>(MessageType::Enqueue);
+    aStream << aMessage;
 }
 
-void ProtocolSerializer::Serialize(const EnqueueMessage& aMessage)
+void ProtocolSerializer::Serialize(const DequeueMessage& aMessage, std::ostream& aStream)
 {
-    ba::streambuf stream;
-    std::ostream line(&stream);
-    line << static_cast<int>(MessageType::Enqueue);
-    line << aMessage;
-    mWriteFunc(stream);
+    aStream << static_cast<int>(MessageType::Dequeue);
+    aStream << aMessage;
 }
 
-void ProtocolSerializer::Serialize(const DequeueMessage& aMessage)
+MessagePtr ProtocolSerializer::Deserialize(std::istream& aStream)
 {
-    ba::streambuf stream;
-    std::ostream line(&stream);
-    line << static_cast<int>(MessageType::Dequeue);
-    line << aMessage;
-    mWriteFunc(stream);
-}
-
-MessagePtr ProtocolSerializer::Deserialize()
-{
-    ba::streambuf stream;
-    mReadFunc(stream);
-    std::istream line(&stream);
     int messageType;
-    line >> messageType;
+    aStream >> messageType;
     switch (static_cast<MessageType>(messageType))
     {
     case MessageType::QueueList:
     {
         QueueListMessage message;
-        line >> message;
+        aStream >> message;
         return std::make_shared<QueueListMessage>(message);
     }
     case MessageType::StartQueueSession:
     {
         StartQueueSessionMessage message;
-        line >> message;
+        aStream >> message;
         return std::make_shared<StartQueueSessionMessage>(message);
     }
     case MessageType::Enqueue:
     {
         EnqueueMessage message;
-        line >> message;
+        aStream >> message;
         return std::make_shared<EnqueueMessage>(message);
     }
     case MessageType::Dequeue:
     {
         DequeueMessage message;
-        line >> message;
+        aStream >> message;
         return std::make_shared<DequeueMessage>(message);
     }
     default:

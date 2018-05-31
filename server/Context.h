@@ -1,6 +1,5 @@
 #pragma once
 
-#include <boost/asio.hpp>
 #include <list>
 #include <memory>
 #include <mutex>
@@ -21,7 +20,7 @@ public:
 
     void SetExecutor(std::shared_ptr<CommandExecutor> aCommandExecutor);
 
-    void ProcessData(boost::asio::streambuf* aStream);
+    void ProcessData(ba::streambuf* aStream);
 
     void Start();
     void Stop();

@@ -1,10 +1,11 @@
 #include <iostream>
 
-#include "session.h"
+#include "Session.h"
+#include "ProtocolSerializer.h"
 
-using boost::asio::ip::tcp;
+using ba::ip::tcp;
 
-Session::Session(tcp::socket aSocket, std::shared_ptr<CommandExecutor> aCommandExecutor, boost::asio::io_service& aIoService)
+Session::Session(tcp::socket aSocket, std::shared_ptr<CommandExecutor> aCommandExecutor, ba::io_service& aIoService)
     : mSocket(std::move(aSocket))
     , mContext(aCommandExecutor)
     , mIoService(aIoService)
@@ -101,7 +102,7 @@ bool Session::GetWriteQueue()
 #endif
     std::stringstream str;
     for (const auto& status : statuses)
-        str << status;
+        ProtocolSerializer::Serialize(status, str);
 #ifdef DEBUG_PRINT
     std::cout << "Session::GetWriteQueue 4, this==" << this << ", str=" << str.str() << std::endl;
 #endif

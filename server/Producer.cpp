@@ -1,11 +1,12 @@
 #include "Producer.h"
 
-Producer::Producer()
+Producer::Producer(Queue& aQueue)
+    : mQueue(aQueue)
 {
 }
 
-void Producer::Produce(ItemPtr aItem) const
+void Producer::Produce(ItemPtr aItem)
 {
-	return std::make_unique<Item>(aItem);
+    mQueue.Enqueue(*aItem);
 }
 

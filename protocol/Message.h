@@ -14,6 +14,7 @@ enum class MessageType
 
 struct Message
 {
+    virtual ~Message() = default;
 };
 
 using MessagePtr = std::shared_ptr<Message>;
@@ -44,6 +45,8 @@ struct QueueListMessage : Message
     }
 };
 
+using QueueListMessagePtr = std::shared_ptr<QueueListMessage>;
+
 struct StartQueueSessionMessage : Message
 {
     std::string mQueueName;
@@ -64,6 +67,8 @@ struct StartQueueSessionMessage : Message
     }
 };
 
+using StartQueueSessionMessagePtr = std::shared_ptr<StartQueueSessionMessage>;
+
 struct DequeueMessage : Message
 {
     Item mItem;
@@ -81,6 +86,8 @@ struct DequeueMessage : Message
     }
 };
 
+using DequeueMessagePtr = std::shared_ptr<DequeueMessage>;
+
 struct EnqueueMessage : Message
 {
     DataType mData;
@@ -97,3 +104,5 @@ struct EnqueueMessage : Message
         return aStream;
     }
 };
+
+using EnqueueMessagePtr = std::shared_ptr<EnqueueMessage>;

@@ -15,7 +15,7 @@ CommandExecutor::CommandExecutor(IQueueManager* aQueueManager)
     RegisterHandler(Command::StartQueueSession, std::make_unique<StartQueueSessionCommandHandler>(aQueueManager));
 }
 
-CompleteOperationStatus CommandExecutor::RunCommand(const CompleteCommand &aCommand)
+CompleteOperationStatusPtr CommandExecutor::RunCommand(const CompleteCommand& aCommand)
 {
     assert (mCommandHandlers.find(aCommand.mCommand) != mCommandHandlers.end());
     return mCommandHandlers[aCommand.mCommand]->Handle(aCommand);

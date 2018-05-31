@@ -5,6 +5,8 @@ add_executable(queue_server
     CommandHandler.h
     CommandExecutor.cpp
     CommandExecutor.h
+    CompleteCommand.cpp
+    CompleteCommand.h
     Context.cpp
     Context.h
     Consumer.cpp

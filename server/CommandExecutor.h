@@ -13,7 +13,7 @@ class CommandExecutor
 public:
     CommandExecutor(IQueueManager* aQueueManager);
 
-    CompleteOperationStatus RunCommand(const CompleteCommand& aCommand);
+    CompleteOperationStatusPtr RunCommand(const CompleteCommand& aCommand);
 
 private:
     void RegisterHandler(Command aCommand, std::unique_ptr<CommandHandler> aCommandHandler);

@@ -4,6 +4,7 @@
 #include <memory>
 #include <string>
 #include <cstddef>
+#include <list>
 
 #include <boost/asio.hpp>
 
@@ -61,18 +62,28 @@ enum class Command
     Dequeue,
 };
 
-struct CompleteCommand
-{
-    Command mCommand;
-    std::string mQueueName;
-    std::size_t mOffset;
-    DataType mData;
-};
-
 struct CompleteOperationStatus
 {
+    virtual ~CompleteOperationStatus() = default;
+};
+
+using CompleteOperationStatusPtr = std::shared_ptr<CompleteOperationStatus>;
+
+struct QueueListOperationStatus : CompleteOperationStatus
+{
     QueueList mQueueList;
+};
+
+using QueueListOperationStatusPtr = std::shared_ptr<QueueListOperationStatus>;
+
+struct ItemOperationStatus : CompleteOperationStatus
+{
+    ItemOperationStatus(const Item& aItem)
+        : mItem(aItem)
+    {}
     Item mItem;
 };
 
-using CompleteOperationStatuses = std::list<CompleteOperationStatus>;
+using ItemOperationStatusPtr = std::shared_ptr<ItemOperationStatus>;
+
+using CompleteOperationStatuses = std::list<CompleteOperationStatusPtr>;

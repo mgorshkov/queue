@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IQueueManager.h"
+#include "CompleteCommand.h"
 
 class CommandHandler
 {
@@ -9,7 +10,7 @@ public:
 
     virtual ~CommandHandler() = default;
 
-    virtual CompleteOperationStatus Handle(const CompleteCommand& aCommand) = 0;
+    virtual CompleteOperationStatusPtr Handle(const CompleteCommand& aCommand) = 0;
 
 protected:
     IQueueManager* mQueueManager;

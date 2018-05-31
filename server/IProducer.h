@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Item.h"
+#include "Defines.h"
 
 class IProducer
 {
 public:
-	virtual ~IProducer() = default;
-	virtual void Produce(ItemPtr aItem) = 0;
+    virtual ~IProducer() = default;
+    virtual void Produce(ItemPtr aItem) = 0;
 };
 

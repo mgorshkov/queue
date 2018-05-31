@@ -8,5 +8,5 @@ class QueueListCommandHandler : public CommandHandler
 public:
     QueueListCommandHandler(IQueueManager* aQueueManager);
 
-    virtual CompleteOperationStatus Handle(const CompleteCommand& aCommand) override;
+    virtual CompleteOperationStatusPtr Handle(const CompleteCommand& aCommand) override;
 };

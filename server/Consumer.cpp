@@ -1,6 +1,7 @@
 #include "Consumer.h"
 
-Consumer::Consumer()
+Consumer::Consumer(Queue& aQueue)
+    : mQueue(aQueue)
 {
 }
 
