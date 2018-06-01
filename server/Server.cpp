@@ -1,5 +1,7 @@
-#include "server.h"
-#include "session.h"
+#include <iostream>
+
+#include "Server.h"
+#include "Session.h"
 
 Server::Server(boost::asio::io_service& aIoService, const boost::asio::ip::tcp::endpoint& aEndPoint)
     : mAcceptor(aIoService, aEndPoint)

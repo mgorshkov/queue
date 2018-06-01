@@ -17,12 +17,9 @@ add_executable(queue_server
     EnqueueCommandHandler.h
     IConsumer.h
     IProducer.h
-    IProducerApiServer.h
     IQueueManager.h
     Producer.cpp
     Producer.h
-    ProducerApiServer.cpp
-    ProducerApiServer.h
     Queue.cpp
     Queue.h
     QueueListCommandHandler.cpp

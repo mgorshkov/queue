@@ -19,23 +19,15 @@ void Client::CreateApiClient()
         switch (mSyncAsyncMode)
         {
         case SyncAsyncMode::Sync:
-            mApiClient = std::make_unique<ConsumerApiClientSync>();
+            mApiClient = std::make_unique<ConsumerApiClientSync>(mIoService);
             break;
         case SyncAsyncMode::Async:
-            mApiClient = std::make_unique<ConsumerApiClientAsync>();
+            mApiClient = std::make_unique<ConsumerApiClientAsync>(mIoService);
             break;
         }
         break;
     case ConsumerProducerMode::Producer:
-        switch (mSyncAsyncMode)
-        {
-        case SyncAsyncMode::Sync:
-            mApiClient = std::make_unique<ProducerApiClientSync>();
-            break;
-        case SyncAsyncMode::Async:
-            mApiClient = std::make_unique<ProducerApiClientAsync>();
-            break;
-        }
+        mApiClient = std::make_unique<ProducerApiClient>(mIoService);
         break;
     }
 }
@@ -45,9 +37,11 @@ void Client::Run()
     CreateApiClient();
     switch (mConsumerProducerMode)
     {
-    case ConsumerProducerMode::ModeConsumer:
+    case ConsumerProducerMode::Consumer:
         break;
-    case ConsumerProducerMode::ModeProducer:
+    case ConsumerProducerMode::Producer:
         break;
+    default:
+        assert(0);
     }
 }

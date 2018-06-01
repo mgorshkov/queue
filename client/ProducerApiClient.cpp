@@ -1,16 +1,7 @@
 #include "ProducerApiClient.h"
 
-// sync client
-ProducerApiClientSync::ProducerApiClientSync()
-    : mProtocolSerializer(
-        [&mSocket](ba::buffer& aBuffer)
-        {
-            mSocket.read_some(aBuffer);
-        },
-        [&mSocket](const ba::buffer& aBuffer)
-        {
-            mSocket.write(aBuffer);
-        })
+ProducerApiClient::ProducerApiClient(ba::io_service& aIoService)
+    : mSocket(aIoService)
 {
 }
 
@@ -22,7 +13,7 @@ void ProducerApiClient::Connect(const ServerData& aServerData)
 
 void ProducerApiClient::StartQueueSession(const std::string& aQueueName)
 {
-    mProtocolSerializer.Serialize(Protocol::Message::StartQueueSession, aQueueName, aOffset);
+    ProtocolSerializer.Serialize(Protocol::Message::StartQueueSession, aQueueName, aOffset);
 }
 
 void ProducerApiClient::Enqueue(const Item& aItem)

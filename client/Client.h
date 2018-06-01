@@ -17,6 +17,8 @@ private:
     void CreateApiClient();
 
 private:
+    ba::io_service mIoService;
+
     std::unique_ptr<IApiClient> mApiClient;
     ServerData mServerData;
     ConsumerProducerMode mConsumerProducerMode;

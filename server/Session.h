@@ -1,11 +1,10 @@
 #pragma once
 
 #include <array>
-#include <boost/asio.hpp>
 #include <memory>
 
-#include "structs.h"
-#include "context.h"
+#include "Defines.h".h"
+#include "Context.h"
 
 class Session : public std::enable_shared_from_this<Session>
 {

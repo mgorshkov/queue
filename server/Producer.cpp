@@ -7,6 +7,6 @@ Producer::Producer(Queue& aQueue)
 
 void Producer::Produce(ItemPtr aItem)
 {
-    mQueue.Enqueue(*aItem);
+    mQueue.Enqueue(aItem);
 }
 

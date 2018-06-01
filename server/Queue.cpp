@@ -1,14 +1,14 @@
 #include "Queue.h"
 
-void Queue::Enqueue(const Item& aItem)
+void Queue::Enqueue(const ItemPtr& aItem)
 {
-    std::lock_quard<std::mutex> lock(mQueueMutex);
-    mQueue.enqueue(aItem);
+    std::lock_guard<std::mutex> lock(mQueueMutex);
+    mQueue.push(aItem);
 }
 
 ItemPtr Queue::Dequeue()
 {
-    std::lock_quard<std::mutex> lock(mQueueMutex);
+    std::lock_guard<std::mutex> lock(mQueueMutex);
     auto item = mQueue.front();
     mQueue.pop();
     return item;

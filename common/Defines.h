@@ -31,7 +31,7 @@ struct Item
     }
 };
 
-using ItemPtr = std::unique_ptr<Item>;
+using ItemPtr = std::shared_ptr<Item>;
 using ItemQueue = std::queue<ItemPtr>;
 
 using QueueList = std::vector<DataType>;
@@ -48,11 +48,43 @@ enum class SyncAsyncMode
     Async,
 };
 
+std::istream& operator >> (std::istream& aStream, SyncAsyncMode& aMode)
+{
+    std::string name;
+    aStream >> name;
+    aMode = (name == "sync" ?
+        SyncAsyncMode::Sync : SyncAsyncMode::Async);
+    return aStream;
+}
+
+std::ostream& operator << (std::ostream& aStream, const SyncAsyncMode& aMode)
+{
+    std::string name = aMode == SyncAsyncMode::Sync ? "sync" : "async";
+    aStream << name;
+    return aStream;
+}
+
 enum class ConsumerProducerMode
 {
     Consumer,
     Producer,
 };
+
+std::istream& operator >> (std::istream& aStream, ConsumerProducerMode& aMode)
+{
+    std::string name;
+    aStream >> name;
+    aMode = (name == "consumer" ?
+        ConsumerProducerMode::Consumer : ConsumerProducerMode::Producer);
+    return aStream;
+}
+
+std::ostream& operator << (std::ostream& aStream, const ConsumerProducerMode& aMode)
+{
+    std::string name = aMode == ConsumerProducerMode::Consumer ? "consumer" : "producer";
+    aStream << name;
+    return aStream;
+}
 
 enum class Command
 {

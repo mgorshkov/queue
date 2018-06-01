@@ -7,6 +7,6 @@ Consumer::Consumer(Queue& aQueue)
 
 ItemPtr Consumer::Consume()
 {
-    mQueue.Dequeue();
+    return mQueue.Dequeue();
 }
 

@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "Client.h"
 
 int main(int argc, char* argv[])
@@ -19,20 +21,29 @@ int main(int argc, char* argv[])
             std::cerr << "Incorrect port: " << port << std::endl;
             return 1;
         }
-        auto actorMode = argv[3];
-        if (actorMode != "producer" && actorMode != "consumer")
+        auto consumerProducerModeStr = argv[3];
+        if (consumerProducerModeStr != "producer" && consumerProducerModeStr != "consumer")
         {
-            std::cerr << "Unknown mode: " << actorMode << std::endl;
+            std::cerr << "Unknown mode: " << consumerProducerModeStr << std::endl;
             return 1;
         }
-        auto syncAsyncMode = argv[4];
-        if (syncAsyncMode != "sync" && syncAsyncMode != "async")
+        auto syncAsyncModeStr = argv[4];
+        if (syncAsyncModeStr != "sync" && syncAsyncModeStr != "async")
         {
-            std::cerr << "Unknown sync/async mode: " << syncAsyncMode << std::endl;
+            std::cerr << "Unknown sync/async mode: " << syncAsyncModeStr << std::endl;
         }
 
         ServerData serverData{host, port};
-        Client client(serverData, actorMode, syncAsyncMode);
+
+        ConsumerProducerMode consumerProducerMode;
+        std::stringstream consumerProducerModeStream(consumerProducerModeStr);
+        consumerProducerModeStream >> consumerProducerMode;
+
+        SyncAsyncMode syncAsyncMode;
+        std::stringstream syncAsyncModeStream(syncAsyncModeStr);
+        syncAsyncModeStream >> syncAsyncMode;
+
+        Client client(serverData, consumerProducerMode, syncAsyncMode);
         client.Run();
     }
     catch (std::exception& e)

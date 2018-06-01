@@ -5,7 +5,7 @@
 class Queue
 {
 public:
-    void Enqueue(const Item& mItem);
+    void Enqueue(const ItemPtr& mItem);
     ItemPtr Dequeue();
 
 private:
