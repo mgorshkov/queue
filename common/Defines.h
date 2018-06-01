@@ -88,21 +88,20 @@ std::ostream& operator << (std::ostream& aStream, const ConsumerProducerMode& aM
 
 enum class Command
 {
-    QueueList,
-    StartQueueSession,
-    Enqueue,
-    Dequeue,
+    QueueListRequest,
+    StartQueueSessionRequest,
+    EnqueueRequest,
+    DequeueRequest,
+    QueueListResponse,
+    DequeueResponse,
 };
 
-struct CompleteOperationStatus
+struct QueueListOperationStatus : Message
 {
-    virtual ~CompleteOperationStatus() = default;
-};
-
-using CompleteOperationStatusPtr = std::shared_ptr<CompleteOperationStatus>;
-
-struct QueueListOperationStatus : CompleteOperationStatus
-{
+    QueueListOperationStatus(const QueueList& aQueueList)
+        : mQueueList(aQueueList)
+    {
+    }
     QueueList mQueueList;
 };
 
@@ -112,7 +111,8 @@ struct ItemOperationStatus : CompleteOperationStatus
 {
     ItemOperationStatus(const Item& aItem)
         : mItem(aItem)
-    {}
+    {
+    }
     Item mItem;
 };
 

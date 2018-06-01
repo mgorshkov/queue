@@ -2,28 +2,54 @@
 
 #include "assert.h"
 
-void ProtocolSerializer::Serialize(const QueueListMessage& aMessage, std::ostream& aStream)
+void ProtocolSerializer::Serialize(MessagePtr aMessage, std::ostream& aStream)
 {
-    aStream << static_cast<int>(MessageType::QueueList);
-    aStream << aMessage;
+    auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(aMessage);
+    if (queueListMessage)
+    {
+        aStream << static_cast<int>(MessageType::QueueList);
+        aStream << *queueListMessage;
+        return;
+    }
+    auto startQueueSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(aMessage);
+    if (startQueueSessionMessage)
+    {
+        aStream << static_cast<int>(MessageType::StartQueueSession);
+        aStream << *startQueueSessionMessage;
+        return;
+    }
+    auto enqueueMessage = std::dynamic_pointer_cast<EnqueueMessage>(aMessage);
+    if (enqueueMessage)
+    {
+        aStream << static_cast<int>(MessageType::Enqueue);
+        aStream << *enqueueMessage;
+        return;
+    }
+    auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(aMessage);
+    if (dequeueMessage)
+    {
+        aStream << static_cast<int>(MessageType::Dequeue);
+        aStream << *dequeueMessage;
+        return;
+    }
 }
 
-void ProtocolSerializer::Serialize(const StartQueueSessionMessage& aMessage, std::ostream& aStream)
+void ProtocolSerializer::Serialize(CompleteOperationStatusPtr aMessage, std::ostream& aStream)
 {
-    aStream << static_cast<int>(MessageType::StartQueueSession);
-    aStream << aMessage;
-}
-
-void ProtocolSerializer::Serialize(const EnqueueMessage& aMessage, std::ostream& aStream)
-{
-    aStream << static_cast<int>(MessageType::Enqueue);
-    aStream << aMessage;
-}
-
-void ProtocolSerializer::Serialize(const DequeueMessage& aMessage, std::ostream& aStream)
-{
-    aStream << static_cast<int>(MessageType::Dequeue);
-    aStream << aMessage;
+    auto queueListOperationStatus = std::dynamic_pointer_cast<QueueListOperationStatus>(aMessage);
+    if (queueListOperationStatus)
+    {
+        aStream << static_cast<int>(OperationStatus::QueueList);
+        aStream << *queueListOperationStatus;
+        return;
+    }
+    auto itemOperationStatus = std::dynamic_pointer_cast<ItemOperationStatus>(aMessage);
+    if (itemOperationStatus)
+    {
+        aStream << static_cast<int>(OperationStatus::Item);
+        aStream << *itemOperationStatus;
+        return;
+    }
 }
 
 MessagePtr ProtocolSerializer::Deserialize(std::istream& aStream)

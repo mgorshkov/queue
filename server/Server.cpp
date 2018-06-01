@@ -7,8 +7,9 @@ Server::Server(boost::asio::io_service& aIoService, const boost::asio::ip::tcp::
     : mAcceptor(aIoService, aEndPoint)
     , mSocket(aIoService)
     , mIoService(aIoService)
+    , mQueueManager()
 {
-    mCommandExecutor = std::make_shared<CommandExecutor>();
+    mCommandExecutor = std::make_shared<CommandExecutor>(&mQueueManager);
     DoAccept();
 }
 

@@ -4,7 +4,7 @@
 
 QueueListCommandHandler::QueueListCommandHandler(IQueueManager* aQueueManager)
     : CommandHandler(aQueueManager)
-{		
+{
 }
 
 CompleteOperationStatusPtr QueueListCommandHandler::Handle(const CompleteCommand&)

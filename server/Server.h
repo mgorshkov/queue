@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "CommandExecutor.h"
+#include "QueueManager.h"
 
 class Server
 {
@@ -18,4 +19,5 @@ private:
     boost::asio::io_service& mIoService;
 
     std::shared_ptr<CommandExecutor> mCommandExecutor;
+    QueueManager mQueueManager;
 };

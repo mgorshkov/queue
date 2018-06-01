@@ -3,7 +3,7 @@
 #include <array>
 #include <memory>
 
-#include "Defines.h".h"
+#include "Defines.h"
 #include "Context.h"
 
 class Session : public std::enable_shared_from_this<Session>
