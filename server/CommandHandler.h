@@ -10,7 +10,7 @@ public:
 
     virtual ~CommandHandler() = default;
 
-    virtual CompleteOperationStatusPtr Handle(const CompleteCommand& aCommand) = 0;
+    virtual MessagePtr Handle(const CompleteCommand& aCommand) = 0;
 
 protected:
     IQueueManager* mQueueManager;

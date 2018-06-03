@@ -31,8 +31,6 @@ add_executable(queue_server
     ServerMain.cpp
     Session.cpp
     Session.h
-    StartQueueSessionCommandHandler.cpp
-    StartQueueSessionCommandHandler.h
     ThreadPool.cpp
     ThreadPool.h
     ThreadedActor.cpp
@@ -43,13 +41,13 @@ add_executable(queue_server
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
+set(Boost_USE_STATIC_RUNTIME ON)
 
 find_package(Threads REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 set_target_properties(queue_server PROPERTIES
-#    COMPILE_OPTIONS -Wpedantic -Wall -Wextra
+    COMPILE_OPTIONS -Wpedantic -Wall -Wextra
     CMAKE_CXX_STANDARD 14
     CMAKE_CXX_STANDARD_REQUIRED ON
 )

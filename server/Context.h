@@ -25,10 +25,10 @@ public:
     void Start();
     void Stop();
 
-    CompleteOperationStatuses GetOutboundQueue();
+    MessagePtrs GetOutboundQueue();
 
 private:
-    CompleteOperationStatuses ProcessStream(std::shared_ptr<CommandExecutor> aCommandExecutor);
+    MessagePtrs ProcessStream(std::shared_ptr<CommandExecutor> aCommandExecutor);
 
     void ThreadProc(std::shared_ptr<CommandExecutor> aCommandExecutor);
 
@@ -44,6 +44,6 @@ private:
 
     std::thread mThread;
 
-    std::queue<CompleteOperationStatuses> mOutboundStatuses;
+    std::queue<MessagePtrs> mOutboundMessages;
     std::mutex mQueueMutex;
 };

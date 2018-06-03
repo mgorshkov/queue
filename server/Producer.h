@@ -1,16 +1,16 @@
 #pragma once
 
 #include "IProducer.h"
-#include "Queue.h"
+#include "IQueueManager.h"
 
 class Producer : public IProducer
 {
 public:
-    explicit Producer(Queue& aQueue);
+    explicit Producer(IQueueManager& aQueueManager);
 
-    void Produce(ItemPtr aItem) override;
+    void Produce(const std::string& aQueueName, const DataType& aData) override;
 
 private:
-    Queue& mQueue;
+    IQueueManager& mQueueManager;
 };
 

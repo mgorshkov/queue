@@ -1,16 +1,19 @@
 #include "Queue.h"
 
-void Queue::Enqueue(const ItemPtr& aItem)
+Queue::Queue()
+    : mOffset(0)
 {
-    std::lock_guard<std::mutex> lock(mQueueMutex);
-    mQueue.push(aItem);
 }
 
-ItemPtr Queue::Dequeue()
+void Queue::Enqueue(const DataType& aData)
 {
-    std::lock_guard<std::mutex> lock(mQueueMutex);
-    auto item = mQueue.front();
-    mQueue.pop();
-    return item;
+    ItemPtr item = std::make_shared<Item>(aData, mOffset++);
+    mQueue.push_back(item);
+}
+
+ItemPtr Queue::Dequeue(std::size_t aOffset)
+{
+    assert(aOffset < mQueue.size());
+    return mQueue[aOffset];
 }
 

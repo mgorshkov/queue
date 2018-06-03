@@ -7,7 +7,6 @@ class ProtocolSerializer
 {
 public:
     static void Serialize(MessagePtr aMessage, std::ostream& aStream);
-    static void Serialize(CompleteOperationStatusPtr aMessage, std::ostream& aStream);
 
     static MessagePtr Deserialize(std::istream& aStream);
 };

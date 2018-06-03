@@ -7,9 +7,9 @@ EnqueueCommandHandler::EnqueueCommandHandler(IQueueManager* aQueueManager)
 {
 }
 
-CompleteOperationStatusPtr EnqueueCommandHandler::Handle(const CompleteCommand& aCommand)
+MessagePtr EnqueueCommandHandler::Handle(const CompleteCommand& aCommand)
 {
     mQueueManager->Enqueue(aCommand.mQueueName, aCommand.mData);
-    return std::make_shared<CompleteOperationStatus>();
+    return std::make_shared<Message>();
 }
 

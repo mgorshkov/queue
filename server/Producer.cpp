@@ -1,12 +1,12 @@
 #include "Producer.h"
 
-Producer::Producer(Queue& aQueue)
-    : mQueue(aQueue)
+Producer::Producer(IQueueManager& aQueueManager)
+    : mQueueManager(aQueueManager)
 {
 }
 
-void Producer::Produce(ItemPtr aItem)
+void Producer::Produce(const std::string& aQueueName, const DataType& aData)
 {
-    mQueue.Enqueue(aItem);
+    mQueueManager.Enqueue(aQueueName, aData);
 }
 

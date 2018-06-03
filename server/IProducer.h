@@ -6,6 +6,6 @@ class IProducer
 {
 public:
     virtual ~IProducer() = default;
-    virtual void Produce(ItemPtr aItem) = 0;
+    virtual void Produce(const std::string& aQueueName, const DataType& aData) = 0;
 };
 

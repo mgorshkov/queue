@@ -8,5 +8,5 @@ class EnqueueCommandHandler : public CommandHandler
 public:
     EnqueueCommandHandler(IQueueManager* aQueueManager);
 
-    virtual CompleteOperationStatusPtr Handle(const CompleteCommand& aCommand) override;
+    virtual MessagePtr Handle(const CompleteCommand& aCommand) override;
 };

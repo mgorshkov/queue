@@ -8,14 +8,6 @@ CompleteCommand::CompleteCommand(const MessagePtr& aMessage)
         mCommand = Command::QueueList;
         return;
     }
-    auto startQueueSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(aMessage);
-    if (startQueueSessionMessage)
-    {
-        mCommand = Command::StartQueueSession;
-        mQueueName = startQueueSessionMessage->mQueueName;
-        mOffset = startQueueSessionMessage->mOffset;
-        return;
-    }
     auto enqueueMessage = std::dynamic_pointer_cast<EnqueueMessage>(aMessage);
     if (enqueueMessage)
     {

@@ -1,5 +1,8 @@
 #include "ProducerApiClient.h"
 
+#include "Message.h"
+#include "ProtocolSerializer.h"
+
 ProducerApiClient::ProducerApiClient(ba::io_service& aIoService)
     : mSocket(aIoService)
 {
@@ -13,12 +16,16 @@ void ProducerApiClient::Connect(const ServerData& aServerData)
 
 void ProducerApiClient::StartQueueSession(const std::string& aQueueName)
 {
-    ProtocolSerializer.Serialize(Protocol::Message::StartQueueSession, aQueueName, aOffset);
+    mQueueName = aQueueName;
 }
 
-void ProducerApiClient::Enqueue(const Item& aItem)
+void ProducerApiClient::Enqueue(const DataType& aData)
 {
-    boost::asio::write(mSocket, boost::asio::buffer(aMsg.c_str(), aMsg.length()));
+    auto message = std::make_shared<EnqueueMessage>(aData);
+    ba::streambuf buffer;
+    std::ostream stream(&buffer);
+    ProtocolSerializer::Serialize(message, stream);
+    ba::write(mSocket, buffer);
 }
 
 void ProducerApiClient::Disconnect()

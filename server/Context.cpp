@@ -88,14 +88,14 @@ void Context::Stop()
 #endif
 }
 
-CompleteOperationStatuses Context::GetOutboundQueue()
+MessagePtrs Context::GetOutboundQueue()
 {
     if (!mQueueNotified.load())
     {
 #ifdef DEBUG_PRINT
         std::cout << "Context::GetOutboundQueue 1" << std::endl;
 #endif
-        return CompleteOperationStatuses{};
+        return MessagePtrs{};
     }
 #ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 2" << std::endl;
@@ -104,13 +104,13 @@ CompleteOperationStatuses Context::GetOutboundQueue()
 #ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 3" << std::endl;
 #endif
-    if (mOutboundStatuses.empty())
-        return CompleteOperationStatuses{};
+    if (mOutboundMessages.empty())
+        return MessagePtrs{};
 #ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 4" << std::endl;
 #endif
-    auto statuses = mOutboundStatuses.front();
-    mOutboundStatuses.pop();
+    auto statuses = mOutboundMessages.front();
+    mOutboundMessages.pop();
 #ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 5" << std::endl;
     for (auto status : statuses)
@@ -120,7 +120,7 @@ CompleteOperationStatuses Context::GetOutboundQueue()
     return statuses;
 }
 
-CompleteOperationStatuses Context::ProcessStream(std::shared_ptr<CommandExecutor> aCommandExecutor)
+MessagePtrs Context::ProcessStream(std::shared_ptr<CommandExecutor> aCommandExecutor)
 {
     std::list<MessagePtr> messages;
     {
@@ -134,7 +134,7 @@ CompleteOperationStatuses Context::ProcessStream(std::shared_ptr<CommandExecutor
         mStream.clear();
         mStream.str("");
     }
-    CompleteOperationStatuses results;
+    MessagePtrs results;
     for (const auto& message: messages)
     {
         CompleteCommand command{message};
@@ -156,7 +156,7 @@ void Context::ThreadProc(std::shared_ptr<CommandExecutor> aCommandExecutor)
             lk.unlock();
             {
                 std::unique_lock<std::mutex> lk(mQueueMutex);
-                mOutboundStatuses.push(ProcessStream(aCommandExecutor));
+                mOutboundMessages.push(ProcessStream(aCommandExecutor));
             }
             mQueueCondition.notify_one();
             mNotified = false;
@@ -164,7 +164,7 @@ void Context::ThreadProc(std::shared_ptr<CommandExecutor> aCommandExecutor)
         }
         {
             std::unique_lock<std::mutex> lk(mQueueMutex);
-            mOutboundStatuses.push(ProcessStream(aCommandExecutor));
+            mOutboundMessages.push(ProcessStream(aCommandExecutor));
         }
         mQueueCondition.notify_one();
         mQueueNotified = true;

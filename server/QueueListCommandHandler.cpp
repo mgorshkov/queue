@@ -7,9 +7,9 @@ QueueListCommandHandler::QueueListCommandHandler(IQueueManager* aQueueManager)
 {
 }
 
-CompleteOperationStatusPtr QueueListCommandHandler::Handle(const CompleteCommand&)
+MessagePtr QueueListCommandHandler::Handle(const CompleteCommand&)
 {
     QueueList queueList = mQueueManager->GetQueueList();
-    return std::make_shared<QueueListOperationStatus>(queueList);
+    return std::make_shared<QueueListMessage>(queueList);
 }
 

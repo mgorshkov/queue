@@ -18,9 +18,15 @@ struct Message
 };
 
 using MessagePtr = std::shared_ptr<Message>;
+using MessagePtrs = std::list<MessagePtr>;
 
 struct QueueListMessage : Message
 {
+    QueueListMessage(const QueueList& aQueueList = QueueList{})
+        : mQueueList(aQueueList)
+    {
+    }
+
     QueueList mQueueList;
 
     friend std::istream& operator >> (std::istream& aStream, QueueListMessage& aMessage)
@@ -49,6 +55,14 @@ using QueueListMessagePtr = std::shared_ptr<QueueListMessage>;
 
 struct StartQueueSessionMessage : Message
 {
+    StartQueueSessionMessage(
+        const std::string& aQueueName = std::string{},
+        std::size_t aOffset = 0)
+        : mQueueName(aQueueName)
+        , mOffset(aOffset)
+    {
+    }
+
     std::string mQueueName;
     std::size_t mOffset;
 
@@ -71,6 +85,11 @@ using StartQueueSessionMessagePtr = std::shared_ptr<StartQueueSessionMessage>;
 
 struct DequeueMessage : Message
 {
+    DequeueMessage(const Item& aItem = Item{})
+        : mItem(aItem)
+    {
+    }
+
     Item mItem;
 
     friend std::istream& operator >> (std::istream& aStream, DequeueMessage& aMessage)
@@ -90,6 +109,11 @@ using DequeueMessagePtr = std::shared_ptr<DequeueMessage>;
 
 struct EnqueueMessage : Message
 {
+    EnqueueMessage(const DataType& aData = DataType{})
+        : mData(aData)
+    {
+    }
+
     DataType mData;
 
     friend std::istream& operator >> (std::istream& aStream, EnqueueMessage& aMessage)
@@ -106,3 +130,4 @@ struct EnqueueMessage : Message
 };
 
 using EnqueueMessagePtr = std::shared_ptr<EnqueueMessage>;
+

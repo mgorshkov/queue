@@ -34,24 +34,6 @@ void ProtocolSerializer::Serialize(MessagePtr aMessage, std::ostream& aStream)
     }
 }
 
-void ProtocolSerializer::Serialize(CompleteOperationStatusPtr aMessage, std::ostream& aStream)
-{
-    auto queueListOperationStatus = std::dynamic_pointer_cast<QueueListOperationStatus>(aMessage);
-    if (queueListOperationStatus)
-    {
-        aStream << static_cast<int>(OperationStatus::QueueList);
-        aStream << *queueListOperationStatus;
-        return;
-    }
-    auto itemOperationStatus = std::dynamic_pointer_cast<ItemOperationStatus>(aMessage);
-    if (itemOperationStatus)
-    {
-        aStream << static_cast<int>(OperationStatus::Item);
-        aStream << *itemOperationStatus;
-        return;
-    }
-}
-
 MessagePtr ProtocolSerializer::Deserialize(std::istream& aStream)
 {
     int messageType;

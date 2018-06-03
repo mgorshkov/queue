@@ -1,6 +1,6 @@
 #pragma once
 
-#include <queue>
+#include <deque>
 #include <memory>
 #include <string>
 #include <cstddef>
@@ -13,6 +13,12 @@ using DataType = std::string;
 
 struct Item
 {
+    Item(const DataType& aData = DataType(), std::size_t aOffset = 0)
+        : mData(aData)
+        , mOffset(aOffset)
+    {
+    }
+
     DataType mData;
     std::size_t mOffset;
 
@@ -32,7 +38,7 @@ struct Item
 };
 
 using ItemPtr = std::shared_ptr<Item>;
-using ItemQueue = std::queue<ItemPtr>;
+using ItemQueue = std::deque<ItemPtr>;
 
 using QueueList = std::vector<DataType>;
 
@@ -48,7 +54,7 @@ enum class SyncAsyncMode
     Async,
 };
 
-std::istream& operator >> (std::istream& aStream, SyncAsyncMode& aMode)
+inline std::istream& operator >> (std::istream& aStream, SyncAsyncMode& aMode)
 {
     std::string name;
     aStream >> name;
@@ -57,7 +63,7 @@ std::istream& operator >> (std::istream& aStream, SyncAsyncMode& aMode)
     return aStream;
 }
 
-std::ostream& operator << (std::ostream& aStream, const SyncAsyncMode& aMode)
+inline std::ostream& operator << (std::ostream& aStream, const SyncAsyncMode& aMode)
 {
     std::string name = aMode == SyncAsyncMode::Sync ? "sync" : "async";
     aStream << name;
@@ -70,7 +76,7 @@ enum class ConsumerProducerMode
     Producer,
 };
 
-std::istream& operator >> (std::istream& aStream, ConsumerProducerMode& aMode)
+inline std::istream& operator >> (std::istream& aStream, ConsumerProducerMode& aMode)
 {
     std::string name;
     aStream >> name;
@@ -79,7 +85,7 @@ std::istream& operator >> (std::istream& aStream, ConsumerProducerMode& aMode)
     return aStream;
 }
 
-std::ostream& operator << (std::ostream& aStream, const ConsumerProducerMode& aMode)
+inline std::ostream& operator << (std::ostream& aStream, const ConsumerProducerMode& aMode)
 {
     std::string name = aMode == ConsumerProducerMode::Consumer ? "consumer" : "producer";
     aStream << name;
@@ -88,34 +94,8 @@ std::ostream& operator << (std::ostream& aStream, const ConsumerProducerMode& aM
 
 enum class Command
 {
-    QueueListRequest,
-    StartQueueSessionRequest,
-    EnqueueRequest,
-    DequeueRequest,
-    QueueListResponse,
-    DequeueResponse,
+    QueueList,
+    Enqueue,
+    Dequeue,
 };
 
-struct QueueListOperationStatus : Message
-{
-    QueueListOperationStatus(const QueueList& aQueueList)
-        : mQueueList(aQueueList)
-    {
-    }
-    QueueList mQueueList;
-};
-
-using QueueListOperationStatusPtr = std::shared_ptr<QueueListOperationStatus>;
-
-struct ItemOperationStatus : CompleteOperationStatus
-{
-    ItemOperationStatus(const Item& aItem)
-        : mItem(aItem)
-    {
-    }
-    Item mItem;
-};
-
-using ItemOperationStatusPtr = std::shared_ptr<ItemOperationStatus>;
-
-using CompleteOperationStatuses = std::list<CompleteOperationStatusPtr>;

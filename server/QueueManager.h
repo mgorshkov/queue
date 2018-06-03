@@ -1,5 +1,6 @@
 #pragma once
 
+#include <mutex>
 #include <unordered_map>
 
 #include "IQueueManager.h"
@@ -11,8 +12,10 @@ public:
     QueueList GetQueueList();
 
     void Enqueue(const std::string& aQueueName, const DataType& aData);
-    Item Dequeue(const std::string& aQueueName, std::size_t aOffset = 0);
+    ItemPtr Dequeue(const std::string& aQueueName, std::size_t aOffset = 0);
 
 private:
+    std::mutex mQueueMutex;
+
     std::unordered_map<std::string, Queue> mQueues;
 };

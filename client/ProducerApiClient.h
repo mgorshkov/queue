@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IProducerApiClient.h"
+#include "Defines.h"
 
 class ProducerApiClient : public IProducerApiClient
 {
@@ -13,5 +14,6 @@ public:
     void Disconnect();
 
 private:
+    std::string mQueueName;
     ba::ip::tcp::socket mSocket;
 };

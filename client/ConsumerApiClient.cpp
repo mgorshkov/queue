@@ -16,31 +16,48 @@ void ConsumerApiClientSync::Connect(const ServerData& aServerData)
 
 QueueList ConsumerApiClientSync::GetQueueList()
 {
-    QueueListMessage message{};
-    ba::streambuf buffer;
+    auto message = std::make_shared<QueueListMessage>();
     {
+        ba::streambuf buffer;
         std::ostream stream(&buffer);
         ProtocolSerializer::Serialize(message, stream);
         ba::write(mSocket, buffer);
     }
     {
-        size_t len = mSocket.read_some(buffer);
-        std::istream stream(&buffer);
+        constexpr const int MAXSIZE = 256;
+        std::array<char, MAXSIZE> buffer;
+        size_t len = mSocket.read_some(ba::buffer(buffer));
+        std::istringstream stream(std::string(&buffer[0], len));
         auto response = ProtocolSerializer::Deserialize(stream);
         auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(response);
         return queueListMessage->mQueueList;
     }
 }
 
-ItemPtr ConsumerApiClientSync::Dequeue()
-{
-    mProtocolSerializer.Serialize(ProtocolSerializer::Message::Dequeue);
-    return mProtocolSerializer.Deserialize(ProtocolSerializer::Message::Dequeue);
-}
-
 void ConsumerApiClientSync::StartQueueSession(const std::string& aQueueName, std::size_t aOffset)
 {
-    mProtocolSerializer.Serialize(Protocol::Message::StartQueueSession, aQueueName, aOffset);
+    mQueueName = aQueueName;
+    mOffset = aOffset;
+}
+
+Item ConsumerApiClientSync::Dequeue()
+{
+    auto message = std::make_shared<DequeueMessage>();
+    {
+        ba::streambuf buffer;
+        std::ostream stream(&buffer);
+        ProtocolSerializer::Serialize(message, stream);
+        ba::write(mSocket, buffer);
+    }
+    {
+        constexpr const int MAXSIZE = 256;
+        std::array<char, MAXSIZE> buffer;
+        size_t len = mSocket.read_some(ba::buffer(buffer));
+        std::istringstream stream(std::string(&buffer[0], len));
+        auto response = ProtocolSerializer::Deserialize(stream);
+        auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(response);
+        return dequeueMessage->mItem;
+    }
 }
 
 void ConsumerApiClientSync::Disconnect()
@@ -49,23 +66,32 @@ void ConsumerApiClientSync::Disconnect()
 }
 
 // async client
-ConsumerApiClientAsync::ConsumerApiClientSync(ba::io_service& aIoService)
+ConsumerApiClientAsync::ConsumerApiClientAsync(ba::io_service& aIoService)
     : mSocket(aIoService)
+    , mIoService(aIoService)
 {
 }
 
 void ConsumerApiClientAsync::Connect(const ServerData& aServerData)
 {
-    boost::asio::ip::tcp::endpoint endPoint(
-        boost::asio::ip::address::from_string(aServerData.mServerIp), aServerData.mServerPort);
+    ba::ip::tcp::endpoint endPoint(
+        ba::ip::address::from_string(aServerData.mServerIp), aServerData.mServerPort);
     mSocket.connect(endPoint);
 }
 
 void ConsumerApiClientAsync::GetQueueList(std::function<QueueList(void)> aCallback)
 {
-    mIoService.post(
+/*    mIoService.post(
         [this, msg]()
         {
+            auto message = std::make_shared<QueueListMessage>();
+            ba::streambuf buffer;
+            {
+                std::ostream stream(&buffer);
+                ProtocolSerializer::Serialize(message, stream);
+                ba::write(mSocket, buffer);
+            }
+
             bool writeInProgress = !mWriteMsgs.empty();
             auto msg = ProtocolSerializer::Serialize(ProtocolSerializer::Message::QueueList);
             mWriteMsgs.push_back(msg);
@@ -74,28 +100,17 @@ void ConsumerApiClientAsync::GetQueueList(std::function<QueueList(void)> aCallba
                 DoWrite();
                 DoRead();
             }
-        });
+        });*/
 }
 
 void ConsumerApiClientAsync::StartQueueSession(const std::string& aQueueName, std::size_t aOffset)
 {
-   mIoService.post(
-        [this, msg]()
-        {
-            bool writeInProgress = !mWriteMsgs.empty();
-            StartQueueSessionMessage message{aQueueName, aOffset};
-            auto msg = ProtocolSerializer::Serialize(message);
-            mWriteMsgs.push_back(msg);
-            if (!writeInProgress)
-            {
-                DoWrite();
-                DoRead();
-            }
-        });
+    mQueueName = aQueueName;
+    mOffset = aOffset;
 }
 
-void ConsumerApiClientAsync::Dequeue(std::function<void (const Item&)> aCallback)
-{
+void ConsumerApiClientAsync::Dequeue(std::function<Item(void)> aCallback)
+{/*
    mIoService.post(
         [this, msg]()
         {
@@ -107,7 +122,7 @@ void ConsumerApiClientAsync::Dequeue(std::function<void (const Item&)> aCallback
                 DoWrite();
                 DoRead();
             }
-        });
+        });*/
 }
 
 void ConsumerApiClientAsync::Disconnect()

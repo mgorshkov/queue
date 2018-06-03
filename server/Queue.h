@@ -1,15 +1,17 @@
-#include <mutex>
+#pragma once
 
 #include "Defines.h"
 
 class Queue
 {
 public:
-    void Enqueue(const ItemPtr& mItem);
-    ItemPtr Dequeue();
+    Queue();
+
+    void Enqueue(const DataType &aData);
+    ItemPtr Dequeue(std::size_t aOffset);
 
 private:
-    std::mutex mQueueMutex;
     ItemQueue mQueue;
+    std::size_t mOffset;
 };
 
