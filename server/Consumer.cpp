@@ -5,7 +5,7 @@ Consumer::Consumer(Queue& aQueue)
 {
 }
 
-ItemPtr Consumer::Consume(std::size_t aOffset)
+Item Consumer::Consume(std::size_t aOffset)
 {
     return mQueue.Dequeue(aOffset);
 }

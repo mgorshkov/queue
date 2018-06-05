@@ -9,7 +9,7 @@ class Consumer : public IConsumer
 public:
     explicit Consumer(Queue& aQueue);
 
-    ItemPtr Consume(std::size_t aOffset) override;
+    Item Consume(std::size_t aOffset) override;
 
 private:
     Queue& mQueue;

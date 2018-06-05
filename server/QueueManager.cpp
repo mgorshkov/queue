@@ -1,10 +1,8 @@
 #include "QueueManager.h"
 
-#include <boost/filesystem.hpp>
-
 QueueManager::QueueManager()
 {
-    if (!boost::filesystem_exists(QueueStorageFolder))
+    if (!boost::filesystem::exists(QueueStorageFolder))
         boost::filesystem::create_directory(QueueStorageFolder);
     else
         LoadQueues();
@@ -19,9 +17,9 @@ void QueueManager::LoadQueues()
     }
 }
 
-void QueueManager::LoadQueue(const std::string& aFileName)
+void QueueManager::LoadQueue(const boost::filesystem::path& aFileName)
 {
-    mQueues[fileName].Load(aFileName);
+    mQueues[aFileName.string()].Load(aFileName);
 }
 
 QueueList QueueManager::GetQueueList()
@@ -41,7 +39,7 @@ void QueueManager::Enqueue(const std::string& aQueueName, const DataType& aData)
     mQueues[aQueueName].Enqueue(aData);
 }
 
-ItemPtr QueueManager::Dequeue(const std::string& aQueueName, std::size_t aOffset)
+Item QueueManager::Dequeue(const std::string& aQueueName, std::size_t aOffset)
 {
     std::lock_guard<std::mutex> lock(mQueueMutex);
 

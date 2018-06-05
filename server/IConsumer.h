@@ -6,5 +6,5 @@ class IConsumer
 {
 public:
 	virtual ~IConsumer() = default;
-    virtual ItemPtr Consume(std::size_t aOffset) = 0;
+    virtual Item Consume(std::size_t aOffset) = 0;
 };

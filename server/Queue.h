@@ -2,20 +2,21 @@
 
 #include "Defines.h"
 #include "QueueStorage.h"
+#include <boost/filesystem.hpp>
 
 class Queue
 {
 public:
     Queue();
 
-    void Load(const std::string& aFileName);
+    void Load(const boost::filesystem::path& aFileName);
 
     void Enqueue(const DataType &aData);
-    ItemPtr Dequeue(std::size_t aOffset);
+    Item Dequeue(std::size_t aOffset);
 
 private:
     ItemQueue mQueue;
     std::size_t mOffset;
-    QueueStorage mStorage;
+    QueueStorage mQueueStorage;
 };
 

@@ -37,8 +37,7 @@ struct Item
     }
 };
 
-using ItemPtr = std::shared_ptr<Item>;
-using ItemQueue = std::deque<ItemPtr>;
+using ItemQueue = std::deque<Item>;
 
 using QueueList = std::vector<DataType>;
 

@@ -10,6 +10,6 @@ DequeueCommandHandler::DequeueCommandHandler(IQueueManager* aQueueManager)
 MessagePtr DequeueCommandHandler::Handle(const CompleteCommand& aCommand)
 {
     auto item = mQueueManager->Dequeue(aCommand.mQueueName, aCommand.mOffset);
-    return std::make_shared<DequeueMessage>(*item);
+    return std::make_shared<DequeueMessage>(item);
 }
 
