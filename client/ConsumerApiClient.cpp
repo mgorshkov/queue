@@ -79,7 +79,7 @@ void ConsumerApiClientAsync::Connect(const ServerData& aServerData)
     mSocket.connect(endPoint);
 }
 
-void ConsumerApiClientAsync::GetQueueList(std::function<QueueList(void)> aCallback)
+void ConsumerApiClientAsync::GetQueueList(std::function<void(QueueList)> aCallback)
 {
 /*    mIoService.post(
         [this, msg]()
@@ -109,7 +109,7 @@ void ConsumerApiClientAsync::StartQueueSession(const std::string& aQueueName, st
     mOffset = aOffset;
 }
 
-void ConsumerApiClientAsync::Dequeue(std::function<Item(void)> aCallback)
+void ConsumerApiClientAsync::Dequeue(std::function<void(Item)> aCallback)
 {/*
    mIoService.post(
         [this, msg]()

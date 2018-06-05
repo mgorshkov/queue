@@ -27,9 +27,9 @@ public:
     ConsumerApiClientAsync(ba::io_service& aIoService);
 
     void Connect(const ServerData& aServerData);
-    void GetQueueList(std::function<QueueList(void)> aCallback);
+    void GetQueueList(std::function<void(QueueList)> aCallback);
     void StartQueueSession(const std::string& aQueueName, std::size_t aOffset);
-    void Dequeue(std::function<Item (void)> aCallback);
+    void Dequeue(std::function<void(Item)> aCallback);
     void Disconnect();
 
 private:

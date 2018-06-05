@@ -6,7 +6,7 @@ int main(int argc, char* argv[])
 {
     try
     {
-        if (argc != 4)
+        if (argc != 5)
         {
             std::cerr << "Usage: queue_client <host> <port> <consumer|producer> <sync|async>" << std::endl << "Ex.: queue_client localhost 9000 consumer async" << std::endl;
             return 1;

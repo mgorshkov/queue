@@ -5,10 +5,18 @@ Queue::Queue()
 {
 }
 
+void Queue::Load(const std::string& aFileName)
+{
+    mQueueStorage.Load(aFIleName);
+}
+
 void Queue::Enqueue(const DataType& aData)
 {
     ItemPtr item = std::make_shared<Item>(aData, mOffset++);
-    mQueue.push_back(item);
+    mQueueStorage.Load(aFIleName);
+    try
+    {
+        mQueue.push_back(item);
 }
 
 ItemPtr Queue::Dequeue(std::size_t aOffset)

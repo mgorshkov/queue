@@ -15,7 +15,7 @@ public:
 class IConsumerApiClientAsync : public IApiClient
 {
 public:
-    virtual void GetQueueList(std::function<QueueList()> aCallback) = 0;
+    virtual void GetQueueList(std::function<void(QueueList)> aCallback) = 0;
     virtual void StartQueueSession(const std::string& aQueueName, std::size_t aOffset) = 0;
-    virtual void Dequeue(std::function<Item()> aCallback) = 0;
+    virtual void Dequeue(std::function<void(Item)> aCallback) = 0;
 };

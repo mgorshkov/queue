@@ -26,6 +26,8 @@ add_executable(queue_server
     QueueManager.h
     QueueListCommandHandler.cpp
     QueueListCommandHandler.h
+    QueueStorage.cpp
+    QueueStorage.h
     Server.cpp
     Server.h
     ServerMain.cpp
