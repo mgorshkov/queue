@@ -10,6 +10,7 @@ class Server
 {
 public:
     Server(boost::asio::io_service& aIoService, const boost::asio::ip::tcp::endpoint& aEndpoint);
+    void Run();
 
 private:
     void DoAccept();

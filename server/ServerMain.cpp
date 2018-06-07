@@ -20,12 +20,11 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        boost::asio::ip::tcp::endpoint endpoint(boost::asio::ip::tcp::v4(), port);
-        boost::asio::io_service ioService;
+        ba::ip::tcp::endpoint endpoint(ba::ip::tcp::v4(), port);
+        ba::io_service ioService;
 
         Server server(ioService, endpoint);
-
-        ioService.run();
+        server.Run();
     }
     catch (std::exception& e)
     {

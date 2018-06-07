@@ -44,7 +44,7 @@ using QueueList = std::vector<DataType>;
 struct ServerData
 {
     std::string mServerIp;
-    int mServerPort;
+    std::string mServerPort;
 };
 
 enum class SyncAsyncMode

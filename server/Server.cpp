@@ -3,7 +3,7 @@
 #include "Server.h"
 #include "Session.h"
 
-Server::Server(boost::asio::io_service& aIoService, const boost::asio::ip::tcp::endpoint& aEndPoint)
+Server::Server(ba::io_service& aIoService, const ba::ip::tcp::endpoint& aEndPoint)
     : mAcceptor(aIoService, aEndPoint)
     , mSocket(aIoService)
     , mIoService(aIoService)
@@ -11,6 +11,11 @@ Server::Server(boost::asio::io_service& aIoService, const boost::asio::ip::tcp::
 {
     mCommandExecutor = std::make_shared<CommandExecutor>(&mQueueManager);
     DoAccept();
+}
+
+void Server::Run()
+{
+    mIoService.run();
 }
 
 void Server::DoAccept()

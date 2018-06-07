@@ -3,14 +3,17 @@
 
 // sync client
 ConsumerApiClientSync::ConsumerApiClientSync(ba::io_service& aIoService)
-    : mSocket(aIoService)
+    : mIoService(aIoService)
+    , mSocket(aIoService)
 {
 }
 
 void ConsumerApiClientSync::Connect(const ServerData& aServerData)
 {
-    ba::ip::tcp::endpoint endPoint(
-        ba::ip::address::from_string(aServerData.mServerIp), aServerData.mServerPort);
+    ba::ip::tcp::resolver resolver(mIoService);
+    ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
+    ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
+    ba::ip::tcp::endpoint endPoint(*it);
     mSocket.connect(endPoint);
 }
 
@@ -70,16 +73,18 @@ void ConsumerApiClientSync::Disconnect()
 
 // async client
 ConsumerApiClientAsync::ConsumerApiClientAsync(ba::io_service& aIoService)
-    : mSocket(aIoService)
-    , mIoService(aIoService)
+    : mIoService(aIoService)
+    , mSocket(aIoService)
 {
 }
 
-void ConsumerApiClientAsync::Connect(const ServerData& aServerData)
+void ConsumerApiClientAsync::Connect(const ServerData& aServerData, std::function<void(const boost::system::error_code& error)> aCallback)
 {
-    ba::ip::tcp::endpoint endPoint(
-        ba::ip::address::from_string(aServerData.mServerIp), aServerData.mServerPort);
-    mSocket.connect(endPoint);
+    ba::ip::tcp::resolver resolver(mIoService);
+    ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
+    ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
+    ba::ip::tcp::endpoint endPoint(*it);
+    mSocket.async_connect(endPoint, aCallback);
 }
 
 void ConsumerApiClientAsync::GetQueueList(std::function<void(QueueList)> aCallback)

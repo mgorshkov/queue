@@ -12,15 +12,9 @@ int main(int argc, char* argv[])
             return 1;
         }
 
-        boost::asio::io_service ioService;
-
         std::string host = argv[1];
-        int port = std::atoi(argv[2]);
-        if (port == 0)
-        {
-            std::cerr << "Incorrect port: " << port << std::endl;
-            return 1;
-        }
+        std::string port = argv[2];
+
         std::string consumerProducerModeStr = argv[3];
         if (consumerProducerModeStr != "producer" && consumerProducerModeStr != "consumer")
         {
