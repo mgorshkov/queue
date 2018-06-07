@@ -9,22 +9,12 @@ QueueStorage::QueueStorage()
 QueueStorage::~QueueStorage()
 {
     Stop();
+    mStream.close();
 }
 
 void QueueStorage::New(const boost::filesystem::path& aStorageFileName)
 {
-    mStream.open(aStorageFileName.string());
-}
-
-void QueueStorage::Load(const boost::filesystem::path& aStorageFileName)
-{
-    mStream.open(aStorageFileName.string());
-    while (mStream)
-    {
-        Item item;
-        mStream >> item;
-        AddItem(item);
-    }
+    mStorageFileName = aStorageFileName;
 }
 
 void QueueStorage::Start()
@@ -47,6 +37,11 @@ void QueueStorage::AddItem(const Item& aItem)
     mCondition.notify_one();
 }
 
+void QueueStorage::ScheduleShrinkStorage()
+{
+    AddItem(Item{"", static_cast<std::size_t>(-1)});
+}
+
 void QueueStorage::Stop()
 {
     mDone = true;
@@ -61,6 +56,7 @@ void QueueStorage::ThreadProc()
 {
     try
     {
+        mStream.open(mStorageFileName.string(), std::fstream::out);
         while (!mDone.load())
         {
             std::unique_lock<std::mutex> lk(mStreamMutex);
@@ -79,7 +75,43 @@ void QueueStorage::ThreadProc()
 
 void QueueStorage::ProcessQueue()
 {
-    auto item = mQueue.front();
-    mQueue.pop();
-    mStream << item;
+    while (!mQueue.empty())
+    {
+        auto item = mQueue.front();
+        mQueue.pop();
+
+        if (item.mOffset == static_cast<std::size_t>(-1))
+            ShrinkStorage();
+        else
+            mStream << item;
+    }
+    mStream.flush();
+
+    if (!CheckFreeDiskSpace())
+    {
+        ShrinkStorage();
+        ShrinkQueue();
+    }
+}
+
+bool QueueStorage::CheckFreeDiskSpace()
+{
+    try
+    {
+        boost::filesystem::space_info info = boost::filesystem::space(mStorageFileName);
+        return info.available > FreeSpaceThreshold;
+    }
+    catch (boost::filesystem::filesystem_error& e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+    return true;
+}
+
+void QueueStorage::ShrinkStorage()
+{
+}
+
+void QueueStorage::ShrinkQueue()
+{
 }

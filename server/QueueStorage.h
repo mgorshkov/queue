@@ -15,18 +15,21 @@ class QueueStorage
 public:
     QueueStorage();
     ~QueueStorage();
-    
+
     void New(const boost::filesystem::path& aStorageFileName);
-    void Load(const boost::filesystem::path& aStorageFileName);
 
     void Start();
     void Stop();
 
     void AddItem(const Item& aItem);
+    void ScheduleShrinkStorage();
 
 private:
     void ThreadProc();
     void ProcessQueue();
+    bool CheckFreeDiskSpace();
+    void ShrinkStorage();
+    void ShrinkQueue();
 
     std::queue<Item> mQueue;
 
@@ -38,5 +41,9 @@ private:
     std::atomic_bool mNotified{false};
 
     std::thread mThread;
+
+    boost::filesystem::path mStorageFileName;
+
+    static const uintmax_t FreeSpaceThreshold = 1000;
 };
 

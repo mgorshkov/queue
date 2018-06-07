@@ -9,8 +9,8 @@ class Queue
 public:
     Queue();
 
-    void New(const boost::filesystem::path& aFileName);
-    void Load(const boost::filesystem::path& aFileName);
+    void New(const boost::filesystem::path& aStorageFileName);
+    void Load(const boost::filesystem::path& aStorageFileName);
 
     void Start();
 
@@ -18,6 +18,8 @@ public:
     Item Dequeue(std::size_t aOffset);
 
 private:
+    void Shrink();
+
     ItemQueue mQueue;
     std::size_t mOffset;
     QueueStorage mQueueStorage;

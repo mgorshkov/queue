@@ -5,14 +5,34 @@ Queue::Queue()
 {
 }
 
-void Queue::New(const boost::filesystem::path& aFileName)
+void Queue::New(const boost::filesystem::path& aStorageFileName)
 {
-    mQueueStorage.New(aFileName);
+    mQueueStorage.New(aStorageFileName);
 }
 
-void Queue::Load(const boost::filesystem::path& aFileName)
+void Queue::Load(const boost::filesystem::path& aStorageFileName)
 {
-    mQueueStorage.Load(aFileName);
+    bool shrink = false;
+    {
+        std::ifstream stream(aStorageFileName.string());
+        while (stream)
+        {
+            Item item;
+            stream >> item;
+            try
+            {
+                mQueue.push_back(item);
+                mOffset = item.mOffset + 1;
+            }
+            catch(const std::bad_alloc& ex)
+            {
+                shrink = true;
+                break;
+            }
+        }
+    }
+    if (shrink)
+        Shrink();
 }
 
 void Queue::Start()
@@ -22,21 +42,31 @@ void Queue::Start()
 
 void Queue::Enqueue(const DataType& aData)
 {
-    Item item(aData, mOffset++);
-    mQueueStorage.AddItem(item);
+    Item item(aData, mOffset);
     try
     {
         mQueue.push_back(item);
+        mQueueStorage.AddItem(item);
+        mOffset = item.mOffset + 1;
     }
     catch(const std::bad_alloc& ex)
     {
-
+        Shrink();
     }
 }
 
 Item Queue::Dequeue(std::size_t aOffset)
 {
-    assert(aOffset < mQueue.size());
-    return mQueue[aOffset];
+    std::size_t size = mQueue.size();
+    if (size - mOffset + aOffset < 0)
+        return Item{"", static_cast<std::size_t>(-1)};
+    return mQueue[size - mOffset + aOffset];
 }
 
+void Queue::Shrink()
+{
+    // remove oldest quarter of the queue
+    std::size_t size = mQueue.size();
+    mQueue.erase(mQueue.begin(), mQueue.begin() + size / 4);
+    mQueueStorage.ScheduleShrinkStorage();
+}
