@@ -11,9 +11,20 @@ QueueStorage::~QueueStorage()
     Stop();
 }
 
+void QueueStorage::New(const boost::filesystem::path& aStorageFileName)
+{
+    mStream.open(aStorageFileName.string());
+}
+
 void QueueStorage::Load(const boost::filesystem::path& aStorageFileName)
 {
     mStream.open(aStorageFileName.string());
+    while (mStream)
+    {
+        Item item;
+        mStream >> item;
+        AddItem(item);
+    }
 }
 
 void QueueStorage::Start()
@@ -43,6 +54,7 @@ void QueueStorage::Stop()
     mCondition.notify_one();
     if (mThread.joinable())
         mThread.join();
+    mStream.close();
 }
 
 void QueueStorage::ThreadProc()

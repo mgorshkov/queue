@@ -36,7 +36,10 @@ struct QueueListMessage : Message
         for (std::size_t i = 0; i < size; ++i)
         {
             DataType data;
-            aStream >> data;
+            std::size_t size;
+            aStream.read((char*)&size, sizeof(size));
+            data.resize(size);
+            aStream.read(&data[0], size);
             aMessage.mQueueList.emplace_back(data);
         }
         return aStream;
@@ -46,7 +49,11 @@ struct QueueListMessage : Message
     {
         aStream << aMessage.mQueueList.size();
         for (auto item : aMessage.mQueueList)
+        {
+            std::size_t size = item.size();
+            aStream.write((const char*)&size, sizeof(size));
             aStream << item;
+        }
         return aStream;
     }
 };
@@ -57,7 +64,7 @@ struct StartQueueSessionMessage : Message
 {
     StartQueueSessionMessage(
         const std::string& aQueueName = std::string{},
-        std::size_t aOffset = 0)
+        std::size_t aOffset = static_cast<std::size_t>(-1))
         : mQueueName(aQueueName)
         , mOffset(aOffset)
     {
@@ -68,15 +75,20 @@ struct StartQueueSessionMessage : Message
 
     friend std::istream& operator >> (std::istream& aStream, StartQueueSessionMessage& aMessage)
     {
-        aStream >> aMessage.mQueueName;
-        aStream >> aMessage.mOffset;
+        std::size_t size;
+        aStream.read((char*)&size, sizeof(size));
+        aMessage.mQueueName.resize(size);
+        aStream.read(&aMessage.mQueueName[0], size);
+        aStream.read((char*)&aMessage.mOffset, sizeof(aMessage.mOffset));
         return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const StartQueueSessionMessage& aMessage)
     {
+        std::size_t size = aMessage.mQueueName.size();
+        aStream.write((const char*)&size, sizeof(size));
         aStream << aMessage.mQueueName;
-        aStream << aMessage.mOffset;
+        aStream.write((const char*)&aMessage.mOffset, sizeof(aMessage.mOffset));
         return aStream;
     }
 };
@@ -118,12 +130,17 @@ struct EnqueueMessage : Message
 
     friend std::istream& operator >> (std::istream& aStream, EnqueueMessage& aMessage)
     {
-        aStream >> aMessage.mData;
+        std::size_t size;
+        aStream.read((char*)&size, sizeof(size));
+        aMessage.mData.resize(size);
+        aStream.read(&aMessage.mData[0], size);
         return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const EnqueueMessage& aMessage)
     {
+        std::size_t size = aMessage.mData.size();
+        aStream.write((const char*)&size, sizeof(size));
         aStream << aMessage.mData;
         return aStream;
     }

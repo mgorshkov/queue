@@ -14,7 +14,6 @@ public:
     void Disconnect();
 
 private:
-    std::string mQueueName;
     ba::io_service& mIoService;
     ba::ip::tcp::socket mSocket;
 };

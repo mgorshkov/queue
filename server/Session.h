@@ -23,13 +23,13 @@ private:
     void DoRead();
     bool GetWriteQueue();
     void DoWrite();
-    void Deliver();
+    void Deliver(std::size_t aLength);
 
     std::shared_ptr<CommandExecutor> mCommandExecutor;
     boost::asio::io_service& mIoService;
     Context mContext;
     boost::asio::ip::tcp::socket mSocket;
-    boost::asio::streambuf mBuffer;
+    std::array<char, 256> mBuffer;
     std::deque<std::string> mWriteMsgs;
     std::thread mWriteThread;
     std::atomic_bool mDone{false};

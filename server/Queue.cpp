@@ -5,9 +5,19 @@ Queue::Queue()
 {
 }
 
+void Queue::New(const boost::filesystem::path& aFileName)
+{
+    mQueueStorage.New(aFileName);
+}
+
 void Queue::Load(const boost::filesystem::path& aFileName)
 {
     mQueueStorage.Load(aFileName);
+}
+
+void Queue::Start()
+{
+    mQueueStorage.Start();
 }
 
 void Queue::Enqueue(const DataType& aData)

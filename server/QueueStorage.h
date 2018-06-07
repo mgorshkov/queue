@@ -16,6 +16,7 @@ public:
     QueueStorage();
     ~QueueStorage();
     
+    void New(const boost::filesystem::path& aStorageFileName);
     void Load(const boost::filesystem::path& aStorageFileName);
 
     void Start();

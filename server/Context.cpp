@@ -44,7 +44,7 @@ void Context::Start()
     mThread = std::move(std::thread(&Context::ThreadProc, this));
 }
 
-void Context::ProcessData(ba::streambuf* aStream)
+void Context::ProcessData(std::array<char, 256> aBuffer, std::size_t aLength)
 {
 #ifdef DEBUG_PRINT
     std::cout << "Context::ProcessData, this==" << this << ", aStream=" << aStream << ", mDone=" << mDone.load() << std::endl;
@@ -56,7 +56,7 @@ void Context::ProcessData(ba::streambuf* aStream)
 #ifdef DEBUG_PRINT
         std::cout << "Context::ProcessData 2, pos = " << mStream.tellp() << std::endl;
 #endif
-        mStream << aStream;
+        mStream << std::string(&aBuffer[0], aLength);
 #ifdef DEBUG_PRINT
         std::cout << "Context::ProcessData 3, pos = " << mStream.tellp() << std::endl;
 #endif
@@ -130,7 +130,8 @@ MessagePtrs Context::ProcessStream()
         while (mStream)
         {
             auto message = ProtocolSerializer::Deserialize(mStream);
-            messages.push_back(message);
+            if (message)
+                messages.push_back(message);
         }
         mStream.clear();
         mStream.str("");
@@ -146,7 +147,7 @@ MessagePtrs Context::ProcessMessages(const std::list<MessagePtr> aMessages)
         auto startSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(message);
         if (startSessionMessage)
             mCommandContext = std::make_unique<CommandContext>(startSessionMessage);
-        else
+        else if (mCommandContext)
         {
             CompleteCommand command{message, *mCommandContext};
             auto result = mCommandExecutor->RunCommand(command);

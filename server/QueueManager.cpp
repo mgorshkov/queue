@@ -13,13 +13,26 @@ void QueueManager::LoadQueues()
     for (boost::filesystem::directory_iterator it(QueueStorageFolder); it != boost::filesystem::directory_iterator(); ++it)
     {
         if (boost::filesystem::is_regular_file(it->status()))
+        {
             LoadQueue(it->path().filename());
+            StartQueue(it->path().filename().string());
+        }
     }
 }
 
 void QueueManager::LoadQueue(const boost::filesystem::path& aFileName)
 {
     mQueues[aFileName.string()].Load(aFileName);
+}
+
+void QueueManager::NewQueue(const std::string& aQueueName)
+{
+    mQueues[aQueueName].New(boost::filesystem::path(QueueStorageFolder) / aQueueName);
+}
+
+void QueueManager::StartQueue(const std::string& aQueueName)
+{
+    mQueues[aQueueName].Start();
 }
 
 QueueList QueueManager::GetQueueList()
@@ -36,12 +49,21 @@ void QueueManager::Enqueue(const std::string& aQueueName, const DataType& aData)
 {
     std::lock_guard<std::mutex> lock(mQueueMutex);
 
+    auto it = mQueues.find(aQueueName);
+    if (it == mQueues.end())
+    {
+        NewQueue(aQueueName);
+        StartQueue(aQueueName);
+    }
     mQueues[aQueueName].Enqueue(aData);
 }
 
 Item QueueManager::Dequeue(const std::string& aQueueName, std::size_t aOffset)
 {
     std::lock_guard<std::mutex> lock(mQueueMutex);
+
+    auto it = mQueues.find(aQueueName);
+    assert (it != mQueues.end());
 
     return mQueues[aQueueName].Dequeue(aOffset);
 }

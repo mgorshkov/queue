@@ -20,7 +20,11 @@ void ProducerApiClient::Connect(const ServerData& aServerData)
 
 void ProducerApiClient::StartQueueSession(const std::string& aQueueName)
 {
-    mQueueName = aQueueName;
+    auto message = std::make_shared<StartQueueSessionMessage>(aQueueName);
+    ba::streambuf buffer;
+    std::ostream stream(&buffer);
+    ProtocolSerializer::Serialize(message, stream);
+    ba::write(mSocket, buffer);
 }
 
 void ProducerApiClient::Enqueue(const DataType& aData)

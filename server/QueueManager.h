@@ -20,6 +20,8 @@ public:
 private:
     void LoadQueues();
     void LoadQueue(const boost::filesystem::path& aFileName);
+    void NewQueue(const std::string& aQueueName);
+    void StartQueue(const std::string& aQueueName);
 
     std::mutex mQueueMutex;
 
