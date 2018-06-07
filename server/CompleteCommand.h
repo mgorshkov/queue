@@ -3,10 +3,11 @@
 #include <string>
 #include "Defines.h"
 #include "Message.h"
+#include "CommandContext.h"
 
 struct CompleteCommand
 {
-    CompleteCommand(const MessagePtr& aMessage);
+    CompleteCommand(const MessagePtr& aMessage, const CommandContext& aContext);
 
     Command mCommand;
     std::string mQueueName;

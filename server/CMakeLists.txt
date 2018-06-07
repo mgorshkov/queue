@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
 add_executable(queue_server
+    CommandContext.cpp
+    CommandContext.h
     CommandHandler.cpp
     CommandHandler.h
     CommandExecutor.cpp

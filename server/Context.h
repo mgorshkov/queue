@@ -28,11 +28,13 @@ public:
     MessagePtrs GetOutboundQueue();
 
 private:
-    MessagePtrs ProcessStream(std::shared_ptr<CommandExecutor> aCommandExecutor);
+    MessagePtrs ProcessStream();
+    MessagePtrs ProcessMessages(const std::list<MessagePtr> aMessages);
 
-    void ThreadProc(std::shared_ptr<CommandExecutor> aCommandExecutor);
+    void ThreadProc();
 
     std::shared_ptr<CommandExecutor> mCommandExecutor;
+    std::unique_ptr<CommandContext> mCommandContext;
 
     std::stringstream mStream;
     std::mutex mStreamMutex;

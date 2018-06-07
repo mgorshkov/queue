@@ -1,6 +1,6 @@
 #include "CompleteCommand.h"
 
-CompleteCommand::CompleteCommand(const MessagePtr& aMessage)
+CompleteCommand::CompleteCommand(const MessagePtr& aMessage, const CommandContext& aContext)
 {
     auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(aMessage);
     if (queueListMessage)
@@ -13,6 +13,8 @@ CompleteCommand::CompleteCommand(const MessagePtr& aMessage)
     {
         mCommand = Command::Enqueue;
         mData = enqueueMessage->mData;
+        mQueueName = aContext.mQueueName;
+        mOffset = aContext.mOffset;
         return;
     }
     auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(aMessage);
@@ -20,6 +22,8 @@ CompleteCommand::CompleteCommand(const MessagePtr& aMessage)
     {
         mCommand = Command::Dequeue;
         mItem = dequeueMessage->mItem;
+        mQueueName = aContext.mQueueName;
+        mOffset = aContext.mOffset;
         return;
     }
 }

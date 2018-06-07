@@ -36,8 +36,11 @@ QueueList ConsumerApiClientSync::GetQueueList()
 
 void ConsumerApiClientSync::StartQueueSession(const std::string& aQueueName, std::size_t aOffset)
 {
-    mQueueName = aQueueName;
-    mOffset = aOffset;
+    auto message = std::make_shared<StartQueueSessionMessage>(aQueueName, aOffset);
+    ba::streambuf buffer;
+    std::ostream stream(&buffer);
+    ProtocolSerializer::Serialize(message, stream);
+    ba::write(mSocket, buffer);
 }
 
 Item ConsumerApiClientSync::Dequeue()

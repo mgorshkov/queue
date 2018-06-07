@@ -70,10 +70,12 @@ void Client::Run()
     case ConsumerProducerMode::Producer:
         {
             auto client = dynamic_cast<ProducerApiClient*>(mApiClient.get());
+            client->Connect(mServerData);
             client->StartQueueSession("TestQueue");
             client->Enqueue("str1");
             client->Enqueue("str2");
             client->Enqueue("str3");
+            client->Disconnect();
             break;
         }
     default:
