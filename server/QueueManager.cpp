@@ -14,20 +14,21 @@ void QueueManager::LoadQueues()
     {
         if (boost::filesystem::is_regular_file(it->status()))
         {
-            LoadQueue(it->path().filename());
-            StartQueue(it->path().filename().string());
+            auto queueName = it->path().filename().string();
+            LoadQueue(queueName);
+            StartQueue(queueName);
         }
     }
 }
 
-void QueueManager::LoadQueue(const boost::filesystem::path& aFileName)
+void QueueManager::LoadQueue(const std::string& aQueueName)
 {
-    mQueues[aFileName.string()].Load(aFileName);
+    mQueues[aQueueName].Load(boost::filesystem::path(QueueStorageFolder) / aQueueName);
 }
 
 void QueueManager::NewQueue(const std::string& aQueueName)
 {
-    mQueues[aQueueName].New(boost::filesystem::path(QueueStorageFolder) / aQueueName);
+    mQueues[aQueueName].CreateStorage(boost::filesystem::path(QueueStorageFolder) / aQueueName);
 }
 
 void QueueManager::StartQueue(const std::string& aQueueName)

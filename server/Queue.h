@@ -10,7 +10,7 @@ class Queue : public IShrink
 public:
     Queue();
 
-    void New(const boost::filesystem::path& aStorageFileName);
+    void CreateStorage(const boost::filesystem::path& aStorageFileName);
     void Load(const boost::filesystem::path& aStorageFileName);
 
     void Start();
@@ -23,6 +23,6 @@ public:
 private:
     ItemQueue mQueue;
     std::size_t mOffset;
-    QueueStorage mQueueStorage;
+    std::unique_ptr<QueueStorage> mQueueStorage;
 };
 

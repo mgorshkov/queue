@@ -25,19 +25,25 @@ struct Item
     friend std::istream& operator >> (std::istream& aStream, Item& aItem)
     {
         std::size_t size;
-        aStream.read((char*)&size, sizeof(size));
+        if (!aStream.read((char*)&size, sizeof(size)))
+            return aStream;
         aItem.mData.resize(size);
-        aStream.read(&aItem.mData[0], size);
+        if (!aStream.read(&aItem.mData[0], size))
+            return aStream;
 
-        aStream.read((char*)&aItem.mOffset, sizeof(aItem.mOffset));
+        if (!aStream.read((char*)&aItem.mOffset, sizeof(aItem.mOffset)))
+            return aStream;
         return aStream;
     }
 
     friend std::ostream& operator << (std::ostream& aStream, const Item& aItem)
     {
         auto size = aItem.mData.size();
-        aStream.write((const char*)&size, sizeof(size));
+        if (!aStream.write((const char*)&size, sizeof(size)))
+            return aStream;
         aStream << aItem.mData;
+        if (!aStream)
+            return aStream;
 
         aStream.write((char*)&aItem.mOffset, sizeof(aItem.mOffset));
         return aStream;

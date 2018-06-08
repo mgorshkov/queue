@@ -2,8 +2,9 @@
 
 #include "QueueStorage.h"
 
-QueueStorage::QueueStorage(IShrink* aShrink)
-    : mShrink(aShrink)
+QueueStorage::QueueStorage(const boost::filesystem::path& aStorageFileName, IShrink* aShrink)
+    : mStorageFileName(aStorageFileName)
+    , mShrink(aShrink)
 {
 }
 
@@ -11,11 +12,6 @@ QueueStorage::~QueueStorage()
 {
     Stop();
     mStream.close();
-}
-
-void QueueStorage::New(const boost::filesystem::path& aStorageFileName)
-{
-    mStorageFileName = aStorageFileName;
 }
 
 void QueueStorage::Start()
@@ -57,7 +53,7 @@ void QueueStorage::ThreadProc()
 {
     try
     {
-        mStream.open(mStorageFileName.string(), std::fstream::out);
+        mStream.open(mStorageFileName.string(), std::fstream::out | std::fstream::app);
         while (!mDone.load())
         {
             std::unique_lock<std::mutex> lk(mStreamMutex);

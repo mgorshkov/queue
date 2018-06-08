@@ -8,7 +8,8 @@ void ProtocolSerializer::Serialize(MessagePtr aMessage, std::ostream& aStream)
     if (queueListMessage)
     {
         auto type = static_cast<int>(MessageType::QueueList);
-        aStream.write((const char*)&type, sizeof(type));
+        if (!aStream.write((const char*)&type, sizeof(type)))
+            return;
         aStream << *queueListMessage;
         return;
     }
@@ -16,7 +17,8 @@ void ProtocolSerializer::Serialize(MessagePtr aMessage, std::ostream& aStream)
     if (startQueueSessionMessage)
     {
         auto type = static_cast<int>(MessageType::StartQueueSession);
-        aStream.write((const char*)&type, sizeof(type));
+        if (!aStream.write((const char*)&type, sizeof(type)))
+            return;
         aStream << *startQueueSessionMessage;
         return;
     }
@@ -24,7 +26,8 @@ void ProtocolSerializer::Serialize(MessagePtr aMessage, std::ostream& aStream)
     if (enqueueMessage)
     {
         auto type = static_cast<int>(MessageType::Enqueue);
-        aStream.write((const char*)&type, sizeof(type));
+        if (!aStream.write((const char*)&type, sizeof(type)))
+            return;
         aStream << *enqueueMessage;
         return;
     }
@@ -32,7 +35,8 @@ void ProtocolSerializer::Serialize(MessagePtr aMessage, std::ostream& aStream)
     if (dequeueMessage)
     {
         auto type = static_cast<int>(MessageType::Dequeue);
-        aStream.write((const char*)&type, sizeof(type));
+        if (!aStream.write((const char*)&type, sizeof(type)))
+            return;
         aStream << *dequeueMessage;
         return;
     }
@@ -49,24 +53,32 @@ MessagePtr ProtocolSerializer::Deserialize(std::istream& aStream)
     {
         QueueListMessage message;
         aStream >> message;
+        if (!aStream)
+            return nullptr;
         return std::make_shared<QueueListMessage>(message);
     }
     case MessageType::StartQueueSession:
     {
         StartQueueSessionMessage message;
         aStream >> message;
+        if (!aStream)
+            return nullptr;
         return std::make_shared<StartQueueSessionMessage>(message);
     }
     case MessageType::Enqueue:
     {
         EnqueueMessage message;
         aStream >> message;
+        if (!aStream)
+            return nullptr;
         return std::make_shared<EnqueueMessage>(message);
     }
     case MessageType::Dequeue:
     {
         DequeueMessage message;
         aStream >> message;
+        if (!aStream)
+            return nullptr;
         return std::make_shared<DequeueMessage>(message);
     }
     default:

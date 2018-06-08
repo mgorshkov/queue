@@ -14,10 +14,8 @@
 class QueueStorage
 {
 public:
-    QueueStorage(IShrink* aShrink);
+    QueueStorage(const boost::filesystem::path& aStorageFileName, IShrink* aShrink);
     ~QueueStorage();
-
-    void New(const boost::filesystem::path& aStorageFileName);
 
     void Start();
     void Stop();
@@ -47,6 +45,6 @@ private:
 
     boost::filesystem::path mStorageFileName;
 
-    static const uintmax_t FreeSpaceThreshold = 1000;
+    static const uintmax_t FreeSpaceThreshold = 1000 * 1024;
 };
 

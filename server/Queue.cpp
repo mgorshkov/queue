@@ -4,24 +4,22 @@
 
 Queue::Queue()
     : mOffset(0)
-    , mQueueStorage(this)
 {
 }
 
-void Queue::New(const boost::filesystem::path& aStorageFileName)
+void Queue::CreateStorage(const boost::filesystem::path& aStorageFileName)
 {
-    mQueueStorage.New(aStorageFileName);
+    mQueueStorage = std::make_unique<QueueStorage>(aStorageFileName, this);
 }
 
 void Queue::Load(const boost::filesystem::path& aStorageFileName)
 {
     bool shrink = false;
     {
-        std::ifstream stream(aStorageFileName.string());
-        while (stream)
+        std::ifstream stream(aStorageFileName.string(), std::ifstream::binary);
+        Item item;
+        while (stream >> item)
         {
-            Item item;
-            stream >> item;
             try
             {
                 mQueue.push_back(item);
@@ -35,13 +33,14 @@ void Queue::Load(const boost::filesystem::path& aStorageFileName)
             }
         }
     }
+    CreateStorage(aStorageFileName);
     if (shrink)
         Shrink();
 }
 
 void Queue::Start()
 {
-    mQueueStorage.Start();
+    mQueueStorage->Start();
 }
 
 void Queue::Enqueue(const DataType& aData)
@@ -50,7 +49,7 @@ void Queue::Enqueue(const DataType& aData)
     try
     {
         mQueue.push_back(item);
-        mQueueStorage.AddItem(item);
+        mQueueStorage->AddItem(item);
         mOffset = item.mOffset + 1;
     }
     catch(const std::bad_alloc&)
@@ -73,5 +72,5 @@ void Queue::Shrink()
     // remove oldest quarter of the queue
     std::size_t size = mQueue.size();
     mQueue.erase(mQueue.begin(), mQueue.begin() + size / 4);
-    mQueueStorage.ScheduleShrinkStorage();
+    mQueueStorage->ScheduleShrinkStorage();
 }
