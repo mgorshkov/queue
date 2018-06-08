@@ -2,7 +2,8 @@
 
 #include "QueueStorage.h"
 
-QueueStorage::QueueStorage()
+QueueStorage::QueueStorage(IShrink* aShrink)
+    : mShrink(aShrink)
 {
 }
 
@@ -114,4 +115,5 @@ void QueueStorage::ShrinkStorage()
 
 void QueueStorage::ShrinkQueue()
 {
+    mShrink->Shrink();
 }

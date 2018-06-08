@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "ConsumerApiClient.h"
 #include "ProtocolSerializer.h"
 
@@ -14,6 +16,8 @@ void ConsumerApiClientSync::Connect(const ServerData& aServerData)
     ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
     ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
     ba::ip::tcp::endpoint endPoint(*it);
+
+    std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
     mSocket.connect(endPoint);
 }
 
@@ -84,6 +88,8 @@ void ConsumerApiClientAsync::Connect(const ServerData& aServerData, std::functio
     ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
     ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
     ba::ip::tcp::endpoint endPoint(*it);
+
+    std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
     mSocket.async_connect(endPoint, aCallback);
 }
 

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "Defines.h"
+#include "IShrink.h"
 #include "QueueStorage.h"
 #include <boost/filesystem.hpp>
 
-class Queue
+class Queue : public IShrink
 {
 public:
     Queue();
@@ -17,9 +18,9 @@ public:
     void Enqueue(const DataType &aData);
     Item Dequeue(std::size_t aOffset);
 
-private:
     void Shrink();
 
+private:
     ItemQueue mQueue;
     std::size_t mOffset;
     QueueStorage mQueueStorage;

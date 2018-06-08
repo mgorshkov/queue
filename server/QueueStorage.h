@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Defines.h"
+#include "IShrink.h"
 
 #include <thread>
 #include <queue>
@@ -13,7 +14,7 @@
 class QueueStorage
 {
 public:
-    QueueStorage();
+    QueueStorage(IShrink* aShrink);
     ~QueueStorage();
 
     void New(const boost::filesystem::path& aStorageFileName);
@@ -30,6 +31,8 @@ private:
     bool CheckFreeDiskSpace();
     void ShrinkStorage();
     void ShrinkQueue();
+
+    IShrink* mShrink;
 
     std::queue<Item> mQueue;
 

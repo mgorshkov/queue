@@ -1,7 +1,10 @@
+#include <iostream>
+
 #include "Queue.h"
 
 Queue::Queue()
     : mOffset(0)
+    , mQueueStorage(this)
 {
 }
 
@@ -24,8 +27,9 @@ void Queue::Load(const boost::filesystem::path& aStorageFileName)
                 mQueue.push_back(item);
                 mOffset = item.mOffset + 1;
             }
-            catch(const std::bad_alloc& ex)
+            catch(const std::bad_alloc&)
             {
+                std::cout << "Memory exhausted, shrinking storage" << std::endl;
                 shrink = true;
                 break;
             }
@@ -49,8 +53,9 @@ void Queue::Enqueue(const DataType& aData)
         mQueueStorage.AddItem(item);
         mOffset = item.mOffset + 1;
     }
-    catch(const std::bad_alloc& ex)
+    catch(const std::bad_alloc&)
     {
+        std::cout << "Memory exhausted, shrinking storage" << std::endl;
         Shrink();
     }
 }
