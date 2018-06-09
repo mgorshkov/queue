@@ -15,21 +15,10 @@ void ConsumerApiClientSync::Connect(const ServerData& aServerData)
     ba::ip::tcp::resolver resolver(mIoService);
     ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
     ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
+    ba::ip::tcp::endpoint endPoint(*it);
 
-    boost::system::error_code error = boost::asio::error::host_not_found;
-    ba::ip::tcp::resolver::iterator end;
-
-    while (error && it != end)
-    {
-        mSocket.close();
-        ba::ip::tcp::endpoint endPoint(*it++);
-        std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
-        mSocket.connect(endPoint, error);
-        if (error)
-            std::cout << "Error: " << error.message() << std::endl;
-        else
-            std::cout << "Success." << std::endl;
-    }
+    std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
+    mSocket.connect(endPoint);
 }
 
 QueueList ConsumerApiClientSync::GetQueueList()
@@ -95,23 +84,13 @@ ConsumerApiClientAsync::ConsumerApiClientAsync(ba::io_service& aIoService)
 
 void ConsumerApiClientAsync::Connect(const ServerData& aServerData, std::function<void(const boost::system::error_code& error)> aCallback)
 {
-/*    ba::ip::tcp::resolver resolver(mIoService);
+    ba::ip::tcp::resolver resolver(mIoService);
     ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
     ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
-    boost::system::error_code error = boost::asio::error::host_not_found;
-    ba::ip::tcp::resolver::iterator end;
+    ba::ip::tcp::endpoint endPoint(*it);
 
-    while (error && it != end)
-    {
-        mSocket.close();
-        ba::ip::tcp::endpoint endPoint(*it++);
-        std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
-        mSocket.async_connect(endPoint, aCallback);
-        if (error)
-            std::cout << "Error: " << error.message() << std::endl;
-        else
-            std::cout << "Success." << std::endl;
-    }*/
+    std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
+    mSocket.async_connect(endPoint, aCallback);
 }
 
 void ConsumerApiClientAsync::GetQueueList(std::function<void(QueueList)> aCallback)

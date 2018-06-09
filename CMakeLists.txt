@@ -10,13 +10,15 @@ if (DEBUG_PRINT)
     add_definitions(-DDEBUG_PRINT)
 endif()
 
+add_subdirectory(client)
+
+add_subdirectory(clientlib)
+
+add_subdirectory(protocol)
+
 add_subdirectory(server)
 
 add_subdirectory(tests)
-
-add_subdirectory(client)
-
-add_subdirectory(protocol)
 
 set(CPACK_GENERATOR DEB)
 

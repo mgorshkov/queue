@@ -44,9 +44,9 @@ add_executable(queue_server
     ThreadedProducer.h)
 
 set(THREADS_PREFER_PTHREAD_FLAG ON)
-set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 
 find_package(Threads REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
@@ -62,7 +62,7 @@ include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOUR
 target_link_libraries(queue_server
     ${Boost_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
-    queue_lib
+    protocol
 )
 
 install(TARGETS queue_server DESTINATION bin)
