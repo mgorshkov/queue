@@ -1,0 +1,13 @@
+<map id="server/IShrink.h" name="server/IShrink.h">
+<area shape="rect" id="node2" href="$Queue_8h.html" title="server/Queue.h" alt="" coords="177,155,287,181"/>
+<area shape="rect" id="node11" href="$QueueStorage_8h.html" title="server/QueueStorage.h" alt="" coords="270,80,425,107"/>
+<area shape="rect" id="node3" href="$Consumer_8h.html" title="server/Consumer.h" alt="" coords="12,229,145,256"/>
+<area shape="rect" id="node5" href="$Queue_8cpp.html" title="server/Queue.cpp" alt="" coords="169,229,295,256"/>
+<area shape="rect" id="node6" href="$QueueManager_8h.html" title="server/QueueManager.h" alt="" coords="319,229,480,256"/>
+<area shape="rect" id="node4" href="$Consumer_8cpp.html" title="server/Consumer.cpp" alt="" coords="5,304,152,331"/>
+<area shape="rect" id="node7" href="$QueueManager_8cpp.html" title="server/QueueManager.cpp" alt="" coords="245,304,419,331"/>
+<area shape="rect" id="node8" href="$Server_8h.html" title="server/Server.h" alt="" coords="443,304,553,331"/>
+<area shape="rect" id="node9" href="$Server_8cpp.html" title="server/Server.cpp" alt="" coords="355,379,480,405"/>
+<area shape="rect" id="node10" href="$ServerMain_8cpp.html" title="server/ServerMain.cpp" alt="" coords="505,379,657,405"/>
+<area shape="rect" id="node12" href="$QueueStorage_8cpp.html" title="server/QueueStorage.cpp" alt="" coords="312,155,483,181"/>
+</map>

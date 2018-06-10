@@ -1,0 +1,6 @@
+<map id="Message" name="Message">
+<area shape="rect" id="node2" href="$structDequeueMessage.html" title="DequeueMessage" alt="" coords="5,80,131,107"/>
+<area shape="rect" id="node3" href="$structEnqueueMessage.html" title="EnqueueMessage" alt="" coords="155,80,281,107"/>
+<area shape="rect" id="node4" href="$structQueueListMessage.html" title="QueueListMessage" alt="" coords="306,80,440,107"/>
+<area shape="rect" id="node5" href="$structStartQueueSessionMessage.html" title="StartQueueSessionMessage" alt="" coords="465,80,652,107"/>
+</map>

@@ -1,0 +1,4 @@
+<map id="ThreadedActor" name="ThreadedActor">
+<area shape="rect" id="node2" href="$classThreadedConsumer.html" title="ThreadedConsumer\&lt; Dependent\lConsumer \&gt;" alt="" coords="5,81,215,122"/>
+<area shape="rect" id="node3" href="$classThreadedProducer.html" title="ThreadedProducer\&lt; Dependent\lProducer \&gt;" alt="" coords="240,81,443,122"/>
+</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['build_5fboost',['build_boost',['../namespaceinstall__boost.html#ad26026cd485a7a9cb8d87f7a9fd5ec76',1,'install_boost']]]
+  ['boost_5fauto_5ftest_5fcase',['BOOST_AUTO_TEST_CASE',['../QueueServerTest_8cpp.html#a79923b670b18f53cb41c512af6844c73',1,'QueueServerTest.cpp']]]
 ];

@@ -1,0 +1,16 @@
+<map id="server/Server.cpp" name="server/Server.cpp">
+<area shape="rect" id="node3" href="$Server_8h.html" title="Server.h" alt="" coords="1087,80,1157,107"/>
+<area shape="rect" id="node31" href="$Session_8h.html" title="Session.h" alt="" coords="1433,80,1512,107"/>
+<area shape="rect" id="node6" href="$CommandExecutor_8h.html" title="CommandExecutor.h" alt="" coords="991,229,1136,256"/>
+<area shape="rect" id="node20" href="$QueueManager_8h.html" title="QueueManager.h" alt="" coords="351,155,472,181"/>
+<area shape="rect" id="node9" href="$IQueueManager_8h.html" title="IQueueManager.h" alt="" coords="443,379,568,405"/>
+<area shape="rect" id="node11" href="$Defines_8h.html" title="Defines.h" alt="" coords="1081,603,1159,629"/>
+<area shape="rect" id="node16" href="$CommandHandler_8h.html" title="CommandHandler.h" alt="" coords="972,304,1111,331"/>
+<area shape="rect" id="node17" href="$CompleteCommand_8h.html" title="CompleteCommand.h" alt="" coords="1187,379,1335,405"/>
+<area shape="rect" id="node18" href="$Message_8h.html" title="Message.h" alt="" coords="1269,528,1355,555"/>
+<area shape="rect" id="node19" href="$CommandContext_8h.html" title="CommandContext.h" alt="" coords="1085,453,1224,480"/>
+<area shape="rect" id="node23" href="$Queue_8h.html" title="Queue.h" alt="" coords="263,229,333,256"/>
+<area shape="rect" id="node24" href="$IShrink_8h.html" title="IShrink.h" alt="" coords="261,379,335,405"/>
+<area shape="rect" id="node25" href="$QueueStorage_8h.html" title="QueueStorage.h" alt="" coords="701,304,816,331"/>
+<area shape="rect" id="node33" href="$Context_8h.html" title="Context.h" alt="" coords="1261,155,1339,181"/>
+</map>
