@@ -28,6 +28,7 @@ set_target_properties(clientapi PROPERTIES
 include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOURCE_DIR}/protocol)
 
 target_link_libraries(clientapi
+    ${Boost_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     protocol
 )
