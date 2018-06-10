@@ -1,25 +1,28 @@
-#include <iostream>
-
 #include "ProducerApiClient.h"
 
 #include "Message.h"
 #include "ProtocolSerializer.h"
 
-ProducerApiClient::ProducerApiClient(ba::io_service& aIoService)
-    : mIoService(aIoService)
-    , mSocket(aIoService)
+ProducerApiClient::ProducerApiClient()
+    : mSocket(mIoService)
 {
 }
 
 void ProducerApiClient::Connect(const ServerData& aServerData)
 {
     ba::ip::tcp::resolver resolver(mIoService);
-    ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
+    ba::ip::tcp::resolver::query query(aServerData.mHost, std::to_string(aServerData.mPort));
     ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
-    ba::ip::tcp::endpoint endPoint(*it);
 
-    std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
-    mSocket.connect(endPoint);
+    boost::system::error_code error = boost::asio::error::host_not_found;
+    ba::ip::tcp::resolver::iterator end;
+
+    while (error && it != end)
+    {
+        mSocket.close();
+        ba::ip::tcp::endpoint endPoint(*it++);
+        mSocket.connect(endPoint, error);
+    }
 }
 
 void ProducerApiClient::StartQueueSession(const std::string& aQueueName)

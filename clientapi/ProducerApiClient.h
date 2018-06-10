@@ -3,10 +3,14 @@
 #include "IProducerApiClient.h"
 #include "Defines.h"
 
+#include <boost/asio.hpp>
+
+namespace ba = boost::asio;
+
 class ProducerApiClient : public IProducerApiClient
 {
 public:
-    ProducerApiClient(ba::io_service& aIoService);
+    ProducerApiClient();
 
     void Connect(const ServerData& aServerData);
     void StartQueueSession(const std::string& aQueueName);
@@ -14,6 +18,6 @@ public:
     void Disconnect();
 
 private:
-    ba::io_service& mIoService;
+    ba::io_service mIoService;
     ba::ip::tcp::socket mSocket;
 };

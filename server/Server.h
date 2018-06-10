@@ -6,18 +6,20 @@
 #include "CommandExecutor.h"
 #include "QueueManager.h"
 
+namespace ba = boost::asio;
+
 class Server
 {
 public:
-    Server(boost::asio::io_service& aIoService, const boost::asio::ip::tcp::endpoint& aEndpoint);
+    Server(ba::io_service& aIoService, const boost::asio::ip::tcp::endpoint& aEndpoint);
     void Run();
 
 private:
     void DoAccept();
 
-    boost::asio::ip::tcp::acceptor mAcceptor;
-    boost::asio::ip::tcp::socket mSocket;
-    boost::asio::io_service& mIoService;
+    ba::ip::tcp::acceptor mAcceptor;
+    ba::ip::tcp::socket mSocket;
+    ba::io_service& mIoService;
 
     std::shared_ptr<CommandExecutor> mCommandExecutor;
     QueueManager mQueueManager;

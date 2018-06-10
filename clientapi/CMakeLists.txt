@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.5)
 
-add_library(client SHARED
+add_library(clientapi SHARED
+    Api.h
+    Api.cpp
     ConsumerApiClient.cpp
     ConsumerApiClient.h
     IApiClient.h
@@ -17,7 +19,7 @@ set(Boost_USE_STATIC_RUNTIME OFF)
 find_package(Threads REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
-set_target_properties(client PROPERTIES
+set_target_properties(clientapi PROPERTIES
     COMPILE_OPTIONS -Wpedantic -Wall -Wextra
     CMAKE_CXX_STANDARD 14
     CMAKE_CXX_STANDARD_REQUIRED ON
@@ -25,8 +27,9 @@ set_target_properties(client PROPERTIES
 
 include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOURCE_DIR}/protocol)
 
-target_link_libraries(client
+target_link_libraries(clientapi
+    ${CMAKE_THREAD_LIBS_INIT}
     protocol
 )
 
-install(TARGETS client DESTINATION bin)
+install(TARGETS clientapi DESTINATION bin)

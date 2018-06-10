@@ -19,13 +19,13 @@ set_target_properties(queue_client PROPERTIES
     CMAKE_CXX_STANDARD_REQUIRED ON
 )
 
-include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOURCE_DIR}/protocol ${CMAKE_SOURCE_DIR}/clientlib)
+include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOURCE_DIR}/protocol ${CMAKE_SOURCE_DIR}/clientapi)
 
 target_link_libraries(queue_client
     ${Boost_LIBRARIES}
     ${CMAKE_THREAD_LIBS_INIT}
     protocol
-    client
+    clientapi
 )
 
 install(TARGETS queue_client DESTINATION bin)

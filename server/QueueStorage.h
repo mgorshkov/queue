@@ -8,6 +8,7 @@
 #include <fstream>
 #include <mutex>
 #include <condition_variable>
+#include <atomic>
 
 #include <boost/filesystem.hpp>
 

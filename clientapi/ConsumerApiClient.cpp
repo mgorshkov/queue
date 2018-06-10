@@ -4,21 +4,28 @@
 #include "ProtocolSerializer.h"
 
 // sync client
-ConsumerApiClientSync::ConsumerApiClientSync(ba::io_service& aIoService)
-    : mIoService(aIoService)
-    , mSocket(aIoService)
+ConsumerApiClientSync::ConsumerApiClientSync()
+    : mSocket(mIoService)
 {
 }
 
-void ConsumerApiClientSync::Connect(const ServerData& aServerData)
+boost::system::error_code ConsumerApiClientSync::Connect(const ServerData& aServerData)
 {
     ba::ip::tcp::resolver resolver(mIoService);
-    ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
+    ba::ip::tcp::resolver::query query(aServerData.mHost, std::to_string(aServerData.mPort));
     ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
-    ba::ip::tcp::endpoint endPoint(*it);
 
-    std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
-    mSocket.connect(endPoint);
+    boost::system::error_code error = boost::asio::error::host_not_found;
+    ba::ip::tcp::resolver::iterator end;
+
+    while (error && it != end)
+    {
+        mSocket.close();
+        ba::ip::tcp::endpoint endPoint(*it++);
+        std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
+        mSocket.connect(endPoint, error);
+    }
+    return error;
 }
 
 QueueList ConsumerApiClientSync::GetQueueList()
@@ -76,21 +83,31 @@ void ConsumerApiClientSync::Disconnect()
 }
 
 // async client
-ConsumerApiClientAsync::ConsumerApiClientAsync(ba::io_service& aIoService)
-    : mIoService(aIoService)
-    , mSocket(aIoService)
+ConsumerApiClientAsync::ConsumerApiClientAsync()
+    : mSocket(mIoService)
 {
 }
 
 void ConsumerApiClientAsync::Connect(const ServerData& aServerData, std::function<void(const boost::system::error_code& error)> aCallback)
 {
     ba::ip::tcp::resolver resolver(mIoService);
-    ba::ip::tcp::resolver::query query(aServerData.mServerIp, aServerData.mServerPort);
+    ba::ip::tcp::resolver::query query(aServerData.mHost, std::to_string(aServerData.mPort));
     ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
-    ba::ip::tcp::endpoint endPoint(*it);
 
-    std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
-    mSocket.async_connect(endPoint, aCallback);
+    boost::system::error_code error = boost::asio::error::host_not_found;
+    ba::ip::tcp::resolver::iterator end;
+
+    while (error && it != end)
+    {
+        mSocket.close();
+        ba::ip::tcp::endpoint endPoint(*it++);
+        std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
+        mSocket.async_connect(endPoint, aCallback);
+        if (error)
+            std::cout << "Error: " << error.message() << std::endl;
+        else
+            std::cout << "Success." << std::endl;
+    }
 }
 
 void ConsumerApiClientAsync::GetQueueList(std::function<void(QueueList)> aCallback)

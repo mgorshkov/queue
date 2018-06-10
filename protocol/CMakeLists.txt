@@ -12,4 +12,6 @@ set_target_properties(protocol PROPERTIES
     CMAKE_CXX_STANDARD_REQUIRED ON
 )
 
+add_definitions(-fPIC)
+
 include_directories(${CMAKE_SOURCE_DIR}/common)

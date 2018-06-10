@@ -12,7 +12,7 @@ endif()
 
 add_subdirectory(client)
 
-add_subdirectory(clientlib)
+add_subdirectory(clientapi)
 
 add_subdirectory(protocol)
 

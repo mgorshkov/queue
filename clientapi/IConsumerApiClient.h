@@ -7,7 +7,7 @@
 class IConsumerApiClientSync : public IApiClient
 {
 public:
-    virtual void Connect(const ServerData& aServerData) = 0;
+    virtual boost::system::error_code Connect(const ServerData& aServerData) = 0;
     virtual QueueList GetQueueList() = 0;
     virtual void StartQueueSession(const std::string& aQueueName, std::size_t aOffset) = 0;
     virtual Item Dequeue() = 0;

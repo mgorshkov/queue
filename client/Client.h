@@ -2,7 +2,7 @@
 #include <memory>
 
 #include "Defines.h"
-#include "IApiClient.h"
+#include "Api.h"
 
 class Client
 {
@@ -14,12 +14,10 @@ public:
     void Run();
 
 private:
-    void CreateApiClient();
+    void RunConsumerSync();
+    void RunConsumerAsync();
+    void RunProducerSync();
 
-private:
-    ba::io_service mIoService;
-
-    std::unique_ptr<IApiClient> mApiClient;
     ServerData mServerData;
     ConsumerProducerMode mConsumerProducerMode;
     SyncAsyncMode mSyncAsyncMode;

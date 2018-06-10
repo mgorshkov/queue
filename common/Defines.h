@@ -4,11 +4,10 @@
 #include <memory>
 #include <string>
 #include <cstddef>
+#include <iostream>
+#include <vector>
 #include <list>
 
-#include <boost/asio.hpp>
-
-namespace ba = boost::asio;
 using DataType = std::string;
 
 struct Item
@@ -56,8 +55,8 @@ using QueueList = std::vector<DataType>;
 
 struct ServerData
 {
-    std::string mServerIp;
-    std::string mServerPort;
+    std::string mHost;
+    int mPort;
 };
 
 enum class SyncAsyncMode
