@@ -1,51 +1,40 @@
 #pragma once
 
 #include "Defines.h"
-#include "IShrink.h"
-
-#include <thread>
-#include <queue>
-#include <fstream>
-#include <mutex>
-#include <condition_variable>
-#include <atomic>
 
 #include <boost/filesystem.hpp>
+#include <boost/iostreams/device/mapped_file.hpp>
 
 class QueueStorage
 {
 public:
-    QueueStorage(const boost::filesystem::path& aStorageFileName, IShrink* aShrink);
+    QueueStorage(const boost::filesystem::path& aStorageFolderName);
     ~QueueStorage();
 
-    void Start();
-    void Stop();
-
-    void AddItem(const Item& aItem);
-    void ScheduleShrinkStorage();
-
 private:
-    void ThreadProc();
-    void ProcessQueue();
+    uintmax_t CalcFileSize() const;
+
+    void FoldStorage(std::size_t aOffset);
     bool CheckFreeDiskSpace();
     void ShrinkStorage();
     void ShrinkQueue();
 
-    IShrink* mShrink;
+    using MappedFile = boost::iostreams::mapped_file;
+    struct MappedFileDescriptor
+    {
+        MappedFile mIndex;
+        MappedFile mData;
+    };
+    std::map<uintmax_t, MappedFileDescriptor>> mFiles;
 
-    std::queue<Item> mQueue;
-
-    std::fstream mStream;
-
-    std::mutex mStreamMutex;
-    std::condition_variable mCondition;
-    std::atomic_bool mDone{false};
-    std::atomic_bool mNotified{false};
-
-    std::thread mThread;
+    boost::filesystem::path mStorageFolderName;
 
     boost::filesystem::path mStorageFileName;
+    boost::filesystem::path mIndexFileName;
 
-    static const uintmax_t FreeSpaceThreshold = 1000 * 1024;
+    static const uintmax_t MaxFileSize = 1024 * 1024 * 1024;
+
+    static const uintmax_t FreeSpaceThreshold = 1024 * 1024 * 1024;
+
 };
 

@@ -16,7 +16,6 @@ void QueueManager::LoadQueues()
         {
             auto queueName = it->path().filename().string();
             LoadQueue(queueName);
-            StartQueue(queueName);
         }
     }
 }
@@ -29,11 +28,6 @@ void QueueManager::LoadQueue(const std::string& aQueueName)
 void QueueManager::NewQueue(const std::string& aQueueName)
 {
     mQueues[aQueueName].CreateStorage(boost::filesystem::path(QueueStorageFolder) / aQueueName);
-}
-
-void QueueManager::StartQueue(const std::string& aQueueName)
-{
-    mQueues[aQueueName].Start();
 }
 
 QueueList QueueManager::GetQueueList()
@@ -52,10 +46,7 @@ void QueueManager::Enqueue(const std::string& aQueueName, const DataType& aData)
 
     auto it = mQueues.find(aQueueName);
     if (it == mQueues.end())
-    {
         NewQueue(aQueueName);
-        StartQueue(aQueueName);
-    }
     mQueues[aQueueName].Enqueue(aData);
 }
 

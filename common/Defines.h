@@ -1,6 +1,5 @@
 #pragma once
 
-#include <deque>
 #include <memory>
 #include <string>
 #include <cstddef>
@@ -48,8 +47,6 @@ struct Item
         return aStream;
     }
 };
-
-using ItemQueue = std::deque<Item>;
 
 using QueueList = std::vector<DataType>;
 
