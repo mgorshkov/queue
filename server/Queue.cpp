@@ -1,15 +1,15 @@
-#include <iostream>
+#include <sstream>
 
 #include "Queue.h"
 
 Queue::Queue()
-    : mOffset(0)
+    : mCurrentOffset(0)
 {
 }
 
-void Queue::CreateStorage(const boost::filesystem::path& aStorageFolderName)
+void Queue::Load(const boost::filesystem::path& aStorageFolderName)
 {
-    for (boost::filesystem::directory_iterator it(mStorageFilePath); it != boost::filesystem::directory_iterator(); ++it)
+    for (boost::filesystem::directory_iterator it(aStorageFolderName); it != boost::filesystem::directory_iterator(); ++it)
     {
         if (!boost::filesystem::is_regular_file(it->status()))
             continue;
@@ -23,39 +23,32 @@ void Queue::CreateStorage(const boost::filesystem::path& aStorageFolderName)
         uintmax_t offset;
         offsetStr >> offset;
 
-        mQueueStorage[offset] = std::make_unique<QueueStorage>(fileName, this);
+        mQueueStorage[offset] = std::make_unique<QueueStorage>(fileName);
     }
-}
-
-void Queue::Load(const boost::filesystem::path& aStorageFolderName)
-{
-    CreateStorage(aStorageFolderName);
-
-    mOffsets = mQueueStorage.GetAllOffsets();
-}
-
-void Queue::FoldStorage(std::size_t aOffset)
-{
-    mStream.close();
-
-    std::stringstream offsetStr;
-    offsetStr << aOffset;
-
-    mStorageFileName = offsetStr.str();
-
-//    mStream.open(mStorageFileName.string(), std::fstream::out | std::fstream::app);
 }
 
 void Queue::Enqueue(const DataType& aData)
 {
-    Item item(aData, mOffset);
-    mQueueStorage->AddItem(item);
-    mOffset = item.mOffset + 1;
+    Item item(aData, mCurrentOffset);
+    if (mQueueStorage.empty())
+    {
+        std::stringstream offsetStr;
+        uintmax_t offset = 0;
+        offsetStr << offset;
+
+        mQueueStorage[offset] = std::make_unique<QueueStorage>(offsetStr.str());
+    }
+
+    auto it = std::end(mQueueStorage);
+    std::advance(it, - 1);
+    it->second->AddItem(item);
+    mCurrentOffset = item.mOffset + 1;
 }
 
 Item Queue::Dequeue(std::size_t aOffset)
 {
-    if (aOffset >= mMinOffset && aOffset <= mMaxOffset)
-        return mQueue[aOffset - mMinOffset];
-    else if (aOffset < mMinOffset)
+    auto it = mQueueStorage.lower_bound(aOffset);
+
+    if (it != mQueueStorage.end())
+        return it->second->GetItem(aOffset);
 }

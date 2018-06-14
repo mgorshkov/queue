@@ -25,11 +25,6 @@ void QueueManager::LoadQueue(const std::string& aQueueName)
     mQueues[aQueueName].Load(boost::filesystem::path(QueueStorageFolder) / aQueueName);
 }
 
-void QueueManager::NewQueue(const std::string& aQueueName)
-{
-    mQueues[aQueueName].CreateStorage(boost::filesystem::path(QueueStorageFolder) / aQueueName);
-}
-
 QueueList QueueManager::GetQueueList()
 {
     std::lock_guard<std::mutex> lock(mQueueMutex);
@@ -46,7 +41,7 @@ void QueueManager::Enqueue(const std::string& aQueueName, const DataType& aData)
 
     auto it = mQueues.find(aQueueName);
     if (it == mQueues.end())
-        NewQueue(aQueueName);
+        LoadQueue(aQueueName);
     mQueues[aQueueName].Enqueue(aData);
 }
 

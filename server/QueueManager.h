@@ -20,7 +20,6 @@ public:
 private:
     void LoadQueues();
     void LoadQueue(const std::string& aQueueName);
-    void NewQueue(const std::string& aQueueName);
 
     std::mutex mQueueMutex;
 

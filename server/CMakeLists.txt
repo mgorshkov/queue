@@ -20,7 +20,6 @@ add_executable(queue_server
     IConsumer.h
     IProducer.h
     IQueueManager.h
-    IShrink.h
     Producer.cpp
     Producer.h
     Queue.cpp

@@ -15,9 +15,9 @@ QueueStorage::QueueStorage(const std::string& aStorageFileName)
     mappedFileParamsIndex.new_file_size = MaxFileSize;
     mappedFileParamsIndex.flags         = boost::iostreams::mapped_file::mapmode::readwrite;
 
-    , mMappedFileDescriptor(boost::iostreams::mapped_file(, ),
-        boost::iostreams::mapped_file(mStorageFileName + ".data", MaxFileSize))
-{
+    mMappedFileDescriptor =
+        std::make_unique<MappedFileDescriptor>(MappedFile(mappedFileParamsIndex),
+                                               MappedFile(mappedFileParamsData));
 }
 
 QueueStorage::~QueueStorage()
@@ -26,7 +26,8 @@ QueueStorage::~QueueStorage()
 
 void QueueStorage::AddItem(const Item& aItem)
 {
-
+    memcpy(mMappedFileDescriptor->mIndex.data() + aItem.mOffset)
+    strcpy(mMappedFileDescriptor->mData.data() + aItem.mOffset, aItem.mData.c_str());
     if (boost::filesystem::file_size(mCurrentFileName) > MaxFileSize)
         FoldStorage(offset + 1);
 
@@ -35,6 +36,13 @@ void QueueStorage::AddItem(const Item& aItem)
         ShrinkStorage();
         ShrinkQueue();
     }
+}
+
+DataType QueueStorage::GetItem(std::size_t aOffset)
+{
+    std::size_t dataOffset = mMappedFileDescriptor.mIndex[aOffset];
+    std::size_t length = strlen(mMappedFileDescriptor.mData.ptr() + dataOffset);
+    return DataType(mMappedFileDescriptor.mData.ptr() + dataOffset, length);
 }
 
 uintmax_t QueueStorage::CalcFileSize() const

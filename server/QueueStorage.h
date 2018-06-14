@@ -10,6 +10,9 @@ public:
     QueueStorage(const std::string& aStorageFileName);
     ~QueueStorage();
 
+    void AddItem(const Item& aItem);
+    DataType GetItem(std::size_t aOffset);
+
 private:
     uintmax_t CalcFileSize() const;
 
@@ -24,7 +27,7 @@ private:
         MappedFile mData;
     };
 
-    MappedFileDescriptor mMappedFileDescriptor;
+    std::unique_ptr<MappedFileDescriptor> mMappedFileDescriptor;
 
     std::string mStorageFileName;
     std::string mIndexFileName;
