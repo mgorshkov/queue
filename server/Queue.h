@@ -17,6 +17,6 @@ public:
 
 private:
     std::size_t mOffset;
-    std::unique_ptr<QueueStorage> mQueueStorage;
+    std::map<uintmax_t, std::unique_ptr<QueueStorage>> mQueueStorage; // minOffset->storage
 };
 

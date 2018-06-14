@@ -2,48 +2,26 @@
 
 #include "QueueStorage.h"
 
-QueueStorage::QueueStorage(const boost::filesystem::path& aStorageFolderName)
-    : mStorageFolderName(aStorageFolderName)
+QueueStorage::QueueStorage(const std::string& aStorageFileName)
+    : mStorageFileName(aStorageFileName)
 {
-    Init();
+    boost::iostreams::mapped_file_params mappedFileParamsData;
+    mappedFileParamsData.path          = mStorageFileName + ".data";
+    mappedFileParamsData.new_file_size = MaxFileSize;
+    mappedFileParamsData.flags         = boost::iostreams::mapped_file::mapmode::readwrite;
+
+    boost::iostreams::mapped_file_params mappedFileParamsIndex;
+    mappedFileParamsIndex.path          = mStorageFileName + ".index";
+    mappedFileParamsIndex.new_file_size = MaxFileSize;
+    mappedFileParamsIndex.flags         = boost::iostreams::mapped_file::mapmode::readwrite;
+
+    , mMappedFileDescriptor(boost::iostreams::mapped_file(, ),
+        boost::iostreams::mapped_file(mStorageFileName + ".data", MaxFileSize))
+{
 }
 
 QueueStorage::~QueueStorage()
 {
-}
-
-void QueueStorage::Init() const
-{
-    for (boost::filesystem::directory_iterator it(mStorageFilePath); it != boost::filesystem::directory_iterator(); ++it)
-    {
-        if (!boost::filesystem::is_regular_file(it->status()))
-            continue;
-
-        if (it->path().extension() != "index")
-            continue;
-
-        auto fileName = it->path().filename().string();
-
-        std::stringstream offsetStr(fileName);
-        uintmax_t offset;
-        offsetStr >> offset;
-
-        MappedFileDescriptor descriptor{boost::iostreams::mapped_file(fileName + ".index"),
-            boost::iostreams::mapped_file(fileName + ".data"), MaxFileSize};
-        mStreams.insert(std::make_pair(offset, descriptor));
-    }
-}
-
-void QueueStorage::FoldStorage(std::size_t aOffset)
-{
-    mStream.close();
-
-    std::stringstream offsetStr;
-    offsetStr << aOffset;
-
-    mStorageFileName = offsetStr.str();
-
-//    mStream.open(mStorageFileName.string(), std::fstream::out | std::fstream::app);
 }
 
 void QueueStorage::AddItem(const Item& aItem)
