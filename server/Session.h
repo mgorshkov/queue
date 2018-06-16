@@ -33,7 +33,7 @@ private:
     ba::io_service& mIoService;
     Context mContext;
     ba::ip::tcp::socket mSocket;
-    std::array<char, 256> mBuffer;
+    BufferType mBuffer;
     std::deque<std::string> mWriteMsgs;
     std::thread mWriteThread;
     std::atomic_bool mDone{false};

@@ -16,7 +16,9 @@ public:
     Item Dequeue(std::size_t aOffset);
 
 private:
-    std::size_t mCurrentOffset;
+    void CreateStorageIfEmpty();
+    void CreateStorageByOffset(std::size_t aOffset);
+
     std::map<uintmax_t, std::unique_ptr<QueueStorage>> mQueueStorage; // minOffset->storage
 };
 

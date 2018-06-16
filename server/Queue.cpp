@@ -3,7 +3,6 @@
 #include "Queue.h"
 
 Queue::Queue()
-    : mCurrentOffset(0)
 {
 }
 
@@ -27,22 +26,28 @@ void Queue::Load(const boost::filesystem::path& aStorageFolderName)
     }
 }
 
+void Queue::CreateStorageIfEmpty()
+{
+    if (mQueueStorage.empty())
+        CreateStorageByOffset(0);
+}
+
+void Queue::CreateStorageByOffset(std::size_t aOffset)
+{
+    std::stringstream offsetStr;
+    uintmax_t offset = aOffset;
+    offsetStr << offset;
+
+    mQueueStorage[offset] = std::make_unique<QueueStorage>(offsetStr.str());
+}
+
 void Queue::Enqueue(const DataType& aData)
 {
-    Item item(aData, mCurrentOffset);
-    if (mQueueStorage.empty())
-    {
-        std::stringstream offsetStr;
-        uintmax_t offset = 0;
-        offsetStr << offset;
-
-        mQueueStorage[offset] = std::make_unique<QueueStorage>(offsetStr.str());
-    }
+    CreateStorageIfEmpty();
 
     auto it = std::end(mQueueStorage);
     std::advance(it, - 1);
-    it->second->AddItem(item);
-    mCurrentOffset = item.mOffset + 1;
+    it->second->AddItem(aData);
 }
 
 Item Queue::Dequeue(std::size_t aOffset)

@@ -29,3 +29,4 @@ set(CPACK_PACKAGE_VERSION_PATCH "${PROJECT_VERSION_PATCH}")
 set(CPACK_PACKAGE_CONTACT mikhail.gorshkov@gmail.com)
 
 include(CPack)
+

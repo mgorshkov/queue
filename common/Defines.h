@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <iostream>
 #include <vector>
-#include <list>
+#include <array>
 
 using DataType = std::string;
 
@@ -47,6 +47,9 @@ struct Item
         return aStream;
     }
 };
+
+const constexpr std::size_t MaxMessageSize = 256;
+using BufferType = std::array<char, MaxMessageSize>;
 
 using QueueList = std::vector<DataType>;
 

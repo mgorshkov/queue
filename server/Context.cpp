@@ -44,10 +44,10 @@ void Context::Start()
     mThread = std::move(std::thread(&Context::ThreadProc, this));
 }
 
-void Context::ProcessData(std::array<char, 256> aBuffer, std::size_t aLength)
+void Context::ProcessData(const BufferType& aBuffer, std::size_t aLength)
 {
 #ifdef DEBUG_PRINT
-    std::cout << "Context::ProcessData, this==" << this << ", aStream=" << aStream << ", mDone=" << mDone.load() << std::endl;
+    std::cout << "Context::ProcessData, this==" << this << ", aBuffer=" << aBuffer << ", mDone=" << mDone.load() << std::endl;
 #endif
     if (mDone.load())
         return;
@@ -56,7 +56,8 @@ void Context::ProcessData(std::array<char, 256> aBuffer, std::size_t aLength)
 #ifdef DEBUG_PRINT
         std::cout << "Context::ProcessData 2, pos = " << mStream.tellp() << std::endl;
 #endif
-        mStream << std::string(&aBuffer[0], aLength);
+        for (std::size_t i = 0; i < aLength; ++i)
+            mStream << aBuffer[i];
 #ifdef DEBUG_PRINT
         std::cout << "Context::ProcessData 3, pos = " << mStream.tellp() << std::endl;
 #endif

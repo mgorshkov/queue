@@ -10,15 +10,11 @@ public:
     QueueStorage(const std::string& aStorageFileName);
     ~QueueStorage();
 
-    void AddItem(const Item& aItem);
+    bool AddItem(const DataType& aItem);
     DataType GetItem(std::size_t aOffset);
 
 private:
-    uintmax_t CalcFileSize() const;
-
-    bool CheckFreeDiskSpace();
-    void ShrinkStorage();
-    void ShrinkQueue();
+    bool CheckFreeDiskSpace() const;
 
     using MappedFile = boost::iostreams::mapped_file;
     struct MappedFileDescriptor
@@ -30,7 +26,7 @@ private:
     std::unique_ptr<MappedFileDescriptor> mMappedFileDescriptor;
 
     std::string mStorageFileName;
-    std::string mIndexFileName;
+    std::size_t mStorageOffset;
 
     static const uintmax_t MaxFileSize = 1024 * 1024 * 1024;
 

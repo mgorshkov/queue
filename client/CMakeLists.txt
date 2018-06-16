@@ -14,10 +14,30 @@ find_package(Threads REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system filesystem)
 
 set_target_properties(queue_client PROPERTIES
-    COMPILE_OPTIONS -Wpedantic -Wall -Wextra
     CMAKE_CXX_STANDARD 14
     CMAKE_CXX_STANDARD_REQUIRED ON
 )
+
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
+    set_target_properties(queue_client PROPERTIES
+        COMPILE_OPTIONS -Wpedantic -Wall -Wextra
+    )
+endif()
+
+macro(get_WIN32_WINNT version)
+    if (WIN32 AND CMAKE_SYSTEM_VERSION)
+        set(ver ${CMAKE_SYSTEM_VERSION})
+        string(REPLACE "." "" ver ${ver})
+        string(REGEX REPLACE "([0-9])" "0\\1" ver ${ver})
+
+        set(${version} "0x${ver}")
+    endif()
+endmacro()
+
+get_WIN32_WINNT(ver)
+if (${ver})
+    add_definitions(-D_WIN32_WINNT=${ver})
+endif()
 
 include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOURCE_DIR}/protocol ${CMAKE_SOURCE_DIR}/clientapi)
 

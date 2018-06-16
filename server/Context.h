@@ -20,7 +20,7 @@ public:
 
     void SetExecutor(std::shared_ptr<CommandExecutor> aCommandExecutor);
 
-    void ProcessData(std::array<char, 256> aBuffer, std::size_t aLength);
+    void ProcessData(const BufferType& aBuffer, std::size_t aLength);
 
     void Start();
     void Stop();
