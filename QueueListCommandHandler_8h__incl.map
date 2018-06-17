@@ -1,8 +1,0 @@
-<map id="server/QueueListCommandHandler.h" name="server/QueueListCommandHandler.h">
-<area shape="rect" id="node2" href="$CommandHandler_8h.html" title="CommandHandler.h" alt="" coords="301,80,440,107"/>
-<area shape="rect" id="node14" href="$IQueueManager_8h.html" title="IQueueManager.h" alt="" coords="456,304,581,331"/>
-<area shape="rect" id="node3" href="$CompleteCommand_8h.html" title="CompleteCommand.h" alt="" coords="293,155,441,181"/>
-<area shape="rect" id="node5" href="$Defines_8h.html" title="Defines.h" alt="" coords="201,379,279,405"/>
-<area shape="rect" id="node11" href="$Message_8h.html" title="Message.h" alt="" coords="113,304,199,331"/>
-<area shape="rect" id="node13" href="$CommandContext_8h.html" title="CommandContext.h" alt="" coords="192,229,331,256"/>
-</map>

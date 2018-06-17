@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['main',['main',['../ClientMain_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;ClientMain.cpp'],['../ServerMain_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;ServerMain.cpp']]]
+  ['run',['Run',['../classClient.html#ac95b4a2a47720fdfd3cf127ece013fa2',1,'Client']]]
 ];

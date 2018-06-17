@@ -1,8 +1,0 @@
-<map id="server/Queue.h" name="server/Queue.h">
-<area shape="rect" id="node2" href="$Queue_8cpp.html" title="server/Queue.cpp" alt="" coords="5,80,131,107"/>
-<area shape="rect" id="node3" href="$QueueManager_8h.html" title="server/QueueManager.h" alt="" coords="155,80,316,107"/>
-<area shape="rect" id="node4" href="$QueueManager_8cpp.html" title="server/QueueManager.cpp" alt="" coords="65,155,239,181"/>
-<area shape="rect" id="node5" href="$Server_8h.html" title="server/Server.h" alt="" coords="263,155,373,181"/>
-<area shape="rect" id="node6" href="$Server_8cpp.html" title="server/Server.cpp" alt="" coords="173,229,299,256"/>
-<area shape="rect" id="node7" href="$ServerMain_8cpp.html" title="server/ServerMain.cpp" alt="" coords="323,229,476,256"/>
-</map>

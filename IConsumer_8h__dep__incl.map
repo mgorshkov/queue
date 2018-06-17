@@ -1,7 +1,0 @@
-<map id="server/IConsumer.h" name="server/IConsumer.h">
-<area shape="rect" id="node2" href="$Consumer_8h.html" title="server/Consumer.h" alt="" coords="267,80,400,107"/>
-<area shape="rect" id="node3" href="$DequeueCommandHandler_8h.html" title="server/DequeueCommandHandler.h" alt="" coords="111,155,341,181"/>
-<area shape="rect" id="node6" href="$Consumer_8cpp.html" title="server/Consumer.cpp" alt="" coords="367,155,513,181"/>
-<area shape="rect" id="node4" href="$CommandExecutor_8cpp.html" title="server/CommandExecutor.cpp" alt="" coords="5,229,203,256"/>
-<area shape="rect" id="node5" href="$DequeueCommandHandler_8cpp.html" title="server/DequeueCommandHandler.cpp" alt="" coords="227,229,471,256"/>
-</map>

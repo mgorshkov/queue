@@ -1,6 +1,0 @@
-<map id="server/Consumer.h" name="server/Consumer.h">
-<area shape="rect" id="node2" href="$DequeueCommandHandler_8h.html" title="server/DequeueCommandHandler.h" alt="" coords="111,80,341,107"/>
-<area shape="rect" id="node5" href="$Consumer_8cpp.html" title="server/Consumer.cpp" alt="" coords="367,80,513,107"/>
-<area shape="rect" id="node3" href="$CommandExecutor_8cpp.html" title="server/CommandExecutor.cpp" alt="" coords="5,155,203,181"/>
-<area shape="rect" id="node4" href="$DequeueCommandHandler_8cpp.html" title="server/DequeueCommandHandler.cpp" alt="" coords="227,155,471,181"/>
-</map>

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['load',['Load',['../classQueue.html#a42e412d6d3fabcfafefa643c6ce7f285',1,'Queue']]]
+  ['queuelistmessage',['QueueListMessage',['../structQueueListMessage.html#ac96a9197dc47e2c8285c391b16f8986a',1,'QueueListMessage']]]
 ];

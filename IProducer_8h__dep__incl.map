@@ -1,7 +1,0 @@
-<map id="server/IProducer.h" name="server/IProducer.h">
-<area shape="rect" id="node2" href="$Producer_8h.html" title="server/Producer.h" alt="" coords="268,80,393,107"/>
-<area shape="rect" id="node3" href="$EnqueueCommandHandler_8h.html" title="server/EnqueueCommandHandler.h" alt="" coords="112,155,341,181"/>
-<area shape="rect" id="node6" href="$Producer_8cpp.html" title="server/Producer.cpp" alt="" coords="365,155,504,181"/>
-<area shape="rect" id="node4" href="$CommandExecutor_8cpp.html" title="server/CommandExecutor.cpp" alt="" coords="5,229,203,256"/>
-<area shape="rect" id="node5" href="$EnqueueCommandHandler_8cpp.html" title="server/EnqueueCommandHandler.cpp" alt="" coords="228,229,471,256"/>
-</map>

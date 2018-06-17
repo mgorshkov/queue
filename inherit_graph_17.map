@@ -1,5 +1,0 @@
-<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classThreadedActor.html" title="ThreadedActor" alt="" coords="5,45,112,72"/>
-<area shape="rect" id="node2" href="$classThreadedConsumer.html" title="ThreadedConsumer\&lt; Dependent\lConsumer \&gt;" alt="" coords="160,5,371,46"/>
-<area shape="rect" id="node3" href="$classThreadedProducer.html" title="ThreadedProducer\&lt; Dependent\lProducer \&gt;" alt="" coords="164,70,367,111"/>
-</map>

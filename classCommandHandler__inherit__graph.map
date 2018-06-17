@@ -1,5 +1,0 @@
-<map id="CommandHandler" name="CommandHandler">
-<area shape="rect" id="node2" href="$classDequeueCommandHandler.html" title="DequeueCommandHandler" alt="" coords="5,80,184,107"/>
-<area shape="rect" id="node3" href="$classEnqueueCommandHandler.html" title="EnqueueCommandHandler" alt="" coords="208,80,387,107"/>
-<area shape="rect" id="node4" href="$classQueueListCommandHandler.html" title="QueueListCommandHandler" alt="" coords="411,80,597,107"/>
-</map>
