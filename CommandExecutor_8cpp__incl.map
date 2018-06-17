@@ -1,12 +1,16 @@
 <map id="server/CommandExecutor.cpp" name="server/CommandExecutor.cpp">
 <area shape="rect" id="node4" href="$CommandExecutor_8h.html" title="CommandExecutor.h" alt="" coords="801,80,945,107"/>
 <area shape="rect" id="node19" href="$DequeueCommandHandler_8h.html" title="DequeueCommandHandler.h" alt="" coords="150,80,340,107"/>
-<area shape="rect" id="node20" href="$EnqueueCommandHandler_8h.html" title="EnqueueCommandHandler.h" alt="" coords="587,80,776,107"/>
-<area shape="rect" id="node21" href="$QueueListCommandHandler_8h.html" title="QueueListCommandHandler.h" alt="" coords="365,80,563,107"/>
-<area shape="rect" id="node8" href="$IQueueManager_8h.html" title="IQueueManager.h" alt="" coords="401,229,527,256"/>
-<area shape="rect" id="node10" href="$Defines_8h.html" title="Defines.h" alt="" coords="553,453,631,480"/>
-<area shape="rect" id="node15" href="$CommandHandler_8h.html" title="CommandHandler.h" alt="" coords="503,155,641,181"/>
-<area shape="rect" id="node16" href="$CompleteCommand_8h.html" title="CompleteCommand.h" alt="" coords="551,229,699,256"/>
-<area shape="rect" id="node17" href="$Message_8h.html" title="Message.h" alt="" coords="631,379,717,405"/>
-<area shape="rect" id="node18" href="$CommandContext_8h.html" title="CommandContext.h" alt="" coords="556,304,695,331"/>
+<area shape="rect" id="node22" href="$EnqueueCommandHandler_8h.html" title="EnqueueCommandHandler.h" alt="" coords="365,80,555,107"/>
+<area shape="rect" id="node25" href="$QueueListCommandHandler_8h.html" title="QueueListCommandHandler.h" alt="" coords="579,80,776,107"/>
+<area shape="rect" id="node8" href="$IQueueManager_8h.html" title="IQueueManager.h" alt="" coords="416,229,541,256"/>
+<area shape="rect" id="node10" href="$Defines_8h.html" title="Defines.h" alt="" coords="446,453,524,480"/>
+<area shape="rect" id="node14" href="$CommandHandler_8h.html" title="CommandHandler.h" alt="" coords="501,155,640,181"/>
+<area shape="rect" id="node15" href="$CompleteCommand_8h.html" title="CompleteCommand.h" alt="" coords="616,229,764,256"/>
+<area shape="rect" id="node16" href="$Message_8h.html" title="Message.h" alt="" coords="718,379,804,405"/>
+<area shape="rect" id="node18" href="$CommandContext_8h.html" title="CommandContext.h" alt="" coords="768,304,907,331"/>
+<area shape="rect" id="node20" href="$Consumer_8h.html" title="Consumer.h" alt="" coords="173,155,267,181"/>
+<area shape="rect" id="node21" href="$IConsumer_8h.html" title="IConsumer.h" alt="" coords="243,304,340,331"/>
+<area shape="rect" id="node23" href="$Producer_8h.html" title="Producer.h" alt="" coords="291,155,376,181"/>
+<area shape="rect" id="node24" href="$IProducer_8h.html" title="IProducer.h" alt="" coords="342,379,431,405"/>
 </map>

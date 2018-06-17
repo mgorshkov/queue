@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -68,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -91,22 +92,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="CommandHandler_8h.html">CommandHandler.h</a>&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="IQueueManager_8h.html">IQueueManager.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;</div>
-<div class="line"><a name="l00006"></a><span class="lineno"><a class="line" href="classEnqueueCommandHandler.html">    6</a></span>&#160;<span class="keyword">class </span><a class="code" href="classEnqueueCommandHandler.html">EnqueueCommandHandler</a> : <span class="keyword">public</span> <a class="code" href="classCommandHandler.html">CommandHandler</a></div>
-<div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;{</div>
-<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <a class="code" href="classEnqueueCommandHandler.html#afa5758f4eecdf369d22728dcc3b54670">EnqueueCommandHandler</a>(<a class="code" href="classIQueueManager.html">IQueueManager</a>* aQueueManager);</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="Message_8h.html#a75ca04502a92d996a6b63dfeec4f8319">MessagePtr</a> <a class="code" href="classEnqueueCommandHandler.html#a480273637ab65e746e3035bcb290a0b8">Handle</a>(<span class="keyword">const</span> <a class="code" href="structCompleteCommand.html">CompleteCommand</a>&amp; aCommand) <span class="keyword">override</span>;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;};</div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Producer_8h.html">Producer.h</a>&quot;</span></div>
+<div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
+<div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classEnqueueCommandHandler.html">    7</a></span>&#160;<span class="keyword">class </span><a class="code" href="classEnqueueCommandHandler.html">EnqueueCommandHandler</a> : <span class="keyword">public</span> <a class="code" href="classCommandHandler.html">CommandHandler</a></div>
+<div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="classEnqueueCommandHandler.html#afa5758f4eecdf369d22728dcc3b54670">EnqueueCommandHandler</a>(<a class="code" href="classIQueueManager.html">IQueueManager</a>* aQueueManager);</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="Message_8h.html#a75ca04502a92d996a6b63dfeec4f8319">MessagePtr</a> <a class="code" href="classEnqueueCommandHandler.html#a480273637ab65e746e3035bcb290a0b8">Handle</a>(<span class="keyword">const</span> <a class="code" href="structCompleteCommand.html">CompleteCommand</a>&amp; aCommand) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classProducer.html">Producer</a> mProducer;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;};</div>
 <div class="ttc" id="IQueueManager_8h_html"><div class="ttname"><a href="IQueueManager_8h.html">IQueueManager.h</a></div></div>
-<div class="ttc" id="Message_8h_html_a75ca04502a92d996a6b63dfeec4f8319"><div class="ttname"><a href="Message_8h.html#a75ca04502a92d996a6b63dfeec4f8319">MessagePtr</a></div><div class="ttdeci">std::shared_ptr&lt; Message &gt; MessagePtr</div><div class="ttdef"><b>Definition:</b> Message.h:20</div></div>
+<div class="ttc" id="classProducer_html"><div class="ttname"><a href="classProducer.html">Producer</a></div><div class="ttdef"><b>Definition:</b> Producer.h:6</div></div>
+<div class="ttc" id="Message_8h_html_a75ca04502a92d996a6b63dfeec4f8319"><div class="ttname"><a href="Message_8h.html#a75ca04502a92d996a6b63dfeec4f8319">MessagePtr</a></div><div class="ttdeci">std::shared_ptr&lt; Message &gt; MessagePtr</div><div class="ttdef"><b>Definition:</b> Message.h:21</div></div>
 <div class="ttc" id="classIQueueManager_html"><div class="ttname"><a href="classIQueueManager.html">IQueueManager</a></div><div class="ttdef"><b>Definition:</b> IQueueManager.h:6</div></div>
-<div class="ttc" id="classEnqueueCommandHandler_html"><div class="ttname"><a href="classEnqueueCommandHandler.html">EnqueueCommandHandler</a></div><div class="ttdef"><b>Definition:</b> EnqueueCommandHandler.h:6</div></div>
-<div class="ttc" id="classCommandHandler_html"><div class="ttname"><a href="classCommandHandler.html">CommandHandler</a></div><div class="ttdef"><b>Definition:</b> CommandHandler.h:6</div></div>
+<div class="ttc" id="classEnqueueCommandHandler_html"><div class="ttname"><a href="classEnqueueCommandHandler.html">EnqueueCommandHandler</a></div><div class="ttdef"><b>Definition:</b> EnqueueCommandHandler.h:7</div></div>
+<div class="ttc" id="classCommandHandler_html"><div class="ttname"><a href="classCommandHandler.html">CommandHandler</a></div><div class="ttdef"><b>Definition:</b> CommandHandler.h:5</div></div>
 <div class="ttc" id="structCompleteCommand_html"><div class="ttname"><a href="structCompleteCommand.html">CompleteCommand</a></div><div class="ttdef"><b>Definition:</b> CompleteCommand.h:8</div></div>
 <div class="ttc" id="CommandHandler_8h_html"><div class="ttname"><a href="CommandHandler_8h.html">CommandHandler.h</a></div></div>
 <div class="ttc" id="classEnqueueCommandHandler_html_afa5758f4eecdf369d22728dcc3b54670"><div class="ttname"><a href="classEnqueueCommandHandler.html#afa5758f4eecdf369d22728dcc3b54670">EnqueueCommandHandler::EnqueueCommandHandler</a></div><div class="ttdeci">EnqueueCommandHandler(IQueueManager *aQueueManager)</div><div class="ttdef"><b>Definition:</b> EnqueueCommandHandler.cpp:5</div></div>
+<div class="ttc" id="Producer_8h_html"><div class="ttname"><a href="Producer_8h.html">Producer.h</a></div></div>
 <div class="ttc" id="classEnqueueCommandHandler_html_a480273637ab65e746e3035bcb290a0b8"><div class="ttname"><a href="classEnqueueCommandHandler.html#a480273637ab65e746e3035bcb290a0b8">EnqueueCommandHandler::Handle</a></div><div class="ttdeci">virtual MessagePtr Handle(const CompleteCommand &amp;aCommand) override</div><div class="ttdef"><b>Definition:</b> EnqueueCommandHandler.cpp:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->

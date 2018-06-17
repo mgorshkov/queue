@@ -13,7 +13,7 @@ var searchData=
   ['queuemanager_2ecpp',['QueueManager.cpp',['../QueueManager_8cpp.html',1,'']]],
   ['queuemanager_2eh',['QueueManager.h',['../QueueManager_8h.html',1,'']]],
   ['queueservertest_2ecpp',['QueueServerTest.cpp',['../QueueServerTest_8cpp.html',1,'']]],
-  ['queuestorage',['QueueStorage',['../classQueueStorage.html',1,'QueueStorage'],['../classQueueStorage.html#acc7b2dcf8e209073a3055d5e2035f552',1,'QueueStorage::QueueStorage()']]],
+  ['queuestorage',['QueueStorage',['../classQueueStorage.html',1,'QueueStorage'],['../classQueueStorage.html#ad668654514bce73d5b9a69ee3be99848',1,'QueueStorage::QueueStorage()']]],
   ['queuestorage_2ecpp',['QueueStorage.cpp',['../QueueStorage_8cpp.html',1,'']]],
   ['queuestorage_2eh',['QueueStorage.h',['../QueueStorage_8h.html',1,'']]]
 ];

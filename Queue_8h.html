@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -68,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -90,22 +91,22 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="Defines_8h_source.html">Defines.h</a>&quot;</code><br/>
-<code>#include &quot;<a class="el" href="IShrink_8h_source.html">IShrink.h</a>&quot;</code><br/>
 <code>#include &quot;<a class="el" href="QueueStorage_8h_source.html">QueueStorage.h</a>&quot;</code><br/>
 <code>#include &lt;boost/filesystem.hpp&gt;</code><br/>
+<code>#include &lt;map&gt;</code><br/>
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for Queue.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="Queue_8h__incl.png" border="0" usemap="#server_2Queue_8h" alt=""/></div>
 <map name="server_2Queue_8h" id="server_2Queue_8h">
-<area shape="rect" id="node2" href="Defines_8h.html" title="Defines.h" alt="" coords="253,155,331,181"/><area shape="rect" id="node10" href="IShrink_8h.html" title="IShrink.h" alt="" coords="356,155,429,181"/><area shape="rect" id="node11" href="QueueStorage_8h.html" title="QueueStorage.h" alt="" coords="602,80,717,107"/></map>
+<area shape="rect" id="node2" href="Defines_8h.html" title="Defines.h" alt="" coords="218,163,296,189"/><area shape="rect" id="node9" href="QueueStorage_8h.html" title="QueueStorage.h" alt="" coords="342,80,457,107"/></map>
 </div>
 </div><div class="textblock"><div class="dynheader">
 This graph shows which files directly or indirectly include this file:</div>
 <div class="dyncontent">
 <div class="center"><img src="Queue_8h__dep__incl.png" border="0" usemap="#server_2Queue_8hdep" alt=""/></div>
 <map name="server_2Queue_8hdep" id="server_2Queue_8hdep">
-<area shape="rect" id="node2" href="Consumer_8h.html" title="server/Consumer.h" alt="" coords="12,80,145,107"/><area shape="rect" id="node4" href="Queue_8cpp.html" title="server/Queue.cpp" alt="" coords="169,80,295,107"/><area shape="rect" id="node5" href="QueueManager_8h.html" title="server/QueueManager.h" alt="" coords="319,80,480,107"/><area shape="rect" id="node3" href="Consumer_8cpp.html" title="server/Consumer.cpp" alt="" coords="5,155,152,181"/><area shape="rect" id="node6" href="QueueManager_8cpp.html" title="server/QueueManager.cpp" alt="" coords="245,155,419,181"/><area shape="rect" id="node7" href="Server_8h.html" title="server/Server.h" alt="" coords="443,155,553,181"/><area shape="rect" id="node8" href="Server_8cpp.html" title="server/Server.cpp" alt="" coords="353,229,479,256"/><area shape="rect" id="node9" href="ServerMain_8cpp.html" title="server/ServerMain.cpp" alt="" coords="503,229,656,256"/></map>
+<area shape="rect" id="node2" href="Queue_8cpp.html" title="server/Queue.cpp" alt="" coords="5,80,131,107"/><area shape="rect" id="node3" href="QueueManager_8h.html" title="server/QueueManager.h" alt="" coords="155,80,316,107"/><area shape="rect" id="node4" href="QueueManager_8cpp.html" title="server/QueueManager.cpp" alt="" coords="65,155,239,181"/><area shape="rect" id="node5" href="Server_8h.html" title="server/Server.h" alt="" coords="263,155,373,181"/><area shape="rect" id="node6" href="Server_8cpp.html" title="server/Server.cpp" alt="" coords="173,229,299,256"/><area shape="rect" id="node7" href="ServerMain_8cpp.html" title="server/ServerMain.cpp" alt="" coords="323,229,476,256"/></map>
 </div>
 </div>
 <p><a href="Queue_8h_source.html">Go to the source code of this file.</a></p>

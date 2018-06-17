@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li class="current"><a href="annotated.html"><span>Classes</span></a></li>
       <li><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -70,7 +71,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -88,14 +89,10 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 <p>This is the complete list of members for <a class="el" href="classQueue.html">Queue</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classQueue.html#ae1c1584044958fe7572460adc0953130">CreateStorage</a>(const boost::filesystem::path &amp;aStorageFileName)</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classQueue.html#a9236ab9073c3a9233916e8597c98320d">Dequeue</a>(std::size_t aOffset)</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classQueue.html#aab0223b5cdb076b8f0f158fc7ee240be">Enqueue</a>(const DataType &amp;aData)</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classQueue.html#a6cba8cc733cff41b6ecfe164078924af">Load</a>(const boost::filesystem::path &amp;aStorageFileName)</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classQueue.html#a7cfca3637d57c4a9e37351b3426ffd40">Queue</a>()</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classQueue.html#a98a64b6f098bcc2e4158ccec35ee7e70">Shrink</a>()</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classQueue.html#a6819e4b3dcedb19d1fa54ef9a7d891ac">Start</a>()</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classIShrink.html#a6a9fa81a186d91cdb3fce9f450a6d034">~IShrink</a>()=default</td><td class="entry"><a class="el" href="classIShrink.html">IShrink</a></td><td class="entry"><span class="mlabel">virtual</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classQueue.html#a9236ab9073c3a9233916e8597c98320d">Dequeue</a>(std::size_t aOffset)</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classQueue.html#aab0223b5cdb076b8f0f158fc7ee240be">Enqueue</a>(const DataType &amp;aData)</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classQueue.html#a3464129a125d9c911abcdebd21c33f87">Load</a>(const boost::filesystem::path &amp;aStorageFolderName)</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classQueue.html#a7cfca3637d57c4a9e37351b3426ffd40">Queue</a>()</td><td class="entry"><a class="el" href="classQueue.html">Queue</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

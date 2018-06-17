@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -68,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -91,28 +92,28 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00002"></a><span class="lineno">    2</span>&#160;<span class="preprocessor"></span></div>
 <div class="line"><a name="l00003"></a><span class="lineno">    3</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="IConsumer_8h.html">IConsumer.h</a>&quot;</span></div>
 <div class="line"><a name="l00004"></a><span class="lineno">    4</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Defines_8h.html">Defines.h</a>&quot;</span></div>
-<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="Queue_8h.html">Queue.h</a>&quot;</span></div>
+<div class="line"><a name="l00005"></a><span class="lineno">    5</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="IQueueManager_8h.html">IQueueManager.h</a>&quot;</span></div>
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;</div>
 <div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classConsumer.html">    7</a></span>&#160;<span class="keyword">class </span><a class="code" href="classConsumer.html">Consumer</a> : <span class="keyword">public</span> <a class="code" href="classIConsumer.html">IConsumer</a></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classConsumer.html#a8bc763a9b0201b8b0b48d34fd2327172">Consumer</a>(<a class="code" href="classQueue.html">Queue</a>&amp; aQueue);</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <span class="keyword">explicit</span> <a class="code" href="classConsumer.html#a34bb4535fdf9d86bcd8022a79bd71ba0">Consumer</a>(<a class="code" href="classIQueueManager.html">IQueueManager</a>* aQueueManager);</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;</div>
-<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="structItem.html">Item</a> <a class="code" href="classConsumer.html#a1d996fbeca19dd538312e86ae3ca8271">Consume</a>(std::size_t aOffset) <span class="keyword">override</span>;</div>
+<div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;    <a class="code" href="structItem.html">Item</a> <a class="code" href="classConsumer.html#ac393e831067a1158525a00f0bbee714d">Consume</a>(<span class="keyword">const</span> std::string&amp; aQueueName, std::size_t aOffset) <span class="keyword">override</span>;</div>
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classQueue.html">Queue</a>&amp; mQueue;</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <a class="code" href="classIQueueManager.html">IQueueManager</a>* mQueueManager;</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;};</div>
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="ttc" id="IQueueManager_8h_html"><div class="ttname"><a href="IQueueManager_8h.html">IQueueManager.h</a></div></div>
 <div class="ttc" id="classConsumer_html"><div class="ttname"><a href="classConsumer.html">Consumer</a></div><div class="ttdef"><b>Definition:</b> Consumer.h:7</div></div>
-<div class="ttc" id="classQueue_html"><div class="ttname"><a href="classQueue.html">Queue</a></div><div class="ttdef"><b>Definition:</b> Queue.h:8</div></div>
+<div class="ttc" id="classConsumer_html_ac393e831067a1158525a00f0bbee714d"><div class="ttname"><a href="classConsumer.html#ac393e831067a1158525a00f0bbee714d">Consumer::Consume</a></div><div class="ttdeci">Item Consume(const std::string &amp;aQueueName, std::size_t aOffset) override</div><div class="ttdef"><b>Definition:</b> Consumer.cpp:8</div></div>
 <div class="ttc" id="Defines_8h_html"><div class="ttname"><a href="Defines_8h.html">Defines.h</a></div></div>
-<div class="ttc" id="structItem_html"><div class="ttname"><a href="structItem.html">Item</a></div><div class="ttdef"><b>Definition:</b> Defines.h:13</div></div>
-<div class="ttc" id="Queue_8h_html"><div class="ttname"><a href="Queue_8h.html">Queue.h</a></div></div>
+<div class="ttc" id="structItem_html"><div class="ttname"><a href="structItem.html">Item</a></div><div class="ttdef"><b>Definition:</b> Defines.h:12</div></div>
+<div class="ttc" id="classIQueueManager_html"><div class="ttname"><a href="classIQueueManager.html">IQueueManager</a></div><div class="ttdef"><b>Definition:</b> IQueueManager.h:6</div></div>
 <div class="ttc" id="IConsumer_8h_html"><div class="ttname"><a href="IConsumer_8h.html">IConsumer.h</a></div></div>
 <div class="ttc" id="classIConsumer_html"><div class="ttname"><a href="classIConsumer.html">IConsumer</a></div><div class="ttdef"><b>Definition:</b> IConsumer.h:5</div></div>
-<div class="ttc" id="classConsumer_html_a1d996fbeca19dd538312e86ae3ca8271"><div class="ttname"><a href="classConsumer.html#a1d996fbeca19dd538312e86ae3ca8271">Consumer::Consume</a></div><div class="ttdeci">Item Consume(std::size_t aOffset) override</div><div class="ttdef"><b>Definition:</b> Consumer.cpp:8</div></div>
-<div class="ttc" id="classConsumer_html_a8bc763a9b0201b8b0b48d34fd2327172"><div class="ttname"><a href="classConsumer.html#a8bc763a9b0201b8b0b48d34fd2327172">Consumer::Consumer</a></div><div class="ttdeci">Consumer(Queue &amp;aQueue)</div><div class="ttdef"><b>Definition:</b> Consumer.cpp:3</div></div>
+<div class="ttc" id="classConsumer_html_a34bb4535fdf9d86bcd8022a79bd71ba0"><div class="ttname"><a href="classConsumer.html#a34bb4535fdf9d86bcd8022a79bd71ba0">Consumer::Consumer</a></div><div class="ttdeci">Consumer(IQueueManager *aQueueManager)</div><div class="ttdef"><b>Definition:</b> Consumer.cpp:3</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

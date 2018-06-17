@@ -1,12 +1,10 @@
 <map id="server/QueueStorage.h" name="server/QueueStorage.h">
-<area shape="rect" id="node2" href="$Queue_8h.html" title="server/Queue.h" alt="" coords="177,80,287,107"/>
-<area shape="rect" id="node11" href="$QueueStorage_8cpp.html" title="server/QueueStorage.cpp" alt="" coords="312,80,483,107"/>
-<area shape="rect" id="node3" href="$Consumer_8h.html" title="server/Consumer.h" alt="" coords="12,155,145,181"/>
-<area shape="rect" id="node5" href="$Queue_8cpp.html" title="server/Queue.cpp" alt="" coords="169,155,295,181"/>
-<area shape="rect" id="node6" href="$QueueManager_8h.html" title="server/QueueManager.h" alt="" coords="319,155,480,181"/>
-<area shape="rect" id="node4" href="$Consumer_8cpp.html" title="server/Consumer.cpp" alt="" coords="5,229,152,256"/>
-<area shape="rect" id="node7" href="$QueueManager_8cpp.html" title="server/QueueManager.cpp" alt="" coords="245,229,419,256"/>
-<area shape="rect" id="node8" href="$Server_8h.html" title="server/Server.h" alt="" coords="443,229,553,256"/>
-<area shape="rect" id="node9" href="$Server_8cpp.html" title="server/Server.cpp" alt="" coords="353,304,479,331"/>
-<area shape="rect" id="node10" href="$ServerMain_8cpp.html" title="server/ServerMain.cpp" alt="" coords="503,304,656,331"/>
+<area shape="rect" id="node2" href="$Queue_8h.html" title="server/Queue.h" alt="" coords="97,80,207,107"/>
+<area shape="rect" id="node9" href="$QueueStorage_8cpp.html" title="server/QueueStorage.cpp" alt="" coords="232,80,403,107"/>
+<area shape="rect" id="node3" href="$Queue_8cpp.html" title="server/Queue.cpp" alt="" coords="5,155,131,181"/>
+<area shape="rect" id="node4" href="$QueueManager_8h.html" title="server/QueueManager.h" alt="" coords="155,155,316,181"/>
+<area shape="rect" id="node5" href="$QueueManager_8cpp.html" title="server/QueueManager.cpp" alt="" coords="65,229,239,256"/>
+<area shape="rect" id="node6" href="$Server_8h.html" title="server/Server.h" alt="" coords="263,229,373,256"/>
+<area shape="rect" id="node7" href="$Server_8cpp.html" title="server/Server.cpp" alt="" coords="173,304,299,331"/>
+<area shape="rect" id="node8" href="$ServerMain_8cpp.html" title="server/ServerMain.cpp" alt="" coords="323,304,476,331"/>
 </map>

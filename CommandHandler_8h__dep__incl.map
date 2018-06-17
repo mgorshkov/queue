@@ -3,7 +3,6 @@
 <area shape="rect" id="node11" href="$DequeueCommandHandler_8h.html" title="server/DequeueCommandHandler.h" alt="" coords="235,80,465,107"/>
 <area shape="rect" id="node13" href="$EnqueueCommandHandler_8h.html" title="server/EnqueueCommandHandler.h" alt="" coords="491,80,720,107"/>
 <area shape="rect" id="node15" href="$QueueListCommandHandler_8h.html" title="server/QueueListCommandHandler.h" alt="" coords="744,80,980,107"/>
-<area shape="rect" id="node17" href="$CommandHandler_8cpp.html" title="server/CommandHandler.cpp" alt="" coords="1216,80,1408,107"/>
 <area shape="rect" id="node3" href="$CommandExecutor_8cpp.html" title="server/CommandExecutor.cpp" alt="" coords="541,155,739,181"/>
 <area shape="rect" id="node4" href="$Context_8h.html" title="server/Context.h" alt="" coords="1039,155,1157,181"/>
 <area shape="rect" id="node9" href="$Server_8h.html" title="server/Server.h" alt="" coords="1182,155,1292,181"/>

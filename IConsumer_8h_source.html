@@ -37,6 +37,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
   <div id="navrow1" class="tabs">
     <ul class="tablist">
       <li><a href="index.html"><span>Main&#160;Page</span></a></li>
+      <li><a href="namespaces.html"><span>Namespaces</span></a></li>
       <li><a href="annotated.html"><span>Classes</span></a></li>
       <li class="current"><a href="files.html"><span>Files</span></a></li>
       <li>
@@ -68,7 +69,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Macros</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Classes</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Namespaces</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(5)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(6)"><span class="SelectionMark">&#160;</span>Typedefs</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(7)"><span class="SelectionMark">&#160;</span>Enumerations</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(8)"><span class="SelectionMark">&#160;</span>Enumerator</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(9)"><span class="SelectionMark">&#160;</span>Friends</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(10)"><span class="SelectionMark">&#160;</span>Macros</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -95,12 +96,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00006"></a><span class="lineno">    6</span>&#160;{</div>
 <div class="line"><a name="l00007"></a><span class="lineno">    7</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classIConsumer.html#a6748d658abe80f7ac284c177f74d0412">~IConsumer</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="structItem.html">Item</a> <a class="code" href="classIConsumer.html#a8b9fddbea1d847599597f82a5d3e3c65">Consume</a>(std::size_t aOffset) = 0;</div>
+<div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;    <span class="keyword">virtual</span> <a class="code" href="structItem.html">Item</a> <a class="code" href="classIConsumer.html#a1ff3b1bfeeb435832fb21cb27683b497">Consume</a>(<span class="keyword">const</span> std::string&amp; aQueueName, std::size_t aOffset) = 0;</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;};</div>
 <div class="ttc" id="classIConsumer_html_a6748d658abe80f7ac284c177f74d0412"><div class="ttname"><a href="classIConsumer.html#a6748d658abe80f7ac284c177f74d0412">IConsumer::~IConsumer</a></div><div class="ttdeci">virtual ~IConsumer()=default</div></div>
+<div class="ttc" id="classIConsumer_html_a1ff3b1bfeeb435832fb21cb27683b497"><div class="ttname"><a href="classIConsumer.html#a1ff3b1bfeeb435832fb21cb27683b497">IConsumer::Consume</a></div><div class="ttdeci">virtual Item Consume(const std::string &amp;aQueueName, std::size_t aOffset)=0</div></div>
 <div class="ttc" id="Defines_8h_html"><div class="ttname"><a href="Defines_8h.html">Defines.h</a></div></div>
-<div class="ttc" id="structItem_html"><div class="ttname"><a href="structItem.html">Item</a></div><div class="ttdef"><b>Definition:</b> Defines.h:13</div></div>
-<div class="ttc" id="classIConsumer_html_a8b9fddbea1d847599597f82a5d3e3c65"><div class="ttname"><a href="classIConsumer.html#a8b9fddbea1d847599597f82a5d3e3c65">IConsumer::Consume</a></div><div class="ttdeci">virtual Item Consume(std::size_t aOffset)=0</div></div>
+<div class="ttc" id="structItem_html"><div class="ttname"><a href="structItem.html">Item</a></div><div class="ttdef"><b>Definition:</b> Defines.h:12</div></div>
 <div class="ttc" id="classIConsumer_html"><div class="ttname"><a href="classIConsumer.html">IConsumer</a></div><div class="ttdef"><b>Definition:</b> IConsumer.h:5</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
