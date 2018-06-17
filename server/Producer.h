@@ -6,11 +6,11 @@
 class Producer : public IProducer
 {
 public:
-    explicit Producer(IQueueManager& aQueueManager);
+    explicit Producer(IQueueManager* aQueueManager);
 
     void Produce(const std::string& aQueueName, const DataType& aData) override;
 
 private:
-    IQueueManager& mQueueManager;
+    IQueueManager* mQueueManager;
 };
 

@@ -3,7 +3,7 @@
 #include "QueueListCommandHandler.h"
 
 QueueListCommandHandler::QueueListCommandHandler(IQueueManager* aQueueManager)
-    : CommandHandler(aQueueManager)
+    : mQueueManager(aQueueManager)
 {
 }
 

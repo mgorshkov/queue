@@ -24,21 +24,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     )
 endif()
 
-macro(get_WIN32_WINNT version)
-    if (WIN32 AND CMAKE_SYSTEM_VERSION)
-        set(ver ${CMAKE_SYSTEM_VERSION})
-        string(REPLACE "." "" ver ${ver})
-        string(REGEX REPLACE "([0-9])" "0\\1" ver ${ver})
-
-        set(${version} "0x${ver}")
-    endif()
-endmacro()
-
-get_WIN32_WINNT(ver)
-if (${ver})
-    add_definitions(-D_WIN32_WINNT=${ver})
-endif()
-
 include_directories(${Boost_INCLUDE_DIR} ${CMAKE_SOURCE_DIR}/common ${CMAKE_SOURCE_DIR}/protocol ${CMAKE_SOURCE_DIR}/clientapi)
 
 target_link_libraries(queue_client

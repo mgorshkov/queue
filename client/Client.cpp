@@ -141,7 +141,7 @@ void Client::RunProducerSync()
     std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "..." << std::endl;
                     
     char* errorMessage;
-    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage, false);
+    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage, true);
 
     if (!handle)
     {

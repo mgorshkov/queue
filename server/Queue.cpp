@@ -8,6 +8,9 @@ Queue::Queue()
 
 void Queue::Load(const boost::filesystem::path& aStorageFolderName)
 {
+    if (!boost::filesystem::exists(aStorageFolderName))
+        boost::filesystem::create_directory(aStorageFolderName);
+
     for (boost::filesystem::directory_iterator it(aStorageFolderName); it != boost::filesystem::directory_iterator(); ++it)
     {
         if (!boost::filesystem::is_regular_file(it->status()))
@@ -22,7 +25,7 @@ void Queue::Load(const boost::filesystem::path& aStorageFolderName)
         uintmax_t offset;
         offsetStr >> offset;
 
-        mQueueStorage[offset] = std::make_unique<QueueStorage>(fileName);
+        mQueueStorage[offset] = std::make_unique<QueueStorage>(aStorageFolderName / fileName);
     }
 }
 

@@ -1,23 +1,31 @@
 #include <sstream>
-#include <boost/filesystem.hpp>
 
 #include "QueueStorage.h"
 
-QueueStorage::QueueStorage(const std::string& aStorageFileName)
+QueueStorage::QueueStorage(const boost::filesystem::path& aStorageFileName)
     : mStorageOffset(0)
     , mStorageFileName(aStorageFileName)
 {
-    std::stringstream offsetStr(aStorageFileName);
+//#ifdef DEBUG_PRINT
+    std::cout << "QueueStorage::QueueStorage aStorageFileName=" << aStorageFileName.string();
+//#endif
+    std::stringstream offsetStr(aStorageFileName.filename().string());
     offsetStr >> mStorageOffset;
 
+    boost::filesystem::path storageFileNameData(aStorageFileName);
+    boost::filesystem::path storageFileNameIndex(aStorageFileName);
+
+    storageFileNameData.replace_extension("data");
+    storageFileNameIndex.replace_extension("index");
+
     boost::iostreams::mapped_file_params mappedFileParamsData;
-    mappedFileParamsData.path          = aStorageFileName + ".data";
-    mappedFileParamsData.new_file_size = 0;
+    mappedFileParamsData.path          = storageFileNameData.string();
+    mappedFileParamsData.new_file_size = MaxFileSize;
     mappedFileParamsData.flags         = boost::iostreams::mapped_file::mapmode::readwrite;
 
     boost::iostreams::mapped_file_params mappedFileParamsIndex;
-    mappedFileParamsIndex.path          = aStorageFileName + ".index";
-    mappedFileParamsIndex.new_file_size = 0;
+    mappedFileParamsIndex.path          = storageFileNameIndex.string();
+    mappedFileParamsIndex.new_file_size = MaxFileSize;
     mappedFileParamsIndex.flags         = boost::iostreams::mapped_file::mapmode::readwrite;
 
     mMappedFileDescriptor =

@@ -25,19 +25,29 @@ namespace QueueApiSync
     {
         auto apiClient = CreateApiClient(producer, true);
 
-        auto client = dynamic_cast<ConsumerApiClientSync*>(apiClient);
-        assert(client);
-        
         ServerData serverData{host, port};
-        auto error = client->Connect(serverData);
+        auto consumerClient = dynamic_cast<ConsumerApiClientSync*>(apiClient);
+        if (consumerClient)
+        {
+            boost::system::error_code error = consumerClient->Connect(serverData);
+            if (error)
+            {
+                *errorMessage = new char[error.message().length()];
+                strcpy(*errorMessage, error.message().c_str());
+            }
 
+            return consumerClient;
+        }
+        auto producerClient = dynamic_cast<ProducerApiClient*>(apiClient);
+        assert (producerClient);
+        boost::system::error_code error = producerClient->Connect(serverData);
         if (error)
         {
             *errorMessage = new char[error.message().length()];
             strcpy(*errorMessage, error.message().c_str());
         }
 
-        return apiClient;
+        return producerClient;
     }
 
     /// consumer only, list is separated by \0
@@ -66,10 +76,18 @@ namespace QueueApiSync
     /// consumer/producer, offset ignored for producer
     void StartQueueSession(Handle handle, const char* queueName, std::size_t offset)
     {
-        auto client = dynamic_cast<ConsumerApiClientSync*>(handle);
-        assert(client);
-
-        client->StartQueueSession(queueName, offset);
+        auto clientConsumer = dynamic_cast<ConsumerApiClientSync*>(handle);
+        if (clientConsumer)
+        {
+            clientConsumer->StartQueueSession(queueName, offset);
+            return;
+        }
+        auto clientProducer = dynamic_cast<ProducerApiClient*>(handle);
+        if (clientProducer)
+        {
+            clientProducer->StartQueueSession(queueName);
+            return;
+        }
     }
 
     /// for producer
@@ -96,10 +114,18 @@ namespace QueueApiSync
 
     void Disconnect(Handle handle)
     {
-        auto client = dynamic_cast<ConsumerApiClientSync*>(handle);
-        assert(client);
-
-        client->Disconnect();
+        auto clientConsumer = dynamic_cast<ConsumerApiClientSync*>(handle);
+        if (clientConsumer)
+        {
+            clientConsumer->Disconnect();
+            return;
+        }
+        auto clientProducer = dynamic_cast<ProducerApiClient*>(handle);
+        if (clientProducer)
+        {
+            clientProducer->Disconnect();
+            return;
+        }
     }
 }
        

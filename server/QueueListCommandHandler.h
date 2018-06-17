@@ -9,4 +9,7 @@ public:
     QueueListCommandHandler(IQueueManager* aQueueManager);
 
     virtual MessagePtr Handle(const CompleteCommand& aCommand) override;
+
+private:
+    IQueueManager* mQueueManager;
 };

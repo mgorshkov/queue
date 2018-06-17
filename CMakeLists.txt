@@ -10,6 +10,21 @@ if (DEBUG_PRINT)
     add_definitions(-DDEBUG_PRINT)
 endif()
 
+macro(get_WIN32_WINNT version)
+    if (WIN32 AND CMAKE_SYSTEM_VERSION)
+        set(ver ${CMAKE_SYSTEM_VERSION})
+        string(REPLACE "." "" ver ${ver})
+        string(REGEX REPLACE "([0-9])" "0\\1" ver ${ver})
+
+        set(${version} "0x${ver}")
+    endif()
+endmacro()
+
+get_WIN32_WINNT(ver)
+if (${ver})
+    add_definitions(-D_WIN32_WINNT=${ver})
+endif()
+
 add_subdirectory(client)
 
 add_subdirectory(clientapi)

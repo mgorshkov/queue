@@ -27,7 +27,7 @@ before_install:
 install:
   - sudo apt-get install -qq doxygen graphviz
   - wget http://posyo.ru/install_boost.py  
-  - python install_boost.py --directory ~ --boost-version 1.58.0 filesystem system test
+  - python install_boost.py --directory ~ --boost-version 1.58.0 filesystem system test iostreams
 before_script:
   - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq

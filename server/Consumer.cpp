@@ -1,12 +1,12 @@
 #include "Consumer.h"
 
-Consumer::Consumer(Queue& aQueue)
-    : mQueue(aQueue)
+Consumer::Consumer(IQueueManager* aQueueManager)
+    : mQueueManager(aQueueManager)
 {
 }
 
-Item Consumer::Consume(std::size_t aOffset)
+Item Consumer::Consume(const std::string& aQueueName, std::size_t aOffset)
 {
-    return mQueue.Dequeue(aOffset);
+    return mQueueManager->Dequeue(aQueueName, aOffset);
 }
 

@@ -8,7 +8,7 @@ ProducerApiClient::ProducerApiClient()
 {
 }
 
-void ProducerApiClient::Connect(const ServerData& aServerData)
+boost::system::error_code ProducerApiClient::Connect(const ServerData& aServerData)
 {
     ba::ip::tcp::resolver resolver(mIoService);
     ba::ip::tcp::resolver::query query(aServerData.mHost, std::to_string(aServerData.mPort));
@@ -23,6 +23,7 @@ void ProducerApiClient::Connect(const ServerData& aServerData)
         ba::ip::tcp::endpoint endPoint(*it++);
         mSocket.connect(endPoint, error);
     }
+    return error;
 }
 
 void ProducerApiClient::StartQueueSession(const std::string& aQueueName)
