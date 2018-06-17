@@ -5,8 +5,8 @@ Producer::Producer(IQueueManager* aQueueManager)
 {
 }
 
-void Producer::Produce(const std::string& aQueueName, const DataType& aData)
+bool Producer::Produce(const std::string& aQueueName, const DataType& aData)
 {
-    mQueueManager->Enqueue(aQueueName, aData);
+    return mQueueManager->Enqueue(aQueueName, aData);
 }
 

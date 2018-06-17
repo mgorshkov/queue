@@ -1,17 +1,23 @@
 #include <sstream>
+#include <iomanip>
 
 #include "Queue.h"
 
-Queue::Queue()
+Queue::Queue(const boost::filesystem::path& aStorageFolderName)
+    : mStorageFolderName(aStorageFolderName)
 {
+    Load();
 }
 
-void Queue::Load(const boost::filesystem::path& aStorageFolderName)
+void Queue::Load()
 {
-    if (!boost::filesystem::exists(aStorageFolderName))
-        boost::filesystem::create_directory(aStorageFolderName);
+#ifdef DEBUG_PRINT
+    std::cout << "Queue::Load aStorageFolderName=" << mStorageFolderName << std::endl;
+#endif
+    if (!boost::filesystem::exists(mStorageFolderName))
+        boost::filesystem::create_directory(mStorageFolderName);
 
-    for (boost::filesystem::directory_iterator it(aStorageFolderName); it != boost::filesystem::directory_iterator(); ++it)
+    for (boost::filesystem::directory_iterator it(mStorageFolderName); it != boost::filesystem::directory_iterator(); ++it)
     {
         if (!boost::filesystem::is_regular_file(it->status()))
             continue;
@@ -25,7 +31,7 @@ void Queue::Load(const boost::filesystem::path& aStorageFolderName)
         uintmax_t offset;
         offsetStr >> offset;
 
-        mQueueStorage[offset] = std::make_unique<QueueStorage>(aStorageFolderName / fileName);
+        mQueueStorage[offset] = std::make_unique<QueueStorage>(it->path());
     }
 }
 
@@ -37,11 +43,13 @@ void Queue::CreateStorageIfEmpty()
 
 void Queue::CreateStorageByOffset(std::size_t aOffset)
 {
+#ifdef DEBUG_PRINT
+    std::cout << "Queue::CreateStorageByOffset, aOffset=" << aOffset << std::endl;
+#endif
     std::stringstream offsetStr;
-    uintmax_t offset = aOffset;
-    offsetStr << offset;
+    offsetStr << std::setfill('0') << std::setw(2 * sizeof(aOffset)) << std::uppercase << std::hex << aOffset;
 
-    mQueueStorage[offset] = std::make_unique<QueueStorage>(offsetStr.str());
+    mQueueStorage[aOffset] = std::make_unique<QueueStorage>(mStorageFolderName / offsetStr.str());
 }
 
 void Queue::Enqueue(const DataType& aData)

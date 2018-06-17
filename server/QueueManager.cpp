@@ -20,9 +20,9 @@ void QueueManager::LoadQueues()
     }
 }
 
-void QueueManager::LoadQueue(const std::string& aQueueName)
+std::pair<QueueManager::Queues::iterator, bool> QueueManager::LoadQueue(const std::string& aQueueName)
 {
-    mQueues[aQueueName].Load(boost::filesystem::path(QueueStorageFolder) / aQueueName);
+    return mQueues.insert(std::make_pair(aQueueName, boost::filesystem::path(QueueStorageFolder) / aQueueName));
 }
 
 QueueList QueueManager::GetQueueList()
@@ -35,14 +35,19 @@ QueueList QueueManager::GetQueueList()
     return queueList;
 }
 
-void QueueManager::Enqueue(const std::string& aQueueName, const DataType& aData)
+bool QueueManager::Enqueue(const std::string& aQueueName, const DataType& aData)
 {
     std::lock_guard<std::mutex> lock(mQueueMutex);
 
     auto it = mQueues.find(aQueueName);
     if (it == mQueues.end())
-        LoadQueue(aQueueName);
-    mQueues[aQueueName].Enqueue(aData);
+    {
+        auto insertResult = LoadQueue(aQueueName);
+        if (!insertResult.second)
+            return false;
+        it = insertResult.first;
+    }
+    it->second.Enqueue(aData);
 }
 
 Item QueueManager::Dequeue(const std::string& aQueueName, std::size_t aOffset)
@@ -52,5 +57,5 @@ Item QueueManager::Dequeue(const std::string& aQueueName, std::size_t aOffset)
     auto it = mQueues.find(aQueueName);
     assert (it != mQueues.end());
 
-    return mQueues[aQueueName].Dequeue(aOffset);
+    return it->second.Dequeue(aOffset);
 }

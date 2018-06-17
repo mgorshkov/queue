@@ -8,9 +8,9 @@
 class Queue
 {
 public:
-    Queue();
+    Queue(const boost::filesystem::path& aStorageFolderName);
 
-    void Load(const boost::filesystem::path& aStorageFolderName);
+    void Load();
 
     void Enqueue(const DataType& aData);
     Item Dequeue(std::size_t aOffset);
@@ -19,6 +19,7 @@ private:
     void CreateStorageIfEmpty();
     void CreateStorageByOffset(std::size_t aOffset);
 
+    boost::filesystem::path mStorageFolderName;
     std::map<uintmax_t, std::unique_ptr<QueueStorage>> mQueueStorage; // minOffset->storage
 };
 

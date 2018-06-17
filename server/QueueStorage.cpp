@@ -6,9 +6,9 @@ QueueStorage::QueueStorage(const boost::filesystem::path& aStorageFileName)
     : mStorageOffset(0)
     , mStorageFileName(aStorageFileName)
 {
-//#ifdef DEBUG_PRINT
-    std::cout << "QueueStorage::QueueStorage aStorageFileName=" << aStorageFileName.string();
-//#endif
+#ifdef DEBUG_PRINT
+    std::cout << "QueueStorage::QueueStorage aStorageFileName=" << aStorageFileName << std::endl;
+#endif
     std::stringstream offsetStr(aStorageFileName.filename().string());
     offsetStr >> mStorageOffset;
 

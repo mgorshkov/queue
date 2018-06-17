@@ -14,16 +14,18 @@ public:
 
     QueueList GetQueueList();
 
-    void Enqueue(const std::string& aQueueName, const DataType& aData);
+    bool Enqueue(const std::string& aQueueName, const DataType& aData);
     Item Dequeue(const std::string& aQueueName, std::size_t aOffset = 0);
 
 private:
     void LoadQueues();
-    void LoadQueue(const std::string& aQueueName);
+
+    using Queues = std::unordered_map<std::string, Queue>;
+    std::pair<Queues::iterator, bool> LoadQueue(const std::string& aQueueName);
 
     std::mutex mQueueMutex;
 
-    std::unordered_map<std::string, Queue> mQueues;
+    Queues mQueues;
 
     constexpr static const char* QueueStorageFolder = "storage";
 };
