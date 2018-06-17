@@ -10,6 +10,14 @@ if (DEBUG_PRINT)
     add_definitions(-DDEBUG_PRINT)
 endif()
 
+set(THREADS_PREFER_PTHREAD_FLAG ON)
+set(Boost_USE_STATIC_LIBS ON)
+set(Boost_USE_MULTITHREADED ON)
+set(Boost_USE_STATIC_RUNTIME ON)
+
+find_package(Threads REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system filesystem iostreams unit_test_framework)
+
 macro(get_WIN32_WINNT version)
     if (WIN32 AND CMAKE_SYSTEM_VERSION)
         set(ver ${CMAKE_SYSTEM_VERSION})
@@ -25,11 +33,21 @@ if (${ver})
     add_definitions(-D_WIN32_WINNT=${ver})
 endif()
 
+include_directories(
+    ${Boost_INCLUDE_DIR}
+    ${CMAKE_SOURCE_DIR}/common
+    ${CMAKE_SOURCE_DIR}/protocol
+    ${CMAKE_SOURCE_DIR}/clientapi
+    ${CMAKE_SOURCE_DIR}/serverlib
+)
+
 add_subdirectory(client)
 
 add_subdirectory(clientapi)
 
 add_subdirectory(protocol)
+
+add_subdirectory(serverlib)
 
 add_subdirectory(server)
 

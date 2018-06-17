@@ -18,6 +18,11 @@ void Server::Run()
     mIoService.run();
 }
 
+void Server::Stop()
+{
+    mIoService.stop();
+}
+
 void Server::DoAccept()
 {
     mAcceptor.async_accept(mSocket,

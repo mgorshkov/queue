@@ -1,7 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
-
 add_library(protocol
-    ../common/Defines.h
     Message.h
     ProtocolSerializer.cpp
     ProtocolSerializer.h)
@@ -17,5 +14,3 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
     )
     add_definitions(-fPIC)
 endif()
-
-include_directories(${CMAKE_SOURCE_DIR}/common)

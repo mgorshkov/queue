@@ -13,6 +13,7 @@ class Server
 public:
     Server(ba::io_service& aIoService, const boost::asio::ip::tcp::endpoint& aEndpoint);
     void Run();
+    void Stop();
 
 private:
     void DoAccept();

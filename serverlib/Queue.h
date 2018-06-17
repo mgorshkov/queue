@@ -17,6 +17,7 @@ public:
 
 private:
     void CreateStorageIfEmpty();
+    boost::filesystem::path GetStorageFileNameByOffset(std::size_t aOffset);
     void CreateStorageByOffset(std::size_t aOffset);
 
     boost::filesystem::path mStorageFolderName;

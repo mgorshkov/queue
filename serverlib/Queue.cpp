@@ -41,15 +41,21 @@ void Queue::CreateStorageIfEmpty()
         CreateStorageByOffset(0);
 }
 
+boost::filesystem::path Queue::GetStorageFileNameByOffset(std::size_t aOffset)
+{
+    std::stringstream offsetStr;
+    offsetStr << std::setfill('0') << std::setw(2 * sizeof(aOffset)) << std::uppercase << std::hex << aOffset;
+    return mStorageFolderName / offsetStr.str();
+}
+
 void Queue::CreateStorageByOffset(std::size_t aOffset)
 {
 #ifdef DEBUG_PRINT
     std::cout << "Queue::CreateStorageByOffset, aOffset=" << aOffset << std::endl;
 #endif
-    std::stringstream offsetStr;
-    offsetStr << std::setfill('0') << std::setw(2 * sizeof(aOffset)) << std::uppercase << std::hex << aOffset;
+    auto fileName = GetStorageFileNameByOffset(aOffset);
 
-    mQueueStorage[aOffset] = std::make_unique<QueueStorage>(mStorageFolderName / offsetStr.str());
+    mQueueStorage[aOffset] = std::make_unique<QueueStorage>(fileName);
 }
 
 void Queue::Enqueue(const DataType& aData)
@@ -57,7 +63,7 @@ void Queue::Enqueue(const DataType& aData)
     CreateStorageIfEmpty();
 
     auto it = std::end(mQueueStorage);
-    std::advance(it, - 1);
+    std::advance(it, -1);
     it->second->AddItem(aData);
 }
 
@@ -67,4 +73,6 @@ Item Queue::Dequeue(std::size_t aOffset)
 
     if (it != mQueueStorage.end())
         return it->second->GetItem(aOffset);
+
+    return Item(DataType(), static_cast<std::size_t>(-1));
 }
