@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['load',['Load',['../classQueue.html#a3464129a125d9c911abcdebd21c33f87',1,'Queue']]]
+  ['load',['Load',['../classQueue.html#a42e412d6d3fabcfafefa643c6ce7f285',1,'Queue']]]
 ];

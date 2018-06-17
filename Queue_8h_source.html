@@ -98,9 +98,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00008"></a><span class="lineno"><a class="line" href="classQueue.html">    8</a></span>&#160;<span class="keyword">class </span><a class="code" href="classQueue.html">Queue</a></div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;{</div>
 <div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classQueue.html#a7cfca3637d57c4a9e37351b3426ffd40">Queue</a>();</div>
+<div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;    <a class="code" href="classQueue.html#a7d6f6eedca5c24dd168e3e616c0c4cc7">Queue</a>(<span class="keyword">const</span> boost::filesystem::path&amp; aStorageFolderName);</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classQueue.html#a3464129a125d9c911abcdebd21c33f87">Load</a>(<span class="keyword">const</span> boost::filesystem::path&amp; aStorageFolderName);</div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classQueue.html#a42e412d6d3fabcfafefa643c6ce7f285">Load</a>();</div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classQueue.html#aab0223b5cdb076b8f0f158fc7ee240be">Enqueue</a>(<span class="keyword">const</span> <a class="code" href="Defines_8h.html#ae2ffa024b2986775ee8168fae1a9f0af">DataType</a>&amp; aData);</div>
 <div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <a class="code" href="structItem.html">Item</a> <a class="code" href="classQueue.html#a9236ab9073c3a9233916e8597c98320d">Dequeue</a>(std::size_t aOffset);</div>
@@ -109,17 +109,18 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> CreateStorageIfEmpty();</div>
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> CreateStorageByOffset(std::size_t aOffset);</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    std::map&lt;uintmax_t, std::unique_ptr&lt;QueueStorage&gt;&gt; mQueueStorage; <span class="comment">// minOffset-&gt;storage</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;};</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="ttc" id="classQueue_html_a7cfca3637d57c4a9e37351b3426ffd40"><div class="ttname"><a href="classQueue.html#a7cfca3637d57c4a9e37351b3426ffd40">Queue::Queue</a></div><div class="ttdeci">Queue()</div><div class="ttdef"><b>Definition:</b> Queue.cpp:5</div></div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    boost::filesystem::path mStorageFolderName;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    std::map&lt;uintmax_t, std::unique_ptr&lt;QueueStorage&gt;&gt; mQueueStorage; <span class="comment">// minOffset-&gt;storage</span></div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;};</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
 <div class="ttc" id="QueueStorage_8h_html"><div class="ttname"><a href="QueueStorage_8h.html">QueueStorage.h</a></div></div>
-<div class="ttc" id="classQueue_html_a9236ab9073c3a9233916e8597c98320d"><div class="ttname"><a href="classQueue.html#a9236ab9073c3a9233916e8597c98320d">Queue::Dequeue</a></div><div class="ttdeci">Item Dequeue(std::size_t aOffset)</div><div class="ttdef"><b>Definition:</b> Queue.cpp:56</div></div>
+<div class="ttc" id="classQueue_html_a7d6f6eedca5c24dd168e3e616c0c4cc7"><div class="ttname"><a href="classQueue.html#a7d6f6eedca5c24dd168e3e616c0c4cc7">Queue::Queue</a></div><div class="ttdeci">Queue(const boost::filesystem::path &amp;aStorageFolderName)</div><div class="ttdef"><b>Definition:</b> Queue.cpp:6</div></div>
+<div class="ttc" id="classQueue_html_a9236ab9073c3a9233916e8597c98320d"><div class="ttname"><a href="classQueue.html#a9236ab9073c3a9233916e8597c98320d">Queue::Dequeue</a></div><div class="ttdeci">Item Dequeue(std::size_t aOffset)</div><div class="ttdef"><b>Definition:</b> Queue.cpp:64</div></div>
 <div class="ttc" id="classQueue_html"><div class="ttname"><a href="classQueue.html">Queue</a></div><div class="ttdef"><b>Definition:</b> Queue.h:8</div></div>
 <div class="ttc" id="Defines_8h_html"><div class="ttname"><a href="Defines_8h.html">Defines.h</a></div></div>
 <div class="ttc" id="structItem_html"><div class="ttname"><a href="structItem.html">Item</a></div><div class="ttdef"><b>Definition:</b> Defines.h:12</div></div>
-<div class="ttc" id="classQueue_html_aab0223b5cdb076b8f0f158fc7ee240be"><div class="ttname"><a href="classQueue.html#aab0223b5cdb076b8f0f158fc7ee240be">Queue::Enqueue</a></div><div class="ttdeci">void Enqueue(const DataType &amp;aData)</div><div class="ttdef"><b>Definition:</b> Queue.cpp:47</div></div>
-<div class="ttc" id="classQueue_html_a3464129a125d9c911abcdebd21c33f87"><div class="ttname"><a href="classQueue.html#a3464129a125d9c911abcdebd21c33f87">Queue::Load</a></div><div class="ttdeci">void Load(const boost::filesystem::path &amp;aStorageFolderName)</div><div class="ttdef"><b>Definition:</b> Queue.cpp:9</div></div>
+<div class="ttc" id="classQueue_html_a42e412d6d3fabcfafefa643c6ce7f285"><div class="ttname"><a href="classQueue.html#a42e412d6d3fabcfafefa643c6ce7f285">Queue::Load</a></div><div class="ttdeci">void Load()</div><div class="ttdef"><b>Definition:</b> Queue.cpp:12</div></div>
+<div class="ttc" id="classQueue_html_aab0223b5cdb076b8f0f158fc7ee240be"><div class="ttname"><a href="classQueue.html#aab0223b5cdb076b8f0f158fc7ee240be">Queue::Enqueue</a></div><div class="ttdeci">void Enqueue(const DataType &amp;aData)</div><div class="ttdef"><b>Definition:</b> Queue.cpp:55</div></div>
 <div class="ttc" id="Defines_8h_html_ae2ffa024b2986775ee8168fae1a9f0af"><div class="ttname"><a href="Defines_8h.html#ae2ffa024b2986775ee8168fae1a9f0af">DataType</a></div><div class="ttdeci">std::string DataType</div><div class="ttdef"><b>Definition:</b> Defines.h:10</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
