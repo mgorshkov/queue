@@ -53,11 +53,14 @@ namespace QueueApiSync
     /// consumer only, list is separated by \0
     std::size_t GetQueueList(Handle handle, char** list)
     {
+std::cout << "GetQueueList" << std::endl;
         auto client = dynamic_cast<ConsumerApiClientSync*>(handle);
         assert(client);
 
         QueueList queueList = client->GetQueueList();
-
+for (auto q : queueList)
+    std::cout << q << std::endl;
+    
         std::size_t size = 0;
         for (auto queueName : queueList)
             size += queueName.length() + 1;

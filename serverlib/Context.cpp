@@ -146,9 +146,10 @@ MessagePtrs Context::ProcessMessages(const std::list<MessagePtr> aMessages)
     for (const auto& message: aMessages)
     {
         auto startSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(message);
+        auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(message);
         if (startSessionMessage)
             mCommandContext = std::make_unique<CommandContext>(startSessionMessage);
-        else if (mCommandContext)
+        else if (mCommandContext || queueListMessage)
         {
             CompleteCommand command{message, *mCommandContext};
             auto result = mCommandExecutor->RunCommand(command);

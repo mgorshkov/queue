@@ -61,7 +61,7 @@ void Client::RunConsumerSync()
 
     char* queueList;
     std::size_t queueListLength = GetQueueList(handle, &queueList);
-
+std::cout << queueListLength << std::endl;
     std::cout << "Queues:" << std::endl;
     for (char* ptr = queueList; queueList + queueListLength <= ptr; ptr += strlen(ptr) + 1)
     {
@@ -73,7 +73,7 @@ void Client::RunConsumerSync()
         char* str;
         std::size_t* offset;
         Dequeue(handle, &str, &offset);
-        
+
         std::cout << "Item:" << str << ", offset:" << *offset << std::endl;
     }
 }
@@ -111,7 +111,7 @@ void Client::RunConsumerAsync()
                     {
                         std::cout << "Item:" << str << ", offset: " << offset << std::endl;
                     };
-                    
+
                     Dequeue(handle, dequeueCallback);
                 };
 
@@ -122,7 +122,7 @@ void Client::RunConsumerAsync()
                     std::cout << "Item:" << str << ", offset:" << offset << std::endl;
                 };
 
-                Dequeue(handle, dequeueCallback);        
+                Dequeue(handle, dequeueCallback);
             }
         };
 
@@ -139,7 +139,7 @@ void Client::RunProducerSync()
     std::cout << "Sync producer client started." << std::endl;
 
     std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "..." << std::endl;
-                    
+
     char* errorMessage;
     auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage, true);
 
@@ -151,7 +151,7 @@ void Client::RunProducerSync()
     }
 
     std::cout << "Success." << std::endl;
-    
+
     StartQueueSession(handle, "TestQueue");
 
     Enqueue(handle, "str1");

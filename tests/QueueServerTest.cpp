@@ -45,7 +45,7 @@ BOOST_AUTO_TEST_CASE(test_mmap_write_read)
 
     {
         mappedFileParams.new_file_size = 0x1000;
-    
+
         MappedFile mappedFile(mappedFileParams);
         char* ptr = mappedFile.data();
         strcpy(ptr, "123123123123123123");
@@ -53,7 +53,7 @@ BOOST_AUTO_TEST_CASE(test_mmap_write_read)
 
     {
         mappedFileParams.new_file_size = 0;
-        
+
         MappedFile mappedFile(mappedFileParams);
         const char* constPtr = mappedFile.const_data();
         BOOST_CHECK(std::string(constPtr) == "123123123123123123");
@@ -80,7 +80,7 @@ BOOST_AUTO_TEST_CASE(test_producer_consumer)
             auto handle = Connect(serverData.mHost.c_str(), serverData.mPort, &errorMessage, true);
 
             BOOST_CHECK(handle);
-            
+
             StartQueueSession(handle, "TestQueue");
 
             Enqueue(handle, "str1");
