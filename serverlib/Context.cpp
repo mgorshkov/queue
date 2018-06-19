@@ -94,30 +94,30 @@ MessagePtrs Context::GetOutboundQueue()
 {
     if (!mQueueNotified.load())
     {
-#ifdef DEBUG_PRINT
+//#ifdef DEBUG_PRINT
         std::cout << "Context::GetOutboundQueue 1" << std::endl;
-#endif
+//#endif
         return MessagePtrs{};
     }
-#ifdef DEBUG_PRINT
+//#ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 2" << std::endl;
-#endif
+//#endif
     mQueueNotified = false;
-#ifdef DEBUG_PRINT
+//#ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 3" << std::endl;
-#endif
+//#endif
     if (mOutboundMessages.empty())
         return MessagePtrs{};
-#ifdef DEBUG_PRINT
+//#ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 4" << std::endl;
-#endif
+//#endif
     auto statuses = mOutboundMessages.front();
     mOutboundMessages.pop();
-#ifdef DEBUG_PRINT
+//#ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 5" << std::endl;
     for (auto status : statuses)
         std::cout << status << std::endl;
-#endif
+//#endif
 
     return statuses;
 }
@@ -146,10 +146,9 @@ MessagePtrs Context::ProcessMessages(const std::list<MessagePtr> aMessages)
     for (const auto& message: aMessages)
     {
         auto startSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(message);
-        auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(message);
         if (startSessionMessage)
             mCommandContext = std::make_unique<CommandContext>(startSessionMessage);
-        else if (mCommandContext || queueListMessage)
+        else if (mCommandContext || std::dynamic_pointer_cast<QueueListMessage>(message))
         {
             CompleteCommand command{message, *mCommandContext};
             auto result = mCommandExecutor->RunCommand(command);

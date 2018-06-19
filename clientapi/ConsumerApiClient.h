@@ -21,8 +21,6 @@ public:
 private:
     ba::io_service mIoService;
     ba::ip::tcp::socket mSocket;
-    std::string mQueueName;
-    std::size_t mOffset;
 };
 
 class ConsumerApiClientAsync : public IConsumerApiClientAsync
@@ -37,13 +35,7 @@ public:
     void Disconnect();
 
 private:
-    void DoWrite();
-    void DoRead();
-
     ba::io_service mIoService;
     ba::ip::tcp::socket mSocket;
-
-    std::string mQueueName;
-    std::size_t mOffset;
 };
 

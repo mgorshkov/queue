@@ -88,6 +88,40 @@ BOOST_AUTO_TEST_CASE(test_producer_consumer)
             Enqueue(handle, "str3");
 
             Disconnect(handle);
+       });
+
+    std::async(std::launch::async, [port, &server]()
+        {
+            using namespace QueueApiSync;
+
+            ServerData serverData{"127.0.0.1", port};
+            char* errorMessage;
+            auto handle = Connect(serverData.mHost.c_str(), serverData.mPort, &errorMessage, true);
+
+            BOOST_CHECK(handle);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+            char* queueList;
+            std::size_t queueListLength = GetQueueList(handle, &queueList);
+            std::cout << queueListLength << std::endl;
+            std::cout << "Queues:" << std::endl;
+            for (char* ptr = queueList; queueList + queueListLength <= ptr; ptr += strlen(ptr) + 1)
+            {
+                std::string queueName(ptr);
+                std::cout << queueName << std::endl;
+
+                StartQueueSession(handle, ptr);
+
+                char* str;
+                std::size_t* offset;
+                Dequeue(handle, &str, &offset);
+
+                std::cout << "Item:" << str << ", offset:" << *offset << std::endl;
+            }
+
+            Disconnect(handle);
+
             server.Stop();
        });
 

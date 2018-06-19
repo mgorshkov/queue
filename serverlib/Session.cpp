@@ -103,9 +103,9 @@ bool Session::GetWriteQueue()
     std::stringstream str;
     for (const auto& status : statuses)
         ProtocolSerializer::Serialize(status, str);
-#ifdef DEBUG_PRINT
+//#ifdef DEBUG_PRINT
     std::cout << "Session::GetWriteQueue 4, this==" << this << ", str=" << str.str() << std::endl;
-#endif
+//#endif
     mWriteMsgs.push_back(str.str());
     return true;
 }
