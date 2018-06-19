@@ -83,11 +83,14 @@ BOOST_AUTO_TEST_CASE(test_producer_consumer)
 
             StartQueueSession(handle, "TestQueue");
 
-            Enqueue(handle, "str1");
-            Enqueue(handle, "str2");
-            Enqueue(handle, "str3");
+            for (int i = 0; i < 100; ++i)
+                Enqueue(handle, (std::string("string") + std::to_string(i)).c_str());
 
             Disconnect(handle);
+
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
+            server.Stop();
        });
 
     std::async(std::launch::async, [port, &server]()
@@ -121,8 +124,45 @@ BOOST_AUTO_TEST_CASE(test_producer_consumer)
             }
 
             Disconnect(handle);
+       });
 
-            server.Stop();
+    std::async(std::launch::async, [port, &server]()
+        {
+            using namespace QueueApiAsync;
+
+            ServerData serverData{"127.0.0.1", port};
+
+            Connect(serverData.mHost.c_str(), serverData.mPort,
+                [](Handle handle, char* errorMessage)
+                {
+                    BOOST_CHECK(handle);
+
+                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+                    GetQueueList(handle,
+                        [handle](const char* queueList, std::size_t queueListLength)
+                        {
+                            std::cout << queueListLength << std::endl;
+                            std::cout << "Queues:" << std::endl;
+                            for (const char* ptr = queueList; queueList + queueListLength <= ptr; ptr += strlen(ptr) + 1)
+                            {
+                                std::string queueName(ptr);
+                                std::cout << queueName << std::endl;
+
+                                StartQueueSession(handle,
+                                    [handle, ptr]
+                                    {
+                                        Dequeue(handle, 
+                                            [handle](const char* str, std::size_t offset)
+                                            {
+                                                std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+
+                                                Disconnect(handle);
+                                            });
+                                    }, ptr, -1);
+                            }
+                        });
+                });
        });
 
     server.Run();
