@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.5)
+
 add_executable(queue_client
     Client.cpp
     Client.h

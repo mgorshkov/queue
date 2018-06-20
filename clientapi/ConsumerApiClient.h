@@ -29,9 +29,9 @@ public:
     ConsumerApiClientAsync();
 
     void Connect(const ServerData& aServerData, std::function<void(const boost::system::error_code& error)> aCallback);
-    void GetQueueList(std::function<void(QueueList)> aCallback);
-    void StartQueueSession(const std::string& aQueueName, std::size_t aOffset);
-    void Dequeue(std::function<void(Item)> aCallback);
+    void GetQueueList(std::function<void(const QueueList&)> aCallback);
+    void StartQueueSession(std::function<void()> aCallback, const std::string& aQueueName, std::size_t aOffset);
+    void Dequeue(std::function<void(const Item&)> aCallback);
     void Disconnect();
 
 private:

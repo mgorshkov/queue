@@ -159,16 +159,55 @@ namespace QueueApiAsync
         client->Connect(serverData, callbackLocal);
     }
 
+    /// list is separated by \0
     void GetQueueList(Handle handle, std::function<void(const char* list, std::size_t size)> callback)
     {
+        auto client = dynamic_cast<ConsumerApiClientAsync*>(handle);
+        assert(client);
+
+        auto callbackLocal = [callback](const QueueList& queueList)
+        {
+#ifdef DEBUG_PRINT
+            for (auto q : queueList)
+                std::cout << q << std::endl;
+#endif    
+            std::size_t size = 0;
+            for (auto queueName : queueList)
+                size += queueName.length() + 1;
+
+            char* list = new char[size];
+            char* ptr = list;
+            for (auto queueName : queueList)
+            {
+                strcpy(ptr, queueName.c_str());
+                ptr += queueName.size() + 1;
+            }
+
+            callback(list, size);
+        };
+
+        client->GetQueueList(callbackLocal);
     }
 
     void StartQueueSession(Handle handle, std::function<void()> callback, const char* queueName, std::size_t offset)
     {
+        auto client = dynamic_cast<ConsumerApiClientAsync*>(handle);
+        assert(client);
+        client->StartQueueSession(callback, queueName, offset);
     }
 
     void Dequeue(Handle handle, std::function<void(const char* str, std::size_t offset)> callback)
     {
+        auto client = dynamic_cast<ConsumerApiClientAsync*>(handle);
+        assert(client);
+        auto callbackLocal = [callback](const Item& item)
+        {
+            char *str = new char[item.mData.size()];
+            strcpy(str, item.mData.c_str());
+            std::size_t offset = item.mOffset;
+            return callback(str, offset);
+        };
+        client->Dequeue(callbackLocal);
     }
 
     void Disconnect(Handle handle)

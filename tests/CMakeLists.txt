@@ -1,5 +1,10 @@
+cmake_minimum_required(VERSION 3.5)
+
 add_executable(queue_server_test
-    QueueServerTest.cpp)
+    QueueMapTest.cpp
+    QueueIntegrationTest.cpp
+    Main.cpp
+)
 
 set_target_properties(queue_server_test PROPERTIES
     CMAKE_CXX_STANDARD 14

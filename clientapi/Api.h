@@ -22,7 +22,7 @@ namespace QueueApiSync
     void Disconnect(Handle handle);
 }
 
-// Sync Api, consumer
+// Async Api, consumer
 namespace QueueApiAsync
 {
     void Connect(const char* host, int port, std::function<void(Handle handle, char* errorMessage)> callback);

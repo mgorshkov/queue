@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.5)
+
 add_library(clientapi SHARED STATIC
     Api.h
     Api.cpp
