@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.6"/>
-<title>queue: tests/QueueServerTest.cpp File Reference</title>
+<title>queue: tests/QueueIntegrationTest.cpp File Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -85,64 +85,39 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#define-members">Macros</a> &#124;
 <a href="#func-members">Functions</a>  </div>
   <div class="headertitle">
-<div class="title">QueueServerTest.cpp File Reference</div>  </div>
+<div class="title">QueueIntegrationTest.cpp File Reference</div>  </div>
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &lt;future&gt;</code><br/>
 <code>#include &lt;boost/asio.hpp&gt;</code><br/>
 <code>#include &lt;boost/test/unit_test.hpp&gt;</code><br/>
-<code>#include &lt;boost/filesystem.hpp&gt;</code><br/>
-<code>#include &lt;boost/iostreams/device/mapped_file.hpp&gt;</code><br/>
 <code>#include &quot;Server.h&quot;</code><br/>
 <code>#include &quot;Api.h&quot;</code><br/>
 </div><div class="textblock"><div class="dynheader">
-Include dependency graph for QueueServerTest.cpp:</div>
+Include dependency graph for QueueIntegrationTest.cpp:</div>
 <div class="dyncontent">
-<div class="center"><img src="QueueServerTest_8cpp__incl.png" border="0" usemap="#tests_2QueueServerTest_8cpp" alt=""/></div>
-<map name="tests_2QueueServerTest_8cpp" id="tests_2QueueServerTest_8cpp">
+<div class="center"><img src="QueueIntegrationTest_8cpp__incl.png" border="0" usemap="#tests_2QueueIntegrationTest_8cpp" alt=""/></div>
+<map name="tests_2QueueIntegrationTest_8cpp" id="tests_2QueueIntegrationTest_8cpp">
 </map>
 </div>
 </div><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="define-members"></a>
-Macros</h2></td></tr>
-<tr class="memitem:a6b2a3852db8bb19ab6909bac01859985"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="QueueServerTest_8cpp.html#a6b2a3852db8bb19ab6909bac01859985">BOOST_TEST_MODULE</a>&#160;&#160;&#160;queue_server_test</td></tr>
-<tr class="separator:a6b2a3852db8bb19ab6909bac01859985"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="func-members"></a>
 Functions</h2></td></tr>
-<tr class="memitem:ab595afac3d30419c7bc9aee97c82789e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="QueueServerTest_8cpp.html#ab595afac3d30419c7bc9aee97c82789e">BOOST_AUTO_TEST_CASE</a> (test_mmap_create)</td></tr>
-<tr class="memdesc:ab595afac3d30419c7bc9aee97c82789e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit tests for queue project.  <a href="#ab595afac3d30419c7bc9aee97c82789e">More...</a><br/></td></tr>
-<tr class="separator:ab595afac3d30419c7bc9aee97c82789e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af8b2a631a0c4aa5115d1c569a5e2260d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="QueueServerTest_8cpp.html#af8b2a631a0c4aa5115d1c569a5e2260d">BOOST_AUTO_TEST_CASE</a> (test_mmap_write_read)</td></tr>
-<tr class="separator:af8b2a631a0c4aa5115d1c569a5e2260d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7ad036063a0c5f013415442b46b510c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="QueueServerTest_8cpp.html#ae7ad036063a0c5f013415442b46b510c">BOOST_AUTO_TEST_CASE</a> (test_producer_consumer)</td></tr>
-<tr class="separator:ae7ad036063a0c5f013415442b46b510c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae5398de10010b061c20d9a8c23ae3cd6"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="QueueIntegrationTest_8cpp.html#ae5398de10010b061c20d9a8c23ae3cd6">BOOST_AUTO_TEST_CASE</a> (test_integration)</td></tr>
+<tr class="memdesc:ae5398de10010b061c20d9a8c23ae3cd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Unit tests for queue project.  <a href="#ae5398de10010b061c20d9a8c23ae3cd6">More...</a><br/></td></tr>
+<tr class="separator:ae5398de10010b061c20d9a8c23ae3cd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Macro Definition Documentation</h2>
-<a class="anchor" id="a6b2a3852db8bb19ab6909bac01859985"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">#define BOOST_TEST_MODULE&#160;&#160;&#160;queue_server_test</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
 <h2 class="groupheader">Function Documentation</h2>
-<a class="anchor" id="ab595afac3d30419c7bc9aee97c82789e"></a>
+<a class="anchor" id="ae5398de10010b061c20d9a8c23ae3cd6"></a>
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">BOOST_AUTO_TEST_CASE </td>
           <td>(</td>
-          <td class="paramtype">test_mmap_create&#160;</td>
+          <td class="paramtype">test_integration&#160;</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
@@ -150,38 +125,6 @@ Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Unit tests for queue project. </p>
-
-</div>
-</div>
-<a class="anchor" id="af8b2a631a0c4aa5115d1c569a5e2260d"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">BOOST_AUTO_TEST_CASE </td>
-          <td>(</td>
-          <td class="paramtype">test_mmap_write_read&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-
-</div>
-</div>
-<a class="anchor" id="ae7ad036063a0c5f013415442b46b510c"></a>
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">BOOST_AUTO_TEST_CASE </td>
-          <td>(</td>
-          <td class="paramtype">test_producer_consumer&#160;</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
 
 </div>
 </div>
