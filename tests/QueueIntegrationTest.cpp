@@ -48,7 +48,7 @@ BOOST_AUTO_TEST_CASE(test_integration)
 
             ServerData serverData{"127.0.0.1", port};
             char* errorMessage;
-            auto handle = Connect(serverData.mHost.c_str(), serverData.mPort, &errorMessage, true);
+            auto handle = Connect(serverData.mHost.c_str(), serverData.mPort, &errorMessage, false);
 
             BOOST_CHECK(handle);
 
