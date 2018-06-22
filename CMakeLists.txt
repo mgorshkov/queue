@@ -13,7 +13,7 @@ endif()
 set(THREADS_PREFER_PTHREAD_FLAG ON)
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME ON)
+set(Boost_USE_STATIC_RUNTIME OFF)
 
 find_package(Threads REQUIRED)
 find_package(Boost REQUIRED COMPONENTS system filesystem iostreams unit_test_framework)

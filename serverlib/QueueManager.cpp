@@ -48,6 +48,7 @@ bool QueueManager::Enqueue(const std::string& aQueueName, const DataType& aData)
         it = insertResult.first;
     }
     it->second.Enqueue(aData);
+    return true;
 }
 
 Item QueueManager::Dequeue(const std::string& aQueueName, std::size_t aOffset)
