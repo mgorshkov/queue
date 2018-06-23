@@ -9,7 +9,7 @@ class DequeueCommandHandler : public CommandHandler
 public:
     DequeueCommandHandler(IQueueManager* aQueueManager);
 
-    virtual MessagePtr Handle(CompleteCommand& aCommand) override;
+    virtual MessagePtr Handle(const CompleteCommand& aCommand) override;
 
 private:
     Consumer mConsumer;

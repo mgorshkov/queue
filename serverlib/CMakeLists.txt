@@ -17,6 +17,7 @@ add_library(server
     EnqueueCommandHandler.cpp
     EnqueueCommandHandler.h
     IConsumer.h
+    IContextHandler.h
     IProducer.h
     IQueueManager.h
     Producer.cpp

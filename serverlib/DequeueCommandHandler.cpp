@@ -7,9 +7,9 @@ DequeueCommandHandler::DequeueCommandHandler(IQueueManager* aQueueManager)
 {
 }
 
-MessagePtr DequeueCommandHandler::Handle(CompleteCommand& aCommand)
+MessagePtr DequeueCommandHandler::Handle(const CompleteCommand& aCommand)
 {
-    auto item = mConsumer.Consume(aCommand.mQueueName, aCommand.mOffset++);
+    auto item = mConsumer.Consume(aCommand.mQueueName, aCommand.mOffset);
     return std::make_shared<DequeueMessage>(item);
 }
 

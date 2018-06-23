@@ -7,7 +7,7 @@ QueueListCommandHandler::QueueListCommandHandler(IQueueManager* aQueueManager)
 {
 }
 
-MessagePtr QueueListCommandHandler::Handle(CompleteCommand&)
+MessagePtr QueueListCommandHandler::Handle(const CompleteCommand&)
 {
 #ifdef DEBUG_PRINT
     std::cout << "QueueListCommandHandler::Handle" << std::endl;

@@ -80,15 +80,18 @@ void Client::RunConsumerSync()
         StartQueueSession(handle, ptr);
         std::cout << "ok" << std::endl;
 
-        std::cout << "Getting item from queue " << queueName << "...";
+        std::cout << "Getting items from queue " << queueName << "...";
         char* str;
         std::size_t offset;
         for (int i = 0; i < 100; ++i)
         {
             Dequeue(handle, &str, &offset);
-            std::cout << "ok" << std::endl;
 
-            std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+            std::cout << "Item:";
+            if (offset == static_cast<std::size_t>(-1))
+                std::cout << "error" << std::endl;
+            else
+                std::cout << str << ", offset:" << offset << std::endl;
 
             delete [] str;
         }

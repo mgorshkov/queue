@@ -1,12 +1,14 @@
 #include "CompleteCommand.h"
 
-CompleteCommand::CompleteCommand(const MessagePtr& aMessage, CommandContextPtr aContext)
+CompleteCommand::CompleteCommand(const MessagePtr& aMessage, IContextHandler* aContextHandler)
+    : mContextHandler(aContextHandler)
+    , mIncrementOffset(false)
 {
     auto startSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(aMessage);
     if (startSessionMessage)
     {
         mCommand = Command::StartSession;
-        aContext = std::make_shared<CommandContext>(startSessionMessage);
+        aContextHandler->SetContext(std::make_shared<CommandContext>(startSessionMessage));
     }
     else
     {
@@ -30,14 +32,19 @@ CompleteCommand::CompleteCommand(const MessagePtr& aMessage, CommandContextPtr a
                 {
                     mCommand = Command::Dequeue;
                     mItem = dequeueMessage->mItem;
+                    mIncrementOffset = true;
                 }
             }
         }
     }
-    if (aContext)
-    {
-        mQueueName = aContext->mQueueName;
-        mOffset = aContext->mOffset;
-    }
+
+    mQueueName = aContextHandler->GetQueueName();
+    mOffset = aContextHandler->GetOffset();
+}
+
+CompleteCommand::~CompleteCommand()
+{
+    if (mIncrementOffset)
+        mContextHandler->IncrementOffset();
 }
 

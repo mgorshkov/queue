@@ -116,10 +116,31 @@ MessagePtrs Context::GetOutboundQueue()
 #ifdef DEBUG_PRINT
     std::cout << "Context::GetOutboundQueue 5" << std::endl;
     for (auto status : statuses)
-        std::cout << status << std::endl;
+        Dump(status);
 #endif
 
     return statuses;
+}
+
+void Context::SetContext(CommandContextPtr aCommandContext)
+{
+    mCommandContext = aCommandContext;
+}
+
+std::string Context::GetQueueName() const
+{
+    return mCommandContext ? mCommandContext->mQueueName : "";
+}
+
+std::size_t Context::GetOffset() const
+{
+    return mCommandContext ? mCommandContext->mOffset : 0;
+}
+
+void Context::IncrementOffset()
+{
+    if (mCommandContext)
+        ++mCommandContext->mOffset;
 }
 
 MessagePtrs Context::ProcessStream()
@@ -145,7 +166,7 @@ MessagePtrs Context::ProcessMessages(const std::list<MessagePtr> aMessages)
     MessagePtrs results;
     for (const auto& message: aMessages)
     {
-        CompleteCommand command{message, mCommandContext};
+        CompleteCommand command{message, this};
         auto result = mCommandExecutor->RunCommand(command);
         results.push_back(result);
     }

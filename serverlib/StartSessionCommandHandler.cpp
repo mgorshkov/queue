@@ -4,8 +4,8 @@ StartSessionCommandHandler::StartSessionCommandHandler(IQueueManager*)
 {
 }
 
-MessagePtr StartSessionCommandHandler::Handle(CompleteCommand&)
+MessagePtr StartSessionCommandHandler::Handle(const CompleteCommand&)
 {
-    return nullptr;
+    return std::make_shared<StartQueueSessionMessage>();
 }
 

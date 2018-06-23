@@ -52,17 +52,38 @@ QueueList ConsumerApiClientSync::GetQueueList()
         }
         auto response = ProtocolSerializer::Deserialize(stream);
         auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(response);
+        assert (queueListMessage);
         return queueListMessage->mQueueList;
     }
 }
 
 void ConsumerApiClientSync::StartQueueSession(const std::string& aQueueName, std::size_t aOffset)
 {
-    auto message = std::make_shared<StartQueueSessionMessage>(aQueueName, aOffset);
-    ba::streambuf buffer;
-    std::ostream stream(&buffer);
-    ProtocolSerializer::Serialize(message, stream);
-    ba::write(mSocket, buffer);
+    {
+        ba::streambuf buffer;
+        std::ostream stream(&buffer);
+        auto message = std::make_shared<StartQueueSessionMessage>(aQueueName, aOffset);
+        ProtocolSerializer::Serialize(message, stream);
+        ba::write(mSocket, buffer);
+    }
+    {
+        BufferType buffer;
+        size_t length = mSocket.read_some(ba::buffer(buffer));
+        std::stringstream stream;
+#ifdef DEBUG_PRINT
+        std::cout << "length=" << length << std::endl;
+#endif
+        for (std::size_t i = 0; i < length; ++i)
+        {
+#ifdef DEBUG_PRINT
+            std::cout << "buffer[i]=" << buffer[i] << std::endl;
+#endif
+            stream << buffer[i];
+        }
+        auto response = ProtocolSerializer::Deserialize(stream);
+        auto startQueueSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(response);
+        assert (startQueueSessionMessage);
+    }
 }
 
 Item ConsumerApiClientSync::Dequeue()
@@ -90,6 +111,7 @@ Item ConsumerApiClientSync::Dequeue()
         }
         auto response = ProtocolSerializer::Deserialize(stream);
         auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(response);
+        assert (dequeueMessage);
         return dequeueMessage->mItem;
     }
 }

@@ -8,6 +8,6 @@ class StartSessionCommandHandler : public CommandHandler
 public:
     StartSessionCommandHandler(IQueueManager*);
 
-    virtual MessagePtr Handle(CompleteCommand&) override;
+    virtual MessagePtr Handle(const CompleteCommand&) override;
 
 };

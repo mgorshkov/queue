@@ -7,7 +7,7 @@ EnqueueCommandHandler::EnqueueCommandHandler(IQueueManager* aQueueManager)
 {
 }
 
-MessagePtr EnqueueCommandHandler::Handle(CompleteCommand& aCommand)
+MessagePtr EnqueueCommandHandler::Handle(const CompleteCommand& aCommand)
 {
     mProducer.Produce(aCommand.mQueueName, aCommand.mData);
     return std::make_shared<Message>();

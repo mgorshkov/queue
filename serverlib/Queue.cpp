@@ -69,7 +69,7 @@ void Queue::Enqueue(const DataType& aData)
 
 Item Queue::Dequeue(std::size_t aOffset)
 {
-    auto it = mQueueStorage.lower_bound(aOffset);
+    auto it = mQueueStorage.upper_bound(aOffset);
 
     if (it != mQueueStorage.end())
         return it->second->GetItem(aOffset);

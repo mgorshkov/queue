@@ -159,3 +159,5 @@ struct EnqueueMessage : Message
 
 using EnqueueMessagePtr = std::shared_ptr<EnqueueMessage>;
 
+void Dump(MessagePtr message);
+

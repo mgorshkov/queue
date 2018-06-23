@@ -9,10 +9,12 @@
 #include <atomic>
 #include <queue>
 
+#include "CommandContext.h"
 #include "CommandExecutor.h"
 #include "Defines.h"
+#include "IContextHandler.h"
 
-class Context
+class Context : public IContextHandler
 {
 public:
     Context(CommandExecutorPtr aCommandExecutor = nullptr);
@@ -26,6 +28,12 @@ public:
     void Stop();
 
     MessagePtrs GetOutboundQueue();
+
+    void SetContext(CommandContextPtr aCommandContext) override;
+
+    std::string GetQueueName() const override;
+    std::size_t GetOffset() const override;
+    void IncrementOffset()  override;
 
 private:
     MessagePtrs ProcessStream();
