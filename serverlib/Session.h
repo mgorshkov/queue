@@ -14,7 +14,7 @@ class Session : public std::enable_shared_from_this<Session>
 {
 public:
     Session(ba::ip::tcp::socket aSocket,
-        std::shared_ptr<CommandExecutor> aCommandExecutor,
+        CommandExecutorPtr aCommandExecutor,
         ba::io_service& aIoService);
     ~Session();
 
@@ -29,7 +29,7 @@ private:
     void DoWrite();
     void Deliver(std::size_t aLength);
 
-    std::shared_ptr<CommandExecutor> mCommandExecutor;
+    CommandExecutorPtr mCommandExecutor;
     ba::io_service& mIoService;
     Context mContext;
     ba::ip::tcp::socket mSocket;

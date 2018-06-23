@@ -7,7 +7,7 @@
 
 struct CompleteCommand
 {
-    CompleteCommand(const MessagePtr& aMessage, const CommandContext& aContext);
+    CompleteCommand(const MessagePtr& aMessage, CommandContextPtr aContext);
 
     Command mCommand;
     std::string mQueueName;

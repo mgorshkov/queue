@@ -13,11 +13,13 @@ class CommandExecutor
 public:
     CommandExecutor(IQueueManager* aQueueManager);
 
-    MessagePtr RunCommand(const CompleteCommand& aCommand);
+    MessagePtr RunCommand(CompleteCommand& aCommand);
 
 private:
     void RegisterHandler(Command aCommand, std::unique_ptr<CommandHandler> aCommandHandler);
-    CompleteCommand Parse(const std::string& aLine);
 
     std::unordered_map<Command, std::unique_ptr<CommandHandler>> mCommandHandlers;
 };
+
+using CommandExecutorPtr = std::shared_ptr<CommandExecutor>;
+

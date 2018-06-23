@@ -33,6 +33,8 @@ add_library(server
     Server.h
     Session.cpp
     Session.h
+    StartSessionCommandHandler.cpp
+    StartSessionCommandHandler.h
     ThreadPool.cpp
     ThreadPool.h
     ThreadedActor.cpp

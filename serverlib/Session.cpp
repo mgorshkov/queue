@@ -5,7 +5,7 @@
 
 using ba::ip::tcp;
 
-Session::Session(tcp::socket aSocket, std::shared_ptr<CommandExecutor> aCommandExecutor, ba::io_service& aIoService)
+Session::Session(tcp::socket aSocket, CommandExecutorPtr aCommandExecutor, ba::io_service& aIoService)
     : mSocket(std::move(aSocket))
     , mContext(aCommandExecutor)
     , mIoService(aIoService)
@@ -103,9 +103,9 @@ bool Session::GetWriteQueue()
     std::stringstream str;
     for (const auto& status : statuses)
         ProtocolSerializer::Serialize(status, str);
-//#ifdef DEBUG_PRINT
+#ifdef DEBUG_PRINT
     std::cout << "Session::GetWriteQueue 4, this==" << this << ", str=" << str.str() << std::endl;
-//#endif
+#endif
     mWriteMsgs.push_back(str.str());
     return true;
 }

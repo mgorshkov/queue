@@ -19,38 +19,26 @@ static IApiClient* CreateApiClient(bool producer, bool sync)
     return apiClient;
 }
 
-namespace QueueApiSync
+namespace QueueApiConsumerSync
 {
-    Handle Connect(const char* host, int port, char** errorMessage, bool producer)
+    Handle Connect(const char* host, int port, char** errorMessage)
     {
-        auto apiClient = CreateApiClient(producer, true);
+        auto apiClient = CreateApiClient(false, true);
 
         ServerData serverData{host, port};
-        auto consumerClient = dynamic_cast<ConsumerApiClientSync*>(apiClient);
-        if (consumerClient)
-        {
-            boost::system::error_code error = consumerClient->Connect(serverData);
-            if (error)
-            {
-                *errorMessage = new char[error.message().length()];
-                strcpy(*errorMessage, error.message().c_str());
-            }
-
-            return consumerClient;
-        }
-        auto producerClient = dynamic_cast<ProducerApiClient*>(apiClient);
-        assert (producerClient);
-        boost::system::error_code error = producerClient->Connect(serverData);
+        auto client = dynamic_cast<ConsumerApiClientSync*>(apiClient);
+        assert (client);
+        boost::system::error_code error = client->Connect(serverData);
         if (error)
         {
-            *errorMessage = new char[error.message().length()];
+            *errorMessage = new char[error.message().length() + 1];
             strcpy(*errorMessage, error.message().c_str());
         }
 
-        return producerClient;
+        return client;
     }
 
-    /// consumer only, list is separated by \0
+    /// list is separated by \0
     std::size_t GetQueueList(Handle handle, char** list)
     {
 #ifdef DEBUG_PRINT
@@ -79,63 +67,35 @@ namespace QueueApiSync
         return size;
     }
 
-    /// consumer/producer, offset ignored for producer
     void StartQueueSession(Handle handle, const char* queueName, std::size_t offset)
     {
-        auto clientConsumer = dynamic_cast<ConsumerApiClientSync*>(handle);
-        if (clientConsumer)
-        {
-            clientConsumer->StartQueueSession(queueName, offset);
-            return;
-        }
-        auto clientProducer = dynamic_cast<ProducerApiClient*>(handle);
-        if (clientProducer)
-        {
-            clientProducer->StartQueueSession(queueName);
-            return;
-        }
+        auto client = dynamic_cast<ConsumerApiClientSync*>(handle);
+        assert (client);
+
+        client->StartQueueSession(queueName, offset);
     }
 
-    /// for producer
-    void Enqueue(Handle handle, const char* str)
-    {
-        auto client = dynamic_cast<ProducerApiClient*>(handle);
-        assert(client);
-
-        client->Enqueue(str);
-    }
-
-    /// for consumer
-    void Dequeue(Handle handle, char** str, std::size_t** offset)
+    void Dequeue(Handle handle, char** str, std::size_t* offset)
     {
         auto client = dynamic_cast<ConsumerApiClientSync*>(handle);
         assert(client);
 
         auto item = client->Dequeue();
-        *str = new char[item.mData.size()];
+        *str = new char[item.mData.size() + 1];
         strcpy(*str, item.mData.c_str());
-        *offset = new std::size_t;
-        **offset = item.mOffset;
+        *offset = item.mOffset;
     }
 
     void Disconnect(Handle handle)
     {
-        auto clientConsumer = dynamic_cast<ConsumerApiClientSync*>(handle);
-        if (clientConsumer)
-        {
-            clientConsumer->Disconnect();
-            return;
-        }
-        auto clientProducer = dynamic_cast<ProducerApiClient*>(handle);
-        if (clientProducer)
-        {
-            clientProducer->Disconnect();
-            return;
-        }
+        auto client = dynamic_cast<ConsumerApiClientSync*>(handle);
+        assert (client);
+
+        client->Disconnect();
     }
 }
-       
-namespace QueueApiAsync
+
+namespace QueueApiConsumerAsync
 {
     void Connect(const char* host, int port, std::function<void(Handle handle, char* errorMessage)> callback)
     {
@@ -214,6 +174,50 @@ namespace QueueApiAsync
     {
         auto client = dynamic_cast<ConsumerApiClientAsync*>(handle);
         assert(client);
+
+        client->Disconnect();
+    }
+}
+
+namespace QueueApiProducerSync
+{
+    Handle Connect(const char* host, int port, char** errorMessage)
+    {
+        auto apiClient = CreateApiClient(true, true);
+
+        ServerData serverData{host, port};
+        auto client = dynamic_cast<ProducerApiClient*>(apiClient);
+        assert (client);
+        boost::system::error_code error = client->Connect(serverData);
+        if (error)
+        {
+            *errorMessage = new char[error.message().length() + 1];
+            strcpy(*errorMessage, error.message().c_str());
+        }
+
+        return client;
+    }
+
+    void StartQueueSession(Handle handle, const char* queueName)
+    {
+        auto client = dynamic_cast<ProducerApiClient*>(handle);
+        assert (client);
+
+        client->StartQueueSession(queueName);
+    }
+
+    void Enqueue(Handle handle, const char* str)
+    {
+        auto client = dynamic_cast<ProducerApiClient*>(handle);
+        assert(client);
+
+        client->Enqueue(str);
+    }
+
+    void Disconnect(Handle handle)
+    {
+        auto client = dynamic_cast<ProducerApiClient*>(handle);
+        assert (client);
 
         client->Disconnect();
     }

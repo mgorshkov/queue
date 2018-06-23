@@ -41,46 +41,64 @@ void Client::Run()
 
 void Client::RunConsumerSync()
 {
-    using namespace QueueApiSync;
+    using namespace QueueApiConsumerSync;
 
     std::cout << "Sync consumer client started." << std::endl;
 
-    std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "..." << std::endl;
+    std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "...";
 
     char* errorMessage;
-    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage, false);
+    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage);
 
     if (!handle)
     {
-        std::cout << "Error: " << errorMessage << std::endl;
+        std::cout << "error: " << errorMessage << std::endl;
         delete [] errorMessage;
         return;
     }
 
-    std::cout << "Success." << std::endl;
+    std::cout << "success" << std::endl;
 
+    std::cout << "Getting list of queues...";
     char* queueList;
     std::size_t queueListLength = GetQueueList(handle, &queueList);
-std::cout << queueListLength << std::endl;
+    std::cout << "ok" << std::endl;
+#ifdef DEBUG_PRINT
+    std::cout << queueListLength << std::endl;
+#endif
     std::cout << "Queues:" << std::endl;
-    for (char* ptr = queueList; queueList + queueListLength <= ptr; ptr += strlen(ptr) + 1)
+    for (char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
     {
         std::string queueName(ptr);
         std::cout << queueName << std::endl;
-
-        StartQueueSession(handle, ptr);
-
-        char* str;
-        std::size_t* offset;
-        Dequeue(handle, &str, &offset);
-
-        std::cout << "Item:" << str << ", offset:" << *offset << std::endl;
     }
+    for (char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
+    {
+        std::string queueName(ptr);
+
+        std::cout << "Starting session with queue " << queueName << "...";
+        StartQueueSession(handle, ptr);
+        std::cout << "ok" << std::endl;
+
+        std::cout << "Getting item from queue " << queueName << "...";
+        char* str;
+        std::size_t offset;
+        for (int i = 0; i < 100; ++i)
+        {
+            Dequeue(handle, &str, &offset);
+            std::cout << "ok" << std::endl;
+
+            std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+
+            delete [] str;
+        }
+    }
+    delete [] queueList;
 }
 
 void Client::RunConsumerAsync()
 {
-    using namespace QueueApiAsync;
+    using namespace QueueApiConsumerAsync;
 
     std::cout << "Async consumer client started." << std::endl;
 
@@ -100,7 +118,7 @@ void Client::RunConsumerAsync()
         auto queueListCallback = [handle](const char* queueList, std::size_t queueListLength)
         {
             std::cout << "Queues:" << std::endl;
-            for (const char* ptr = queueList; queueList + queueListLength <= ptr; ptr += strlen(ptr) + 1)
+            for (const char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
             {
                 std::string queueName(ptr);
                 std::cout << queueName << std::endl;
@@ -134,14 +152,14 @@ void Client::RunConsumerAsync()
 
 void Client::RunProducerSync()
 {
-    using namespace QueueApiSync;
+    using namespace QueueApiProducerSync;
 
     std::cout << "Sync producer client started." << std::endl;
 
     std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "..." << std::endl;
 
     char* errorMessage;
-    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage, true);
+    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage);
 
     if (!handle)
     {
@@ -154,9 +172,8 @@ void Client::RunProducerSync()
 
     StartQueueSession(handle, "TestQueue");
 
-    Enqueue(handle, "str1");
-    Enqueue(handle, "str2");
-    Enqueue(handle, "str3");
+    for (int i = 0; i < 100; ++i)
+        Enqueue(handle, (std::string("str") + std::to_string(i)).c_str());
 
     Disconnect(handle);
 }

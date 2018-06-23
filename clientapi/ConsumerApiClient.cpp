@@ -22,7 +22,6 @@ boost::system::error_code ConsumerApiClientSync::Connect(const ServerData& aServ
     {
         mSocket.close();
         ba::ip::tcp::endpoint endPoint(*it++);
-        std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
         mSocket.connect(endPoint, error);
     }
     return error;
@@ -40,11 +39,15 @@ QueueList ConsumerApiClientSync::GetQueueList()
     {
         BufferType buffer;
         size_t length = mSocket.read_some(ba::buffer(buffer));
-        std::cout << "length=" << length << std::endl;
         std::stringstream stream;
+#ifdef DEBUG_PRINT
+        std::cout << "length=" << length << std::endl;
+#endif
         for (std::size_t i = 0; i < length; ++i)
         {
+#ifdef DEBUG_PRINT
             std::cout << "buffer[i]=" << buffer[i] << std::endl;
+#endif
             stream << buffer[i];
         }
         auto response = ProtocolSerializer::Deserialize(stream);
@@ -74,7 +77,17 @@ Item ConsumerApiClientSync::Dequeue()
     {
         BufferType buffer;
         size_t length = mSocket.read_some(ba::buffer(buffer));
-        std::istringstream stream(std::string(&buffer[0], length));
+        std::stringstream stream;
+#ifdef DEBUG_PRINT
+        std::cout << "length=" << length << std::endl;
+#endif
+        for (std::size_t i = 0; i < length; ++i)
+        {
+#ifdef DEBUG_PRINT
+            std::cout << "buffer[i]=" << buffer[i] << std::endl;
+#endif
+            stream << buffer[i];
+        }
         auto response = ProtocolSerializer::Deserialize(stream);
         auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(response);
         return dequeueMessage->mItem;
@@ -105,7 +118,6 @@ void ConsumerApiClientAsync::Connect(const ServerData& aServerData, std::functio
     {
         mSocket.close();
         ba::ip::tcp::endpoint endPoint(*it++);
-        std::cout << "Connecting to " << endPoint.address().to_string() << ":" << endPoint.port() << "..." << std::endl;
         mSocket.async_connect(endPoint, aCallback);
         if (error)
             std::cout << "Error: " << error.message() << std::endl;

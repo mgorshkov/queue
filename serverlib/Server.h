@@ -22,6 +22,6 @@ private:
     ba::ip::tcp::socket mSocket;
     ba::io_service& mIoService;
 
-    std::shared_ptr<CommandExecutor> mCommandExecutor;
+    CommandExecutorPtr mCommandExecutor;
     QueueManager mQueueManager;
 };

@@ -9,7 +9,7 @@ class EnqueueCommandHandler : public CommandHandler
 public:
     EnqueueCommandHandler(IQueueManager* aQueueManager);
 
-    virtual MessagePtr Handle(const CompleteCommand& aCommand) override;
+    virtual MessagePtr Handle(CompleteCommand& aCommand) override;
 
 private:
     Producer mProducer;

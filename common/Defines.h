@@ -106,6 +106,7 @@ inline std::ostream& operator << (std::ostream& aStream, const ConsumerProducerM
 enum class Command
 {
     QueueList,
+    StartSession,
     Enqueue,
     Dequeue,
 };

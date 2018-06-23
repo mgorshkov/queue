@@ -1,30 +1,43 @@
 #include "CompleteCommand.h"
 
-CompleteCommand::CompleteCommand(const MessagePtr& aMessage, const CommandContext& aContext)
+CompleteCommand::CompleteCommand(const MessagePtr& aMessage, CommandContextPtr aContext)
 {
-    auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(aMessage);
-    if (queueListMessage)
+    auto startSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(aMessage);
+    if (startSessionMessage)
     {
-        mCommand = Command::QueueList;
-        return;
+        mCommand = Command::StartSession;
+        aContext = std::make_shared<CommandContext>(startSessionMessage);
     }
-    auto enqueueMessage = std::dynamic_pointer_cast<EnqueueMessage>(aMessage);
-    if (enqueueMessage)
+    else
     {
-        mCommand = Command::Enqueue;
-        mData = enqueueMessage->mData;
-        mQueueName = aContext.mQueueName;
-        mOffset = aContext.mOffset;
-        return;
+        auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(aMessage);
+        if (queueListMessage)
+        {
+            mCommand = Command::QueueList;
+        }
+        else
+        {
+            auto enqueueMessage = std::dynamic_pointer_cast<EnqueueMessage>(aMessage);
+            if (enqueueMessage)
+            {
+                mCommand = Command::Enqueue;
+                mData = enqueueMessage->mData;
+            }
+            else
+            {
+                auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(aMessage);
+                if (dequeueMessage)
+                {
+                    mCommand = Command::Dequeue;
+                    mItem = dequeueMessage->mItem;
+                }
+            }
+        }
     }
-    auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(aMessage);
-    if (dequeueMessage)
+    if (aContext)
     {
-        mCommand = Command::Dequeue;
-        mItem = dequeueMessage->mItem;
-        mQueueName = aContext.mQueueName;
-        mOffset = aContext.mOffset;
-        return;
+        mQueueName = aContext->mQueueName;
+        mOffset = aContext->mOffset;
     }
 }
 

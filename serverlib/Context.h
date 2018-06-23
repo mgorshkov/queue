@@ -15,10 +15,10 @@
 class Context
 {
 public:
-    Context(std::shared_ptr<CommandExecutor> aCommandExecutor = nullptr);
+    Context(CommandExecutorPtr aCommandExecutor = nullptr);
     ~Context();
 
-    void SetExecutor(std::shared_ptr<CommandExecutor> aCommandExecutor);
+    void SetExecutor(CommandExecutorPtr aCommandExecutor);
 
     void ProcessData(const BufferType& aBuffer, std::size_t aLength);
 
@@ -33,8 +33,8 @@ private:
 
     void ThreadProc();
 
-    std::shared_ptr<CommandExecutor> mCommandExecutor;
-    std::unique_ptr<CommandContext> mCommandContext;
+    CommandExecutorPtr mCommandExecutor;
+    CommandContextPtr mCommandContext;
 
     std::stringstream mStream;
     std::mutex mStreamMutex;

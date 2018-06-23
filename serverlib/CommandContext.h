@@ -11,3 +11,6 @@ struct CommandContext
     std::string mQueueName;
     std::size_t mOffset;
 };
+
+using CommandContextPtr = std::shared_ptr<CommandContext>;
+

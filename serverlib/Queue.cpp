@@ -22,7 +22,7 @@ void Queue::Load()
         if (!boost::filesystem::is_regular_file(it->status()))
             continue;
 
-        if (it->path().extension() != "index")
+        if (it->path().extension() != ".index")
             continue;
 
         auto fileName = it->path().filename().string();

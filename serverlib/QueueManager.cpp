@@ -12,7 +12,7 @@ void QueueManager::LoadQueues()
 {
     for (boost::filesystem::directory_iterator it(QueueStorageFolder); it != boost::filesystem::directory_iterator(); ++it)
     {
-        if (boost::filesystem::is_regular_file(it->status()))
+        if (boost::filesystem::is_directory(it->path()))
         {
             auto queueName = it->path().filename().string();
             LoadQueue(queueName);
