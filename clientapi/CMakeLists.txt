@@ -29,5 +29,5 @@ target_link_libraries(clientapi
 )
 
 install(TARGETS clientapi DESTINATION lib)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/clientapi/Api.h DESTINATION /usr/local/include/queue/)
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/clientapi/Handle.h DESTINATION /usr/local/include/queue/)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Api.h DESTINATION /usr/local/include/queue/)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/Handle.h DESTINATION /usr/local/include/queue/)

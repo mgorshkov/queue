@@ -8,7 +8,7 @@
 class QueueStorage
 {
 public:
-    QueueStorage(const boost::filesystem::path& aStorageFileName);
+    QueueStorage(const boost::filesystem::path& aStorageFilePath);
     ~QueueStorage();
 
     enum class AddStatus
@@ -35,7 +35,7 @@ private:
 
     std::unique_ptr<MappedFileDescriptor> mMappedFileDescriptor;
 
-    boost::filesystem::path mStorageFileName;
+    boost::filesystem::path mStorageFilePath;
     std::size_t mStorageOffset;
 
     uint32_t* mDataSizeUsed;
@@ -44,8 +44,9 @@ private:
     char* mBaseData;
     uint32_t* mBaseIndex;
 
-    static const uintmax_t MaxFileSize = 1024 * 1024 * 1024;
+    static const uintmax_t MaxFileSize = 1024 * 1024;// * 1024;
 
-    static const uintmax_t FreeSpaceThreshold = 1024 * 1024 * 1024;
+    // multiple by 2 for 2 files: data and index
+    static const uintmax_t FreeSpaceThreshold = 2 * 1024 * 1024;// * 1024;
 };
 

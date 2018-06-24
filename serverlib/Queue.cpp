@@ -45,12 +45,26 @@ void Queue::DeleteFirstStorage()
 {
     assert (!mQueueStorage.empty());
     auto it = std::begin(mQueueStorage);
-    auto path = GetStorageFileNameByOffset(it->first);
-    boost::filesystem::remove(path);
+    auto offset = it->first;
     mQueueStorage.erase(it);
+    RemoveStorageFileNameByOffset(offset);
 }
 
-boost::filesystem::path Queue::GetStorageFileNameByOffset(std::size_t aOffset)
+void Queue::RemoveStorageFileNameByOffset(std::size_t aOffset)
+{
+    auto storageFilePath = GetStoragePathByOffset(aOffset);
+
+    boost::filesystem::path storageFileNameData(storageFilePath);
+    boost::filesystem::path storageFileNameIndex(storageFilePath);
+
+    storageFileNameData.replace_extension("data");
+    storageFileNameIndex.replace_extension("index");
+
+    boost::filesystem::remove(storageFileNameData);
+    boost::filesystem::remove(storageFileNameIndex);
+}
+
+boost::filesystem::path Queue::GetStoragePathByOffset(std::size_t aOffset)
 {
     std::stringstream offsetStr;
     offsetStr << std::setfill('0') << std::setw(2 * sizeof(aOffset)) << std::uppercase << std::hex << aOffset;
@@ -62,9 +76,9 @@ void Queue::CreateStorageByOffset(std::size_t aOffset)
 #ifdef DEBUG_PRINT
     std::cout << "Queue::CreateStorageByOffset, aOffset=" << aOffset << std::endl;
 #endif
-    auto fileName = GetStorageFileNameByOffset(aOffset);
+    auto filePath = GetStoragePathByOffset(aOffset);
 
-    mQueueStorage[aOffset] = std::make_unique<QueueStorage>(fileName);
+    mQueueStorage[aOffset] = std::make_unique<QueueStorage>(filePath);
 }
 
 void Queue::Enqueue(const DataType& aData)
@@ -86,6 +100,7 @@ void Queue::Enqueue(const DataType& aData)
             break;
 
         case QueueStorage::AddStatus::DiskFull:
+            DeleteFirstStorage();
             break;
 
         default:

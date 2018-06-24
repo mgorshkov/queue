@@ -19,7 +19,8 @@ private:
     void CreateStorageIfEmpty();
     void DeleteFirstStorage();
 
-    boost::filesystem::path GetStorageFileNameByOffset(std::size_t aOffset);
+    void RemoveStorageFileNameByOffset(std::size_t aOffset);
+    boost::filesystem::path GetStoragePathByOffset(std::size_t aOffset);
     void CreateStorageByOffset(std::size_t aOffset);
 
     boost::filesystem::path mStorageFolderName;
