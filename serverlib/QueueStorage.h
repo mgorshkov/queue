@@ -38,11 +38,11 @@ private:
     boost::filesystem::path mStorageFileName;
     std::size_t mStorageOffset;
 
-    std::size_t* mDataSizeUsed;
-    std::size_t* mIndexSizeUsed;
+    uint32_t* mDataSizeUsed;
+    uint32_t* mIndexSizeUsed;
 
     char* mBaseData;
-    std::size_t* mBaseIndex;
+    uint32_t* mBaseIndex;
 
     static const uintmax_t MaxFileSize = 1024 * 1024 * 1024;
 

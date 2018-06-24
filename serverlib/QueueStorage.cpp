@@ -38,11 +38,11 @@ QueueStorage::QueueStorage(const boost::filesystem::path& aStorageFileName)
     auto data = mMappedFileDescriptor->mData.data();
     auto index = mMappedFileDescriptor->mIndex.data();
 
-    mDataSizeUsed = reinterpret_cast<std::size_t*>(data);
-    mIndexSizeUsed = reinterpret_cast<std::size_t*>(index);
+    mDataSizeUsed = reinterpret_cast<uint32_t*>(data);
+    mIndexSizeUsed = reinterpret_cast<uint32_t*>(index);
 
-    mBaseData = data + sizeof(std::size_t);
-    mBaseIndex = reinterpret_cast<std::size_t*>(index) + 1;
+    mBaseData = data + sizeof(uint32_t);
+    mBaseIndex = reinterpret_cast<uint32_t*>(index) + 1;
 }
 
 QueueStorage::~QueueStorage()
@@ -51,14 +51,14 @@ QueueStorage::~QueueStorage()
 
 QueueStorage::AddStatus QueueStorage::AddData(const DataType& aData)
 {
-    std::size_t newDataSize = *mDataSizeUsed + aData.size() + 1;
+    uint32_t newDataSize = *mDataSizeUsed + aData.size() + 1;
 #ifdef DEBUG_PRINT
     std::cout << "QueueStorage::AddItem, newDataSize=" << newDataSize << std::endl;
 #endif
     if (newDataSize > MaxFileSize)
         return AddStatus::FileFull;
 
-    if ((*mIndexSizeUsed + 1) * sizeof(std::size_t) > MaxFileSize)
+    if ((*mIndexSizeUsed + 1) * sizeof(uint32_t) > MaxFileSize)
         return AddStatus::FileFull;
 
     if (!CheckFreeDiskSpace())
@@ -89,7 +89,7 @@ bool QueueStorage::GetData(std::size_t aOffset, DataType& aData)
     std::size_t indexOffset = aOffset - mStorageOffset;
     if (indexOffset >= *mIndexSizeUsed)
         return false;
-    std::size_t dataOffset = mBaseIndex[indexOffset];
+    uint32_t dataOffset = mBaseIndex[indexOffset];
 #ifdef DEBUG_PRINT
     std::cout << "QueueStorage::GetItem, dataOffset=" << dataOffset << std::endl;
 #endif
