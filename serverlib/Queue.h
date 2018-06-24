@@ -13,10 +13,12 @@ public:
     void Load();
 
     void Enqueue(const DataType& aData);
-    Item Dequeue(std::size_t aOffset);
+    bool Dequeue(std::size_t aOffset, DataType& aData);
 
 private:
     void CreateStorageIfEmpty();
+    void DeleteFirstStorage();
+
     boost::filesystem::path GetStorageFileNameByOffset(std::size_t aOffset);
     void CreateStorageByOffset(std::size_t aOffset);
 

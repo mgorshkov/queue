@@ -4,10 +4,14 @@
 
 #include "Client.h"
 
-Client::Client(const ServerData& aServerData, ConsumerProducerMode aConsumerProducerMode, SyncAsyncMode aSyncAsyncMode)
+Client::Client(const ServerData& aServerData,
+    ConsumerProducerMode aConsumerProducerMode,
+    SyncAsyncMode aSyncAsyncMode,
+    int aNumber)
     : mServerData(aServerData)
     , mConsumerProducerMode(aConsumerProducerMode)
     , mSyncAsyncMode(aSyncAsyncMode)
+    , mNumber(aNumber)
 {
 }
 
@@ -67,33 +71,39 @@ void Client::RunConsumerSync()
     std::cout << queueListLength << std::endl;
 #endif
     std::cout << "Queues:" << std::endl;
-    for (char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
+    if (queueListLength == 0)
+        std::cout << "empty." << std::endl;
+    else
     {
-        std::string queueName(ptr);
-        std::cout << queueName << std::endl;
-    }
-    for (char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
-    {
-        std::string queueName(ptr);
-
-        std::cout << "Starting session with queue " << queueName << "...";
-        StartQueueSession(handle, ptr);
-        std::cout << "ok" << std::endl;
-
-        std::cout << "Getting items from queue " << queueName << "...";
-        char* str;
-        std::size_t offset;
-        for (int i = 0; i < 100; ++i)
+        for (char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
         {
-            Dequeue(handle, &str, &offset);
+            std::string queueName(ptr);
+            std::cout << queueName << std::endl;
+        }
+        for (char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
+        {
+            std::string queueName(ptr);
 
-            std::cout << "Item:";
-            if (offset == static_cast<std::size_t>(-1))
-                std::cout << "error" << std::endl;
-            else
-                std::cout << str << ", offset:" << offset << std::endl;
+            std::cout << "Starting session with queue " << queueName << "...";
+            StartQueueSession(handle, ptr, 32);
+            std::cout << "ok" << std::endl;
 
-            delete [] str;
+            std::cout << "Getting items from queue " << queueName << "..." << std::endl;
+            while (true)
+            {
+                char* str;
+                std::size_t offset;
+                if (!Dequeue(handle, &str, &offset))
+                {
+                    std::cout << "error" << std::endl;
+                    break;
+                }
+
+                std::cout << "Item:";
+                std::cout << str << ", offset:" << offset << " " << "ok" << std::endl;
+
+                delete [] str;
+            }
         }
     }
     delete [] queueList;
@@ -175,8 +185,12 @@ void Client::RunProducerSync()
 
     StartQueueSession(handle, "TestQueue");
 
-    for (int i = 0; i < 100; ++i)
-        Enqueue(handle, (std::string("str") + std::to_string(i)).c_str());
+    for (int i = 0; i < mNumber; ++i)
+    {
+        auto str = std::string("str") + std::to_string(i);
+        Enqueue(handle, str.c_str());
+        std::cout << "Enqueued string " << str << std::endl;
+    }
 
     Disconnect(handle);
 }

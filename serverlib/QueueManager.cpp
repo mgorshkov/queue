@@ -56,6 +56,13 @@ Item QueueManager::Dequeue(const std::string& aQueueName, std::size_t aOffset)
     std::lock_guard<std::mutex> lock(mQueueMutex);
 
     auto it = mQueues.find(aQueueName);
-    return it == mQueues.end() ?
-        Item{"", static_cast<std::size_t>(-1)} : it->second.Dequeue(aOffset);
+    if (it == mQueues.end())
+        return Item{"", static_cast<std::size_t>(-1)};
+
+    DataType data;
+    bool result = it->second.Dequeue(aOffset, data);
+    if (!result)
+        return Item{"", static_cast<std::size_t>(-1)};
+
+    return Item{data, aOffset};
 }

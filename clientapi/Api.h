@@ -14,7 +14,7 @@ namespace QueueApiConsumerSync
 
     void StartQueueSession(Handle handle, const char* queueName, std::size_t offset = 0);
 
-    void Dequeue(Handle handle, char** str, std::size_t *offset);
+    bool Dequeue(Handle handle, char** str, std::size_t *offset);
 
     void Disconnect(Handle handle);
 }

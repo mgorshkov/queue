@@ -7,9 +7,11 @@ int main(int argc, char* argv[])
 {
     try
     {
-        if (argc != 5)
+        if (argc != 6 && argc != 5)
         {
-            std::cerr << "Usage: queue_client <host> <port> <consumer|producer> <sync|async>" << std::endl << "Ex.: queue_client localhost 9000 consumer async" << std::endl;
+            std::cerr << "Usage: queue_client <host> <port> <consumer|producer> <sync|async> <number_of_strings=100>" << std::endl;
+            std::cerr << "Ex.: queue_client localhost 9000 producer sync 100" << std::endl;
+            std::cerr << "queue_client localhost 9000 consumer sync" << std::endl;
             return 1;
         }
 
@@ -34,6 +36,10 @@ int main(int argc, char* argv[])
             return 1;
         }
 
+        int number = 100;
+        if (argc == 6)
+            number = atoi(argv[5]);
+
         ServerData serverData{host, port};
 
         ConsumerProducerMode consumerProducerMode;
@@ -44,7 +50,7 @@ int main(int argc, char* argv[])
         std::stringstream syncAsyncModeStream(syncAsyncModeStr);
         syncAsyncModeStream >> syncAsyncMode;
 
-        Client client(serverData, consumerProducerMode, syncAsyncMode);
+        Client client(serverData, consumerProducerMode, syncAsyncMode, number);
         client.Run();
     }
     catch (std::exception& e)

@@ -75,15 +75,18 @@ namespace QueueApiConsumerSync
         client->StartQueueSession(queueName, offset);
     }
 
-    void Dequeue(Handle handle, char** str, std::size_t* offset)
+    bool Dequeue(Handle handle, char** str, std::size_t* offset)
     {
         auto client = dynamic_cast<ConsumerApiClientSync*>(handle);
         assert(client);
 
         auto item = client->Dequeue();
+        if (item.mOffset == static_cast<std::size_t>(-1))
+            return false;
         *str = new char[item.mData.size() + 1];
         strcpy(*str, item.mData.c_str());
         *offset = item.mOffset;
+        return true;
     }
 
     void Disconnect(Handle handle)

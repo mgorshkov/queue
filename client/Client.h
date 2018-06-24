@@ -9,7 +9,8 @@ class Client
 public:
     Client(const ServerData& aServerData,
         ConsumerProducerMode aConsumerProducerMode,
-        SyncAsyncMode aSyncAsyncMode);
+        SyncAsyncMode aSyncAsyncMode,
+        int aNumber);
 
     void Run();
 
@@ -21,5 +22,6 @@ private:
     ServerData mServerData;
     ConsumerProducerMode mConsumerProducerMode;
     SyncAsyncMode mSyncAsyncMode;
+    int mNumber;
 };
 

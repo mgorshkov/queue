@@ -11,10 +11,19 @@ public:
     QueueStorage(const boost::filesystem::path& aStorageFileName);
     ~QueueStorage();
 
-    bool AddItem(const DataType& aItem);
-    DataType GetItem(std::size_t aOffset);
+    enum class AddStatus
+    {
+        Ok,
+        FileFull,
+        DiskFull,
+    };
+    AddStatus AddData(const DataType& aData);
+    bool GetData(std::size_t aOffset, DataType& aData);
+
+    std::size_t GetNextOffset() const;
 
 private:
+    void InitStorageOffset();
     bool CheckFreeDiskSpace() const;
 
     using MappedFile = boost::iostreams::mapped_file;

@@ -1,1 +1,1 @@
-queue_server.exe 9000
+../server/queue_server 9000

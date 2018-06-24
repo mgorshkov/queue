@@ -29,7 +29,7 @@ void Queue::Load()
 
         std::stringstream offsetStr(fileName);
         uintmax_t offset;
-        offsetStr >> offset;
+        offsetStr >> std::hex >> offset;
 
         mQueueStorage[offset] = std::make_unique<QueueStorage>(it->path());
     }
@@ -39,6 +39,15 @@ void Queue::CreateStorageIfEmpty()
 {
     if (mQueueStorage.empty())
         CreateStorageByOffset(0);
+}
+
+void Queue::DeleteFirstStorage()
+{
+    assert (!mQueueStorage.empty());
+    auto it = std::begin(mQueueStorage);
+    auto path = GetStorageFileNameByOffset(it->first);
+    boost::filesystem::remove(path);
+    mQueueStorage.erase(it);
 }
 
 boost::filesystem::path Queue::GetStorageFileNameByOffset(std::size_t aOffset)
@@ -62,17 +71,33 @@ void Queue::Enqueue(const DataType& aData)
 {
     CreateStorageIfEmpty();
 
-    auto it = std::end(mQueueStorage);
-    std::advance(it, -1);
-    it->second->AddItem(aData);
+    QueueStorage::AddStatus status = QueueStorage::AddStatus::Ok;
+    do
+    {
+        auto it = std::prev(std::end(mQueueStorage));
+        status = it->second->AddData(aData);
+        switch (status)
+        {
+        case QueueStorage::AddStatus::Ok:
+            break;
+
+        case QueueStorage::AddStatus::FileFull:
+            CreateStorageByOffset(it->second->GetNextOffset());
+            break;
+
+        case QueueStorage::AddStatus::DiskFull:
+            break;
+
+        default:
+            assert(0);
+        }
+    }
+    while (status != QueueStorage::AddStatus::Ok);
 }
 
-Item Queue::Dequeue(std::size_t aOffset)
+bool Queue::Dequeue(std::size_t aOffset, DataType& aData)
 {
-    auto it = mQueueStorage.upper_bound(aOffset);
+    auto it = std::prev(mQueueStorage.upper_bound(aOffset));
 
-    if (it != mQueueStorage.end())
-        return it->second->GetItem(aOffset);
-
-    return Item(DataType(), static_cast<std::size_t>(-1));
+    return it->second->GetData(aOffset, aData);
 }
