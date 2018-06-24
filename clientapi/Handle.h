@@ -1,5 +1,5 @@
 #pragma once
 
-#include "IApiClient.h"
+class IApiClient;
 
 using Handle = IApiClient*;

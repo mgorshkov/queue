@@ -19,3 +19,5 @@ target_link_libraries(queue_server
     ${CMAKE_THREAD_LIBS_INIT}
     server
 )
+
+install(TARGETS queue_server DESTINATION bin)
