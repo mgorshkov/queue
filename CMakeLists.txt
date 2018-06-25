@@ -63,3 +63,4 @@ set(CPACK_PACKAGE_CONTACT mikhail.gorshkov@gmail.com)
 
 include(CPack)
 
+enable_testing()

@@ -1,5 +1,3 @@
-//#define BOOST_TEST_MODULE queue_map_test
-
 #include <future>
 #include <boost/asio.hpp>
 #include <boost/test/unit_test.hpp>
