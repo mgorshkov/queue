@@ -21,12 +21,14 @@ BOOST_AUTO_TEST_CASE(test_mmap_create)
     mappedFileParams.new_file_size = 0x1000;
     mappedFileParams.flags         = boost::iostreams::mapped_file::mapmode::readwrite;
 
-    MappedFile mappedFile(mappedFileParams);
-    char* ptr = mappedFile.data();
-    strcpy(ptr, "123123123123123123");
+    {
+        MappedFile mappedFile(mappedFileParams);
+        char* ptr = mappedFile.data();
+        strcpy(ptr, "123123123123123123");
 
-    const char* constPtr = mappedFile.const_data();
-    BOOST_CHECK(std::string(ptr) == std::string(constPtr));
+        const char* constPtr = mappedFile.const_data();
+        BOOST_CHECK(std::string(ptr) == std::string(constPtr));
+    }
 
     boost::filesystem::remove(fileName);
 }

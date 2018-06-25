@@ -44,9 +44,9 @@ private:
     char* mBaseData;
     uint32_t* mBaseIndex;
 
-    static const uintmax_t MaxFileSize = 1024 * 1024;// * 1024;
+    static const uintmax_t MaxFileSize = 1024 * 1024 * 1024;
 
-    // multiple by 2 for 2 files: data and index
-    static const uintmax_t FreeSpaceThreshold = 2 * 1024 * 1024;// * 1024;
+    // multiple by 2 because of 2 files: data and index
+    static const uintmax_t FreeSpaceThreshold = 2 * MaxFileSize;
 };
 
