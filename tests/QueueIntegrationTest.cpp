@@ -82,11 +82,9 @@ BOOST_AUTO_TEST_CASE(test_integration)
 
             ServerData serverData{"127.0.0.1", port};
 
-            Connect(serverData.mHost.c_str(), serverData.mPort,
-                [&server](Handle handle, char* errorMessage)
+            Handle handle = Connect(serverData.mHost.c_str(), serverData.mPort,
+                [&server, &handle](bool ok, char* errorMessage)
                 {
-                    BOOST_CHECK(handle);
-
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
                     GetQueueList(handle,
@@ -115,6 +113,7 @@ BOOST_AUTO_TEST_CASE(test_integration)
                             }
                         });
                 });
+            Run(handle);
        });
 
     server.Run();

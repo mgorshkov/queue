@@ -127,25 +127,32 @@ ConsumerApiClientAsync::ConsumerApiClientAsync()
 {
 }
 
+void ConsumerApiClientAsync::ConnectInternal()
+{
+    mSocket.close();
+    ba::ip::tcp::endpoint endPoint(*mResolverIterator++);
+    mSocket.async_connect(endPoint, [this](const boost::system::error_code& error)
+        {
+            ba::ip::tcp::resolver::iterator end;
+
+            if (!error || mResolverIterator == end)
+            {
+                mConnectCallback(error);
+                return;
+            }
+
+            ConnectInternal();
+        });
+}
+
 void ConsumerApiClientAsync::Connect(const ServerData& aServerData, std::function<void(const boost::system::error_code& error)> aCallback)
 {
+    mConnectCallback = aCallback;
     ba::ip::tcp::resolver resolver(mIoService);
     ba::ip::tcp::resolver::query query(aServerData.mHost, std::to_string(aServerData.mPort));
-    ba::ip::tcp::resolver::iterator it = resolver.resolve(query);
+    mResolverIterator = resolver.resolve(query);
 
-    boost::system::error_code error = ba::error::host_not_found;
-    ba::ip::tcp::resolver::iterator end;
-
-    while (error && it != end)
-    {
-        mSocket.close();
-        ba::ip::tcp::endpoint endPoint(*it++);
-        mSocket.async_connect(endPoint, aCallback);
-        if (error)
-            std::cout << "Error: " << error.message() << std::endl;
-        else
-            std::cout << "Success." << std::endl;
-    }
+    ConnectInternal();
 }
 
 void ConsumerApiClientAsync::GetQueueList(std::function<void(const QueueList&)> aCallback)
@@ -245,4 +252,9 @@ void ConsumerApiClientAsync::Disconnect()
         {
             mSocket.close();
         });
+}
+
+void ConsumerApiClientAsync::Run()
+{
+    mIoService.run();
 }

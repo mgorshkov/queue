@@ -22,7 +22,7 @@ namespace QueueApiConsumerSync
 // Async Api, consumer
 namespace QueueApiConsumerAsync
 {
-    void Connect(const char* host, int port, std::function<void(Handle handle, char* errorMessage)> callback);
+    Handle Connect(const char* host, int port, std::function<void(bool ok, char* errorMessage)> callback);
 
     void GetQueueList(Handle handle, std::function<void(const char* list, std::size_t size)> callback);
 
@@ -31,6 +31,8 @@ namespace QueueApiConsumerAsync
     void Dequeue(Handle handle, std::function<void(const char* str, std::size_t offset)> callback);
 
     void Disconnect(Handle handle);
+
+    void Run(Handle handle);
 }
 
 // Sync Api, producer

@@ -100,14 +100,14 @@ namespace QueueApiConsumerSync
 
 namespace QueueApiConsumerAsync
 {
-    void Connect(const char* host, int port, std::function<void(Handle handle, char* errorMessage)> callback)
+    Handle Connect(const char* host, int port, std::function<void(bool, char* errorMessage)> callback)
     {
         auto apiClient = CreateApiClient(false, false);
 
         auto client = dynamic_cast<ConsumerApiClientAsync*>(apiClient);
         assert(client);
 
-        auto callbackLocal = [callback, apiClient](const boost::system::error_code& error)
+        auto callbackLocal = [callback](const boost::system::error_code& error)
         {
             char* errorMessage = nullptr;
             if (error)
@@ -115,11 +115,12 @@ namespace QueueApiConsumerAsync
                 errorMessage = new char[error.message().size() + 1];
                 strcpy(errorMessage, error.message().c_str());
             }
-            callback(apiClient, errorMessage);
+            callback(!error, errorMessage);
         };
 
         ServerData serverData{host, port};
         client->Connect(serverData, callbackLocal);
+        return apiClient;
     }
 
     /// list is separated by \0
@@ -179,6 +180,14 @@ namespace QueueApiConsumerAsync
         assert(client);
 
         client->Disconnect();
+    }
+
+    void Run(Handle handle)
+    {
+        auto client = dynamic_cast<ConsumerApiClientAsync*>(handle);
+        assert(client);
+
+        client->Run();
     }
 }
 

@@ -34,7 +34,13 @@ public:
     void Dequeue(std::function<void(const Item&)> aCallback);
     void Disconnect();
 
+    void Run();
+
 private:
+    std::function<void(const boost::system::error_code& error)> mConnectCallback;
+    ba::ip::tcp::resolver::iterator mResolverIterator;
+    void ConnectInternal();
+
     ba::io_service mIoService;
     ba::ip::tcp::socket mSocket;
 };

@@ -10,7 +10,8 @@ public:
     Client(const ServerData& aServerData,
         ConsumerProducerMode aConsumerProducerMode,
         SyncAsyncMode aSyncAsyncMode,
-        int aNumber);
+        int aNumber,
+        std::size_t aStartOffset);
 
     void Run();
 
@@ -23,5 +24,6 @@ private:
     ConsumerProducerMode mConsumerProducerMode;
     SyncAsyncMode mSyncAsyncMode;
     int mNumber;
+    std::size_t mStartOffset;
 };
 

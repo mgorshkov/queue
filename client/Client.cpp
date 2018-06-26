@@ -7,11 +7,13 @@
 Client::Client(const ServerData& aServerData,
     ConsumerProducerMode aConsumerProducerMode,
     SyncAsyncMode aSyncAsyncMode,
-    int aNumber)
+    int aNumber,
+    std::size_t aStartOffset)
     : mServerData(aServerData)
     , mConsumerProducerMode(aConsumerProducerMode)
     , mSyncAsyncMode(aSyncAsyncMode)
     , mNumber(aNumber)
+    , mStartOffset(aStartOffset)
 {
 }
 
@@ -45,14 +47,12 @@ void Client::Run()
 
 void Client::RunConsumerSync()
 {
-    using namespace QueueApiConsumerSync;
-
     std::cout << "Sync consumer client started." << std::endl;
 
     std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "...";
 
     char* errorMessage;
-    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage);
+    auto handle = QueueApiConsumerSync::Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage);
 
     if (!handle)
     {
@@ -65,7 +65,7 @@ void Client::RunConsumerSync()
 
     std::cout << "Getting list of queues...";
     char* queueList;
-    std::size_t queueListLength = GetQueueList(handle, &queueList);
+    std::size_t queueListLength = QueueApiConsumerSync::GetQueueList(handle, &queueList);
     std::cout << "ok" << std::endl;
 #ifdef DEBUG_PRINT
     std::cout << queueListLength << std::endl;
@@ -85,7 +85,7 @@ void Client::RunConsumerSync()
             std::string queueName(ptr);
 
             std::cout << "Starting session with queue " << queueName << "...";
-            StartQueueSession(handle, ptr, 32);
+            QueueApiConsumerSync::StartQueueSession(handle, ptr, mStartOffset);
             std::cout << "ok" << std::endl;
 
             std::cout << "Getting items from queue " << queueName << "..." << std::endl;
@@ -93,7 +93,7 @@ void Client::RunConsumerSync()
             {
                 char* str;
                 std::size_t offset;
-                if (!Dequeue(handle, &str, &offset))
+                if (!QueueApiConsumerSync::Dequeue(handle, &str, &offset))
                 {
                     std::cout << "error" << std::endl;
                     break;
@@ -111,22 +111,21 @@ void Client::RunConsumerSync()
 
 void Client::RunConsumerAsync()
 {
-    using namespace QueueApiConsumerAsync;
-
     std::cout << "Async consumer client started." << std::endl;
 
-    std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "..." << std::endl;
+    std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "...";
 
-    auto connectCallback = [](Handle handle, char* errorMessage)
+    Handle handle = 0;
+    auto connectCallback = [&handle](bool ok, char* errorMessage)
     {
-        if (!handle)
+        if (!ok)
         {
-            std::cout << "Error: " << errorMessage << std::endl;
+            std::cout << "error: " << errorMessage << std::endl;
             delete [] errorMessage;
             return;
         }
 
-        std::cout << "Success." << std::endl;
+        std::cout << "success." << std::endl;
 
         auto queueListCallback = [handle](const char* queueList, std::size_t queueListLength)
         {
@@ -143,36 +142,35 @@ void Client::RunConsumerAsync()
                         std::cout << "Item:" << str << ", offset: " << offset << std::endl;
                     };
 
-                    Dequeue(handle, dequeueCallback);
+                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
                 };
 
-                StartQueueSession(handle, queueSessionCallback, ptr);
+                QueueApiConsumerAsync::StartQueueSession(handle, queueSessionCallback, ptr);
 
                 auto dequeueCallback = [](const char* str, std::size_t offset)
                 {
                     std::cout << "Item:" << str << ", offset:" << offset << std::endl;
                 };
 
-                Dequeue(handle, dequeueCallback);
+                QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
             }
         };
 
-        GetQueueList(handle, queueListCallback);
+        QueueApiConsumerAsync::GetQueueList(handle, queueListCallback);
     };
 
-    Connect(mServerData.mHost.c_str(), mServerData.mPort, connectCallback);
+    handle = QueueApiConsumerAsync::Connect(mServerData.mHost.c_str(), mServerData.mPort, connectCallback);
+    QueueApiConsumerAsync::Run(handle);
 }
 
 void Client::RunProducerSync()
 {
-    using namespace QueueApiProducerSync;
-
     std::cout << "Sync producer client started." << std::endl;
 
     std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "..." << std::endl;
 
     char* errorMessage;
-    auto handle = Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage);
+    auto handle = QueueApiProducerSync::Connect(mServerData.mHost.c_str(), mServerData.mPort, &errorMessage);
 
     if (!handle)
     {
@@ -183,14 +181,14 @@ void Client::RunProducerSync()
 
     std::cout << "Success." << std::endl;
 
-    StartQueueSession(handle, "TestQueue");
+    QueueApiProducerSync::StartQueueSession(handle, "TestQueue");
 
     for (int i = 0; i < mNumber; ++i)
     {
         auto str = std::string("str") + std::to_string(i);
-        Enqueue(handle, str.c_str());
+        QueueApiProducerSync::Enqueue(handle, str.c_str());
         std::cout << "Enqueued string " << str << std::endl;
     }
 
-    Disconnect(handle);
+    QueueApiProducerSync::Disconnect(handle);
 }
