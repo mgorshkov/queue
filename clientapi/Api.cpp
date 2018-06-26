@@ -33,6 +33,7 @@ namespace QueueApiConsumerSync
         {
             *errorMessage = new char[error.message().length() + 1];
             strcpy(*errorMessage, error.message().c_str());
+            return nullptr;
         }
 
         return client;
@@ -205,6 +206,7 @@ namespace QueueApiProducerSync
         {
             *errorMessage = new char[error.message().length() + 1];
             strcpy(*errorMessage, error.message().c_str());
+            return nullptr;
         }
 
         return client;

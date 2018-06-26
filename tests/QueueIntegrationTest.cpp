@@ -14,15 +14,23 @@ BOOST_AUTO_TEST_CASE(test_integration)
 {
     namespace ba = boost::asio;
 
-    int port = 9000;
-    ba::ip::tcp::endpoint endPoint(ba::ip::tcp::v4(), port);
-    ba::io_service ioService;
+    const int port = 9000;
 
-    Server server(ioService, endPoint);
+    // server
+    std::async(std::launch::async, [port]()
+        {
+            ba::ip::tcp::endpoint endPoint(ba::ip::tcp::v4(), port);
+            ba::io_service ioService;
+
+            Server server(ioService, endPoint);
+            server.Run();
+        });
 
     // producer
-    std::async(std::launch::async, [port, &server]()
+    std::async(std::launch::async, [port]()
         {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
             using namespace QueueApiProducerSync;
 
             ServerData serverData{"127.0.0.1", port};
@@ -42,7 +50,7 @@ BOOST_AUTO_TEST_CASE(test_integration)
        });
 
     // Sync consumer
-    std::async(std::launch::async, [port, &server]()
+    std::async(std::launch::async, [port]()
         {
             using namespace QueueApiConsumerSync;
 
@@ -76,19 +84,19 @@ BOOST_AUTO_TEST_CASE(test_integration)
        });
 
     // Async consumer
-    std::async(std::launch::async, [port, &server]()
+    std::async(std::launch::async, [port]()
         {
             using namespace QueueApiConsumerAsync;
 
             ServerData serverData{"127.0.0.1", port};
 
             Handle handle = Connect(serverData.mHost.c_str(), serverData.mPort,
-                [&server, &handle](bool ok, char* errorMessage)
+                [&handle](bool ok, char* errorMessage)
                 {
                     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
                     GetQueueList(handle,
-                        [&server, handle](const char* queueList, std::size_t queueListLength)
+                        [handle](const char* queueList, std::size_t queueListLength)
                         {
                             std::cout << queueListLength << std::endl;
                             std::cout << "Queues:" << std::endl;
@@ -98,16 +106,15 @@ BOOST_AUTO_TEST_CASE(test_integration)
                                 std::cout << queueName << std::endl;
 
                                 StartQueueSession(handle,
-                                    [&server, handle, ptr]
+                                    [handle, ptr]
                                     {
                                         Dequeue(handle, 
-                                            [&server, handle](const char* str, std::size_t offset)
+                                            [handle](const char* str, std::size_t offset)
                                             {
                                                 std::cout << "Item:" << str << ", offset:" << offset << std::endl;
 
                                                 Disconnect(handle);
 
-                                                server.Stop();
                                             });
                                     }, ptr, -1);
                             }
@@ -116,7 +123,6 @@ BOOST_AUTO_TEST_CASE(test_integration)
             Run(handle);
        });
 
-    server.Run();
 }
 
 }
