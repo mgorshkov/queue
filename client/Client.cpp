@@ -116,7 +116,9 @@ void Client::RunConsumerAsync()
     std::cout << "Connecting to " << mServerData.mHost << ":" << mServerData.mPort << "...";
 
     Handle handle = 0;
-    auto connectCallback = [&handle](bool ok, char* errorMessage)
+    std::vector<std::string> queueNames;
+
+    auto connectCallback = [&handle, &queueNames](bool ok, char* errorMessage)
     {
         if (!ok)
         {
@@ -126,33 +128,39 @@ void Client::RunConsumerAsync()
         }
 
         std::cout << "success." << std::endl;
+        std::cout << "Getting list of queues...";
 
-        auto queueListCallback = [handle](const char* queueList, std::size_t queueListLength)
+        auto queueListCallback = [handle, &queueNames](const char* queueList, std::size_t queueListLength)
         {
+            std::cout << "ok" << std::endl;
             std::cout << "Queues:" << std::endl;
             for (const char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
             {
                 std::string queueName(ptr);
                 std::cout << queueName << std::endl;
+                queueNames.push_back(queueName);
+            }
+            delete [] queueList;
 
-                auto queueSessionCallback = [handle]()
+            for (const auto& queueName : queueNames)
+            {
+                auto queueSessionCallback = [handle, &queueName]()
                 {
+                    std::cout << "ok" << std::endl;
+                    std::cout << "Getting items from queue " << queueName << "..." << std::endl;
                     auto dequeueCallback = [handle](const char* str, std::size_t offset)
                     {
-                        std::cout << "Item:" << str << ", offset: " << offset << std::endl;
+                        std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+
+                        delete [] str;
                     };
 
-                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
+                    for (int i = 0; i < 3; ++i)
+                        QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
                 };
 
-                QueueApiConsumerAsync::StartQueueSession(handle, queueSessionCallback, ptr);
-
-                auto dequeueCallback = [](const char* str, std::size_t offset)
-                {
-                    std::cout << "Item:" << str << ", offset:" << offset << std::endl;
-                };
-
-                QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
+                std::cout << "Starting session with queue " << queueName << "...";
+                QueueApiConsumerAsync::StartQueueSession(handle, queueSessionCallback, queueName.c_str());
             }
         };
 

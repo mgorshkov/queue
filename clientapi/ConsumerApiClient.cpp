@@ -160,25 +160,27 @@ void ConsumerApiClientAsync::GetQueueList(std::function<void(const QueueList&)> 
     mIoService.post(
         [this, aCallback]()
         {
-            auto message = std::make_shared<QueueListMessage>();
             std::ostringstream stream;
+            auto message = std::make_shared<QueueListMessage>();
             ProtocolSerializer::Serialize(message, stream);
-            mSocket.async_write_some(ba::buffer(stream.str()),
+            auto str = stream.str();
+            memcpy(&mWriteBuffer[0], str.c_str(), str.size());
+            mSocket.async_write_some(ba::buffer(mWriteBuffer),
                 [this, aCallback](const boost::system::error_code& ec, std::size_t /*length*/)
                 {
                     if (!ec)
                     {
-                        BufferType buffer;
-                        mSocket.async_read_some(ba::buffer(buffer),
-                            [this, &buffer, aCallback](const boost::system::error_code& ec, std::size_t length)
+                        mSocket.async_read_some(ba::buffer(mReadBuffer),
+                            [this, aCallback](const boost::system::error_code& ec, std::size_t length)
                             {
                                 if (!ec)
                                 {
                                     std::stringstream stream;
                                     for (int i = 0; i < length; ++i)
-                                        stream << buffer[i];
+                                        stream << mReadBuffer[i];
                                     auto response = ProtocolSerializer::Deserialize(stream);
                                     auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(response);
+                                    assert (queueListMessage);
                                     aCallback(queueListMessage->mQueueList);
                                 }
                                 else
@@ -194,16 +196,33 @@ void ConsumerApiClientAsync::GetQueueList(std::function<void(const QueueList&)> 
 void ConsumerApiClientAsync::StartQueueSession(std::function<void()> aCallback, const std::string& aQueueName, std::size_t aOffset)
 {
     mIoService.post(
-        [this, aCallback, &aQueueName, aOffset]()
+        [this, aCallback, aQueueName, aOffset]()
         {
-            auto message = std::make_shared<StartQueueSessionMessage>(aQueueName, aOffset);
             std::ostringstream stream;
+            auto message = std::make_shared<StartQueueSessionMessage>(aQueueName, aOffset);
             ProtocolSerializer::Serialize(message, stream);
-            mSocket.async_write_some(ba::buffer(stream.str()),
+            auto str = stream.str();
+            memcpy(&mWriteBuffer[0], str.c_str(), str.size());
+            mSocket.async_write_some(ba::buffer(mWriteBuffer),
                 [this, aCallback](const boost::system::error_code& ec, std::size_t /*length*/)
                 {
                     if (!ec)
-                        aCallback();
+                        mSocket.async_read_some(ba::buffer(mReadBuffer),
+                            [this, aCallback](const boost::system::error_code& ec, std::size_t length)
+                            {
+                                if (!ec)
+                                {
+                                    std::stringstream stream;
+                                    for (int i = 0; i < length; ++i)
+                                        stream << mReadBuffer[i];
+                                    auto response = ProtocolSerializer::Deserialize(stream);
+                                    auto startQueueSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(response);
+                                    assert (startQueueSessionMessage);
+                                    aCallback();
+                                }
+                                else
+                                   mSocket.close();
+                            });
                     else
                         mSocket.close();
                 });
@@ -215,29 +234,31 @@ void ConsumerApiClientAsync::Dequeue(std::function<void(const Item&)> aCallback)
     mIoService.post(
         [this, aCallback]()
         {
-            auto message = std::make_shared<DequeueMessage>();
             std::ostringstream stream;
+            auto message = std::make_shared<DequeueMessage>();
             ProtocolSerializer::Serialize(message, stream);
-            mSocket.async_write_some(ba::buffer(stream.str()),
+            auto str = stream.str();
+            memcpy(&mWriteBuffer[0], str.c_str(), str.size());
+            mSocket.async_write_some(ba::buffer(mWriteBuffer),
                 [this, aCallback](const boost::system::error_code& ec, std::size_t length)
                 {
                     if (!ec)
                     {
-                        BufferType buffer;
-                        mSocket.async_read_some(ba::buffer(buffer),
-                            [this, &buffer, aCallback](const boost::system::error_code& ec, std::size_t length)
+                        mSocket.async_read_some(ba::buffer(mReadBuffer),
+                            [this, aCallback](const boost::system::error_code& ec, std::size_t length)
                             {
                                 if (!ec)
                                 {
                                     std::stringstream stream;
                                     for (int i = 0; i < length; ++i)
-                                        stream << buffer[i];
+                                        stream << mReadBuffer[i];
                                     auto response = ProtocolSerializer::Deserialize(stream);
                                     auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(response);
+                                    assert (dequeueMessage);
                                     aCallback(dequeueMessage->mItem);
                                 }
                                 else
-                                   mSocket.close();
+                                    mSocket.close();
                             });
                     }
                     else

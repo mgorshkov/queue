@@ -43,5 +43,7 @@ private:
 
     ba::io_service mIoService;
     ba::ip::tcp::socket mSocket;
+    BufferType mReadBuffer;
+    BufferType mWriteBuffer;
 };
 
