@@ -16,8 +16,8 @@ matrix:
             - g++-7
           cache:
             directories:
-              - $HOME/boost_1_60_0/boost
-              - $HOME/boost_1_60_0/stage/lib
+              - $HOME/boost_1_67_0/boost
+              - $HOME/boost_1_67_0/stage/lib
       env:
         - MATRIX_EVAL="CC=gcc-7 && CXX=g++-7"
         - BUILD_DIR=build
@@ -27,14 +27,14 @@ before_install:
 install:
   - sudo apt-get install -qq doxygen graphviz
   - wget http://posyo.ru/install_boost.py  
-  - python install_boost.py --directory ~ --boost-version 1.60.0 filesystem system test iostreams
+  - python install_boost.py --directory ~ --boost-version 1.67.0 filesystem system test iostreams
 before_script:
   - echo "deb http://archive.ubuntu.com/ubuntu xenial main universe" | sudo tee -a /etc/apt/sources.list
   - sudo apt-get update -qq
 script:
   - mkdir ${BUILD_DIR}
   - cd ${BUILD_DIR}
-  - cmake .. -DBOOST_ROOT=~/boost_1_60_0 -DBOOST_INCLUDEDIR=~/boost_1_60_0 -DBOOST_LIBRARYDIR=~/boost_1_60_0/stage/lib
+  - cmake .. -DBOOST_ROOT=~/boost_1_67_0 -DBOOST_INCLUDEDIR=~/boost_1_67_0 -DBOOST_LIBRARYDIR=~/boost_1_67_0/stage/lib
   - cmake --build .
   - cmake --build . --target test
   - cmake --build . --target package
