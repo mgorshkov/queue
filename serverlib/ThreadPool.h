@@ -1,29 +1,22 @@
 #pragma once
 
-#include <memory>
-#include <thread>
 #include <vector>
-
-using ThreadPtr = std::unique_ptr<std::thread>;
 
 class ThreadPool
 {
 public:
-    ThreadPtr Get();
-
-    struct ThreadInfo
+    ThreadPool(std::size_t aThreads)
     {
-        ThreadInfo(ThreadPtr aThread, bool aBusy)
-            : mThread(std::move(aThread))
-            , mBusy(aBusy)
-        {}
-        ThreadPtr mThread;
-        bool mBusy;
-    };
-
-    void Put(ThreadPtr aThread);
+        for (std::size_t i = 0; i < aThreads; ++i)
+        {
+            mWorkers.push_back(std::make_shared<Worker>());
+        }
+    }
+    ~ThreadPool() {}
 
 private:
-    std::vector<ThreadInfo> mPool;
+    WorkerPtr GetFreeWorker() const;
+
+    std::vector<WorkerPtr> mWorkers; 
 };
 

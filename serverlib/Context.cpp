@@ -41,7 +41,7 @@ void Context::Start()
     mStream.str("");
     mCommandContext = nullptr;
 
-    mThread = std::move(std::thread(&Context::ThreadProc, this));
+    auto threadPotr = mThreadPool.Get(&Context::ThreadProc, this));
 }
 
 void Context::ProcessData(const BufferType& aBuffer, std::size_t aLength)

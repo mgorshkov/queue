@@ -38,10 +38,8 @@ add_library(server
     StartSessionCommandHandler.h
     ThreadPool.cpp
     ThreadPool.h
-    ThreadedActor.cpp
-    ThreadedActor.h
-    ThreadedConsumer.h
-    ThreadedProducer.h)
+    Worker.cpp
+    Worker.h)
 
 target_link_libraries(server
     ${Boost_LIBRARIES}

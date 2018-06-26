@@ -1,37 +1,18 @@
 #include "ThreadPool.h"
 
-void ThreadProc()
+WorkerPtr ThreadPool::GetFreeWorker()
 {
-}
-
-ThreadPtr ThreadPool::Get()
-{
-    for (auto& poolElem : mPool)
+    WorkerPtr freeWorker;
+    size_t minTasks = std::numeric_limits<std::size_t>::max();
+    for (const auto& worker : mWorkers)
     {
-        if (!poolElem.mBusy)
+        if (worker->isEmpty())
+            return worker;
+        else if (minTasks > worker->GetTaskCount())
         {
-            poolElem.mBusy = true;
-            return std::move(poolElem.mThread);
+            minTasks = worker->GetTaskCount();
+            freeWorker = it;
         }
     }
-
-    auto thread = std::make_unique<std::thread>(&ThreadProc);
-
-    mPool.emplace_back(std::move(thread), true);
-
-    return std::move(mPool[mPool.size() - 1].mThread);
+    return freeWorker;
 }
-
-void ThreadPool::Put(ThreadPtr aThread)
-{
-    for (size_t i = 0; i < mPool.size(); ++i)
-    {
-        if (mPool[i].mBusy)
-        {
-            mPool[i].mThread = std::move(aThread);
-            mPool[i].mBusy = false;
-            break;
-        }
-    }
-}
-

@@ -13,11 +13,12 @@
 #include "CommandExecutor.h"
 #include "Defines.h"
 #include "IContextHandler.h"
+#include "ThreadPool.h"
 
 class Context : public IContextHandler
 {
 public:
-    Context(CommandExecutorPtr aCommandExecutor = nullptr);
+    Context(ThreadPool& aThreadPool, CommandExecutorPtr aCommandExecutor = nullptr);
     ~Context();
 
     void SetExecutor(CommandExecutorPtr aCommandExecutor);
@@ -52,7 +53,7 @@ private:
     std::atomic_bool mNotified{false};
     std::atomic_bool mQueueNotified{false};
 
-    std::thread mThread;
+    ThreadPool& mThreadPool;
 
     std::queue<MessagePtrs> mOutboundMessages;
     std::mutex mQueueMutex;

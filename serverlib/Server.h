@@ -5,6 +5,7 @@
 
 #include "CommandExecutor.h"
 #include "QueueManager.h"
+#include "ThreadPool.h"
 
 namespace ba = boost::asio;
 
@@ -24,4 +25,5 @@ private:
 
     CommandExecutorPtr mCommandExecutor;
     QueueManager mQueueManager;
+    ThreadPool mThreadPool;
 };
