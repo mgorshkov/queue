@@ -1,45 +1,32 @@
-typedef function<void()> fn_type;
+#pragma once
+
+#include <atomic>
+#include <condition_variable>
+#include <queue>
+#include <thread>
 
 class Worker
-{    
+{
 public:
+    Worker();
+    ~Worker();
 
-    Worker()
-	:enabled(true),fqueue()
-	,thread(&Worker::thread_fn, this)
-    {}
-    ~Worker()
-    {
-	enabled = false;
-	cv.notify_one();	
-	thread.join();
-    }
-    void appendFn(fn_type fn)
-    {
-	std::unique_lock<std::mutex> locker(mutex);
-	fqueue.push(fn);			
-	cv.notify_one();
-    }
-    size_t getTaskCount() 		
-    { 
-	std::unique_lock<std::mutex> locker(mutex);
-	return fqueue.size();		
-    }
-    bool   isEmpty() 			
-    { 
-	std::unique_lock<std::mutex> locker(mutex);
-	return fqueue.empty();	
-    }
+    void Stop();
+
+    using ThreadProcType = std::function<void()>;
+
+    void AppendThreadProc(ThreadProcType aThreadProc);
+    std::size_t GetTaskCount() const;
+    bool IsEmpty() const;
 
 private:
+    std::atomic_bool            mDone;
+    std::condition_variable     mConditionVariable;
+    std::queue<ThreadProcType>  mQueue;
+    mutable std::mutex          mMutex;
+    std::thread                 mThread; 
 
-    bool				enabled;
-    std::condition_variable		cv;
-    std::queue<fn_type>			fqueue;
-    std::mutex				mutex;
-    std::thread				thread;	
-
-    void thread_fn();
+    void ThreadProc();
 };
 
 using WorkerPtr = std::shared_ptr<Worker>;

@@ -8,6 +8,7 @@ Server::Server(ba::io_service& aIoService, const ba::ip::tcp::endpoint& aEndPoin
     , mSocket(aIoService)
     , mIoService(aIoService)
     , mQueueManager()
+    , mThreadPool(10)
 {
     mCommandExecutor = std::make_shared<CommandExecutor>(&mQueueManager);
     DoAccept();
@@ -31,7 +32,7 @@ void Server::DoAccept()
             if (ec)
                 std::cout << "Accept error: " << ec.message() << std::endl;
             else
-                std::make_shared<Session>(std::move(mSocket), mCommandExecutor, mIoService)->Start();
+                std::make_shared<Session>(mThreadPool, std::move(mSocket), mCommandExecutor, mIoService)->Start();
 
             DoAccept();
         });

@@ -5,9 +5,10 @@
 
 using ba::ip::tcp;
 
-Session::Session(tcp::socket aSocket, CommandExecutorPtr aCommandExecutor, ba::io_service& aIoService)
-    : mSocket(std::move(aSocket))
-    , mContext(aCommandExecutor)
+Session::Session(ThreadPool& aThreadPool, tcp::socket aSocket, CommandExecutorPtr aCommandExecutor, ba::io_service& aIoService)
+    : mThreadPool(aThreadPool)
+    , mSocket(std::move(aSocket))
+    , mContext(aThreadPool, aCommandExecutor)
     , mIoService(aIoService)
 {
 #ifdef DEBUG_PRINT
@@ -24,7 +25,7 @@ Session::~Session()
 
 void Session::Start()
 {
-    mWriteThread = std::move(std::thread(&Session::ProcessWrite, this));
+    mThreadPool.RunAsync(&Session::ProcessWrite, this);
     mContext.Start();
     DoRead();
 }
@@ -37,8 +38,6 @@ void Session::Stop()
     mSocket.close();
     mContext.Stop();
     mDone = true;
-    if (mWriteThread.joinable())
-        mWriteThread.join();
 #ifdef DEBUG_PRINT
     std::cout << "Session::Stop 2, this==" << this << std::endl;
 #endif

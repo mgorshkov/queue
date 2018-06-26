@@ -13,7 +13,7 @@ namespace ba = boost::asio;
 class Session : public std::enable_shared_from_this<Session>
 {
 public:
-    Session(ba::ip::tcp::socket aSocket,
+    Session(ThreadPool& aThreadPool, ba::ip::tcp::socket aSocket,
         CommandExecutorPtr aCommandExecutor,
         ba::io_service& aIoService);
     ~Session();
@@ -35,6 +35,6 @@ private:
     ba::ip::tcp::socket mSocket;
     BufferType mBuffer;
     std::deque<std::string> mWriteMsgs;
-    std::thread mWriteThread;
+    ThreadPool& mThreadPool;
     std::atomic_bool mDone{false};
 };

@@ -7,8 +7,9 @@
 
 using namespace std::chrono_literals;
 
-Context::Context(CommandExecutorPtr aCommandExecutor)
-    : mCommandExecutor(aCommandExecutor)
+Context::Context(ThreadPool& aThreadPool, CommandExecutorPtr aCommandExecutor)
+    : mThreadPool(aThreadPool)
+    , mCommandExecutor(aCommandExecutor)
 {
 #ifdef DEBUG_PRINT
     std::cout << "Context::Context, this==" << this << std::endl;
@@ -41,7 +42,7 @@ void Context::Start()
     mStream.str("");
     mCommandContext = nullptr;
 
-    auto threadPotr = mThreadPool.Get(&Context::ThreadProc, this));
+    mThreadPool.RunAsync(&Context::ThreadProc, this);
 }
 
 void Context::ProcessData(const BufferType& aBuffer, std::size_t aLength)
@@ -82,11 +83,6 @@ void Context::Stop()
     mCondition.notify_one();
 #ifdef DEBUG_PRINT
     std::cout << "Context::Stop3, this==" << this << std::endl;
-#endif
-    if (mThread.joinable())
-        mThread.join();
-#ifdef DEBUG_PRINT
-    std::cout << "Context::Stop4, this==" << this << std::endl;
 #endif
 }
 

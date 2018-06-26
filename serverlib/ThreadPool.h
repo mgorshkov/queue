@@ -2,17 +2,19 @@
 
 #include <vector>
 
+#include "Worker.h"
+
 class ThreadPool
 {
 public:
-    ThreadPool(std::size_t aThreads)
+    ThreadPool(std::size_t aThreads);
+    ~ThreadPool();
+
+    template<typename Func, typename... Args>
+    void RunAsync(Func aFunc, Args... aArgs)
     {
-        for (std::size_t i = 0; i < aThreads; ++i)
-        {
-            mWorkers.push_back(std::make_shared<Worker>());
-        }
+        GetFreeWorker()->AppendThreadProc(std::bind(aFunc, aArgs...));
     }
-    ~ThreadPool() {}
 
 private:
     WorkerPtr GetFreeWorker() const;

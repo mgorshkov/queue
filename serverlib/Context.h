@@ -3,10 +3,8 @@
 #include <list>
 #include <memory>
 #include <mutex>
-#include <thread>
 #include <sstream>
 #include <condition_variable>
-#include <atomic>
 #include <queue>
 
 #include "CommandContext.h"
