@@ -152,8 +152,9 @@ MessagePtrs Context::ProcessStream()
         while (mStream)
         {
             auto message = ProtocolSerializer::Deserialize(mStream);
-            if (message)
-                messages.push_back(message);
+            if (!message)
+                break;
+            messages.push_back(message);
         }
         mStream.clear();
         mStream.str("");

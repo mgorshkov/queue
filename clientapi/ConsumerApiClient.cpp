@@ -223,8 +223,9 @@ void ConsumerApiClientAsync::Write(const BufferType& aBuffer, std::function<void
 
 void ConsumerApiClientAsync::DoWrite(std::function<void()> aCallback)
 {
+    auto buffer = mWriteBuffers.front();
     ba::async_write(mSocket,
-        ba::buffer(&mWriteBuffers.front()[0], mWriteBuffers.front().size()),
+        ba::buffer(buffer),
         [this, aCallback](boost::system::error_code ec, std::size_t /*length*/)
         {
             if (!ec)
@@ -261,8 +262,7 @@ void ConsumerApiClientAsync::GetQueueList(std::function<void(const QueueList&)> 
             auto str = stream.str();
             BufferType writeBuffer;
             memcpy(&writeBuffer[0], str.c_str(), str.size());
-            Write(writeBuffer, [](){});
-            ReadQueueListMessage(aCallback);
+            Write(writeBuffer, [this, aCallback](){ReadQueueListMessage(aCallback);});
       });
 }
 
@@ -277,8 +277,7 @@ void ConsumerApiClientAsync::StartQueueSession(std::function<void()> aCallback, 
             auto str = stream.str();
             BufferType writeBuffer;
             memcpy(&writeBuffer[0], str.c_str(), str.size());
-            Write(writeBuffer, [](){});
-            ReadStartQueueSessionMessage(aCallback);
+            Write(writeBuffer, [this, aCallback](){ReadStartQueueSessionMessage(aCallback);});
        });
 }
 
@@ -293,8 +292,7 @@ void ConsumerApiClientAsync::Dequeue(std::function<void(const Item&)> aCallback)
             auto str = stream.str();
             BufferType writeBuffer;
             memcpy(&writeBuffer[0], str.c_str(), str.size());
-            Write(writeBuffer, [](){});
-            ReadDequeueMessage(aCallback);
+            Write(writeBuffer, [this, aCallback](){ReadDequeueMessage(aCallback);});
       });
 }
 

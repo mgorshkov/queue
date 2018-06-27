@@ -17,7 +17,10 @@ public:
 
 private:
     void RunConsumerSync();
+
     void RunConsumerAsync();
+    void GetItemsFromQueue(Handle aHandle, const std::string& aQueueName);
+
     void RunProducerSync();
 
     ServerData mServerData;

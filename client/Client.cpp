@@ -109,6 +109,26 @@ void Client::RunConsumerSync()
     delete [] queueList;
 }
 
+void Client::GetItemsFromQueue(Handle aHandle, const std::string& aQueueName)
+{
+    auto dequeueCallback = [this, aHandle, aQueueName](const char* str, std::size_t offset)
+    {
+        if (offset != -1)
+        {
+            std::cout << "Item:" << str << ", offset:" << offset;
+            std::cout << " ok" << std::endl;
+
+            delete [] str;
+
+            GetItemsFromQueue(aHandle, aQueueName);
+        }
+        else
+            std::cout << "error" << std::endl;
+    };
+
+    QueueApiConsumerAsync::Dequeue(aHandle, dequeueCallback);
+}
+
 void Client::RunConsumerAsync()
 {
     std::cout << "Async consumer client started." << std::endl;
@@ -144,36 +164,12 @@ void Client::RunConsumerAsync()
 
             for (const auto& queueName : queueNames)
             {
-                auto queueSessionCallback = [handle, &queueName]()
+                auto queueSessionCallback = [this, handle, &queueName]()
                 {
                     std::cout << "ok" << std::endl;
                     std::cout << "Getting items from queue " << queueName << "..." << std::endl;
-                    auto dequeueCallback = [handle](const char* str, std::size_t offset)
-                    {
-                        std::cout << "Item:" << str << ", offset:" << offset << std::endl;
 
-                        delete [] str;
-                    };
-
-                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
-
-                    auto dequeueCallback2 = [handle](const char* str, std::size_t offset)
-                    {
-                        std::cout << "Item:" << str << ", offset:" << offset << std::endl;
-
-                        delete [] str;
-                    };
-
-                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback2);
-
-                    auto dequeueCallback3 = [handle](const char* str, std::size_t offset)
-                    {
-                        std::cout << "Item:" << str << ", offset:" << offset << std::endl;
-
-                        delete [] str;
-                    };
-
-                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback3);
+                    GetItemsFromQueue(handle, queueName);
                 };
 
                 std::cout << "Starting session with queue " << queueName << "...";
