@@ -107,16 +107,19 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
 <div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">private</span>:</div>
 <div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> RunConsumerSync();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> RunConsumerAsync();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> RunProducerSync();</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="structServerData.html">ServerData</a> mServerData;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="Defines_8h.html#a31fdffffb9171bca4c9897b8b37ded15">ConsumerProducerMode</a> mConsumerProducerMode;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="Defines_8h.html#afa1e7d4f8cec163e0b89401341524112">SyncAsyncMode</a> mSyncAsyncMode;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">int</span> mNumber;</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    std::size_t mStartOffset;</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> RunConsumerAsync();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <span class="keywordtype">void</span> GetItemsFromQueue(Handle aHandle, <span class="keyword">const</span> std::string&amp; aQueueName);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <span class="keywordtype">void</span> RunProducerSync();</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <a class="code" href="structServerData.html">ServerData</a> mServerData;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    <a class="code" href="Defines_8h.html#a31fdffffb9171bca4c9897b8b37ded15">ConsumerProducerMode</a> mConsumerProducerMode;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="Defines_8h.html#afa1e7d4f8cec163e0b89401341524112">SyncAsyncMode</a> mSyncAsyncMode;</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;    <span class="keywordtype">int</span> mNumber;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    std::size_t mStartOffset;</div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;};</div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
 <div class="ttc" id="classClient_html_ac95b4a2a47720fdfd3cf127ece013fa2"><div class="ttname"><a href="classClient.html#ac95b4a2a47720fdfd3cf127ece013fa2">Client::Run</a></div><div class="ttdeci">void Run()</div><div class="ttdef"><b>Definition:</b> Client.cpp:20</div></div>
 <div class="ttc" id="Defines_8h_html_afa1e7d4f8cec163e0b89401341524112"><div class="ttname"><a href="Defines_8h.html#afa1e7d4f8cec163e0b89401341524112">SyncAsyncMode</a></div><div class="ttdeci">SyncAsyncMode</div><div class="ttdef"><b>Definition:</b> Defines.h:62</div></div>
 <div class="ttc" id="Defines_8h_html"><div class="ttname"><a href="Defines_8h.html">Defines.h</a></div></div>
