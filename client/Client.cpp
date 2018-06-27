@@ -118,7 +118,7 @@ void Client::RunConsumerAsync()
     Handle handle = 0;
     std::vector<std::string> queueNames;
 
-    auto connectCallback = [&handle, &queueNames](bool ok, char* errorMessage)
+    auto connectCallback = [this, &handle, &queueNames](bool ok, char* errorMessage)
     {
         if (!ok)
         {
@@ -130,7 +130,7 @@ void Client::RunConsumerAsync()
         std::cout << "success." << std::endl;
         std::cout << "Getting list of queues...";
 
-        auto queueListCallback = [handle, &queueNames](const char* queueList, std::size_t queueListLength)
+        auto queueListCallback = [this, handle, &queueNames](const char* queueList, std::size_t queueListLength)
         {
             std::cout << "ok" << std::endl;
             std::cout << "Queues:" << std::endl;
@@ -155,12 +155,29 @@ void Client::RunConsumerAsync()
                         delete [] str;
                     };
 
-                    for (int i = 0; i < 3; ++i)
-                        QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
+                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback);
+
+                    auto dequeueCallback2 = [handle](const char* str, std::size_t offset)
+                    {
+                        std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+
+                        delete [] str;
+                    };
+
+                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback2);
+
+                    auto dequeueCallback3 = [handle](const char* str, std::size_t offset)
+                    {
+                        std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+
+                        delete [] str;
+                    };
+
+                    QueueApiConsumerAsync::Dequeue(handle, dequeueCallback3);
                 };
 
                 std::cout << "Starting session with queue " << queueName << "...";
-                QueueApiConsumerAsync::StartQueueSession(handle, queueSessionCallback, queueName.c_str());
+                QueueApiConsumerAsync::StartQueueSession(handle, queueSessionCallback, queueName.c_str(), mStartOffset);
             }
         };
 

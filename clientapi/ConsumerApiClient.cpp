@@ -142,8 +142,103 @@ void ConsumerApiClientAsync::ConnectInternal()
             }
 
             ConnectInternal();
+    });
+}
+
+void ConsumerApiClientAsync::ReadQueueListMessage(std::function<void(const QueueList&)> aCallback)
+{
+    mSocket.async_read_some(ba::buffer(mReadBuffer),
+        [this, aCallback](const boost::system::error_code& ec, std::size_t length)
+        {
+            if (!ec)
+            {
+                std::stringstream stream;
+                for (int i = 0; i < length; ++i)
+                    stream << mReadBuffer[i];
+                auto response = ProtocolSerializer::Deserialize(stream);
+                auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(response);
+                assert (queueListMessage);
+                aCallback(queueListMessage->mQueueList);
+            }
+            else
+               mSocket.close();
         });
 }
+
+void ConsumerApiClientAsync::ReadStartQueueSessionMessage(std::function<void()> aCallback)
+{
+    mSocket.async_read_some(ba::buffer(mReadBuffer),
+        [this, aCallback](const boost::system::error_code& ec, std::size_t length)
+        {
+            if (!ec)
+            {
+                std::stringstream stream;
+                for (int i = 0; i < length; ++i)
+                    stream << mReadBuffer[i];
+                auto response = ProtocolSerializer::Deserialize(stream);
+                auto startQueueSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(response);
+                assert (startQueueSessionMessage);
+                aCallback();
+            }
+            else
+               mSocket.close();
+        });
+}
+
+void ConsumerApiClientAsync::ReadDequeueMessage(std::function<void(const Item&)> aCallback)
+{
+    mSocket.async_read_some(ba::buffer(mReadBuffer),
+        [this, aCallback](const boost::system::error_code& ec, std::size_t length)
+        {
+            if (!ec)
+            {
+                std::stringstream stream;
+                for (int i = 0; i < length; ++i)
+                    stream << mReadBuffer[i];
+                while (stream)
+                {
+                    auto response = ProtocolSerializer::Deserialize(stream);
+                    auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(response);
+                    if (!dequeueMessage)
+                        break;
+                    aCallback(dequeueMessage->mItem);
+                }
+            }
+            else
+                mSocket.close();
+        });
+}
+
+void ConsumerApiClientAsync::Write(const BufferType& aBuffer, std::function<void()> aCallback)
+{
+    mIoService.post(
+        [this, aBuffer, aCallback]()
+        {
+            bool writeInProgress = !mWriteBuffers.empty();
+            mWriteBuffers.push_back(aBuffer);
+            if (!writeInProgress)
+                DoWrite(aCallback);
+        });
+}
+
+void ConsumerApiClientAsync::DoWrite(std::function<void()> aCallback)
+{
+    ba::async_write(mSocket,
+        ba::buffer(&mWriteBuffers.front()[0], mWriteBuffers.front().size()),
+        [this, aCallback](boost::system::error_code ec, std::size_t /*length*/)
+        {
+            if (!ec)
+            {
+                mWriteBuffers.pop_front();
+                if (!mWriteBuffers.empty())
+                    DoWrite(aCallback);
+                else
+                    aCallback();
+            }
+            else
+                mSocket.close();
+        });
+ }
 
 void ConsumerApiClientAsync::Connect(const ServerData& aServerData, std::function<void(const boost::system::error_code& error)> aCallback)
 {
@@ -164,32 +259,10 @@ void ConsumerApiClientAsync::GetQueueList(std::function<void(const QueueList&)> 
             auto message = std::make_shared<QueueListMessage>();
             ProtocolSerializer::Serialize(message, stream);
             auto str = stream.str();
-            memcpy(&mWriteBuffer[0], str.c_str(), str.size());
-            mSocket.async_write_some(ba::buffer(mWriteBuffer),
-                [this, aCallback](const boost::system::error_code& ec, std::size_t /*length*/)
-                {
-                    if (!ec)
-                    {
-                        mSocket.async_read_some(ba::buffer(mReadBuffer),
-                            [this, aCallback](const boost::system::error_code& ec, std::size_t length)
-                            {
-                                if (!ec)
-                                {
-                                    std::stringstream stream;
-                                    for (int i = 0; i < length; ++i)
-                                        stream << mReadBuffer[i];
-                                    auto response = ProtocolSerializer::Deserialize(stream);
-                                    auto queueListMessage = std::dynamic_pointer_cast<QueueListMessage>(response);
-                                    assert (queueListMessage);
-                                    aCallback(queueListMessage->mQueueList);
-                                }
-                                else
-                                   mSocket.close();
-                            });
-                    }
-                    else
-                        mSocket.close();
-                });
+            BufferType writeBuffer;
+            memcpy(&writeBuffer[0], str.c_str(), str.size());
+            Write(writeBuffer, [](){});
+            ReadQueueListMessage(aCallback);
       });
 }
 
@@ -202,30 +275,10 @@ void ConsumerApiClientAsync::StartQueueSession(std::function<void()> aCallback, 
             auto message = std::make_shared<StartQueueSessionMessage>(aQueueName, aOffset);
             ProtocolSerializer::Serialize(message, stream);
             auto str = stream.str();
-            memcpy(&mWriteBuffer[0], str.c_str(), str.size());
-            mSocket.async_write_some(ba::buffer(mWriteBuffer),
-                [this, aCallback](const boost::system::error_code& ec, std::size_t /*length*/)
-                {
-                    if (!ec)
-                        mSocket.async_read_some(ba::buffer(mReadBuffer),
-                            [this, aCallback](const boost::system::error_code& ec, std::size_t length)
-                            {
-                                if (!ec)
-                                {
-                                    std::stringstream stream;
-                                    for (int i = 0; i < length; ++i)
-                                        stream << mReadBuffer[i];
-                                    auto response = ProtocolSerializer::Deserialize(stream);
-                                    auto startQueueSessionMessage = std::dynamic_pointer_cast<StartQueueSessionMessage>(response);
-                                    assert (startQueueSessionMessage);
-                                    aCallback();
-                                }
-                                else
-                                   mSocket.close();
-                            });
-                    else
-                        mSocket.close();
-                });
+            BufferType writeBuffer;
+            memcpy(&writeBuffer[0], str.c_str(), str.size());
+            Write(writeBuffer, [](){});
+            ReadStartQueueSessionMessage(aCallback);
        });
 }
 
@@ -238,32 +291,10 @@ void ConsumerApiClientAsync::Dequeue(std::function<void(const Item&)> aCallback)
             auto message = std::make_shared<DequeueMessage>();
             ProtocolSerializer::Serialize(message, stream);
             auto str = stream.str();
-            memcpy(&mWriteBuffer[0], str.c_str(), str.size());
-            mSocket.async_write_some(ba::buffer(mWriteBuffer),
-                [this, aCallback](const boost::system::error_code& ec, std::size_t length)
-                {
-                    if (!ec)
-                    {
-                        mSocket.async_read_some(ba::buffer(mReadBuffer),
-                            [this, aCallback](const boost::system::error_code& ec, std::size_t length)
-                            {
-                                if (!ec)
-                                {
-                                    std::stringstream stream;
-                                    for (int i = 0; i < length; ++i)
-                                        stream << mReadBuffer[i];
-                                    auto response = ProtocolSerializer::Deserialize(stream);
-                                    auto dequeueMessage = std::dynamic_pointer_cast<DequeueMessage>(response);
-                                    assert (dequeueMessage);
-                                    aCallback(dequeueMessage->mItem);
-                                }
-                                else
-                                    mSocket.close();
-                            });
-                    }
-                    else
-                        mSocket.close();
-                });
+            BufferType writeBuffer;
+            memcpy(&writeBuffer[0], str.c_str(), str.size());
+            Write(writeBuffer, [](){});
+            ReadDequeueMessage(aCallback);
       });
 }
 

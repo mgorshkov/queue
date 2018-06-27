@@ -1,6 +1,8 @@
 #pragma once
 
 #include <boost/asio.hpp>
+#include <deque>
+#include <functional>
 
 #include "Defines.h"
 #include "IConsumerApiClient.h"
@@ -41,9 +43,16 @@ private:
     ba::ip::tcp::resolver::iterator mResolverIterator;
     void ConnectInternal();
 
+    void ReadQueueListMessage(std::function<void(const QueueList&)> aCallback);
+    void ReadStartQueueSessionMessage(std::function<void()> aCallback);
+    void ReadDequeueMessage(std::function<void(const Item&)> aCallback);
+
+    void Write(const BufferType& aBuffer, std::function<void ()> aCallback);
+    void DoWrite(std::function<void ()> aCallback);
+
     ba::io_service mIoService;
     ba::ip::tcp::socket mSocket;
     BufferType mReadBuffer;
-    BufferType mWriteBuffer;
+    std::deque<BufferType> mWriteBuffers;
 };
 
