@@ -73,7 +73,7 @@ void Session::DoRead()
     std::cout << "Session::DoProcessCommand 1, this==" << this << std::endl;
 #endif
 
-    mSocket.async_read_some(ba::buffer(mBuffer),
+    mSocket.async_read_some(ba::buffer(mReadBuffer),
         [this, self](boost::system::error_code ec, std::size_t length)
         {
 #ifdef DEBUG_PRINT
@@ -136,9 +136,12 @@ void Session::DoWrite()
 #ifdef DEBUG_PRINT
                std::cout << "Session::DoWrite 3, this==" << this << ", ec=" << ec << std::endl;
 #endif
+               mWriteMsgs.pop_front();
+
+               if (!mWriteMsgs.empty())
+                   DoWrite();
            }
        });
-     mWriteMsgs.pop_front();
 #ifdef DEBUG_PRINT
      std::cout << "Session::DoWrite 4, this==" << this << ", ec=" << ec << std::endl;
 #endif
@@ -150,5 +153,5 @@ void Session::Deliver(std::size_t aLength)
     std::cout << "Session::Deliver, this==" << this << ", mReadMsg.data()=" << mReadMsg.data() << ", mReadMsg.size()=" << mReadMsg.size() << std::endl;
 #endif
 
-    mContext.ProcessData(mBuffer, aLength);
+    mContext.ProcessData(mReadBuffer, aLength);
 }
