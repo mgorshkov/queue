@@ -51,6 +51,8 @@ private:
     std::atomic_bool mNotified{false};
     std::atomic_bool mQueueNotified{false};
 
+    std::atomic_bool mThreadFinished{false};
+
     ThreadPool& mThreadPool;
 
     std::queue<MessagePtrs> mOutboundMessages;

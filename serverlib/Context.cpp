@@ -41,6 +41,7 @@ void Context::Start()
     mStream.clear();
     mStream.str("");
     mCommandContext = nullptr;
+    mThreadFinished = false;
 
     mThreadPool.RunAsync(&Context::ThreadProc, this);
 }
@@ -84,6 +85,9 @@ void Context::Stop()
 #ifdef DEBUG_PRINT
     std::cout << "Context::Stop3, this==" << this << std::endl;
 #endif
+
+    while (!mThreadFinished.load())
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 MessagePtrs Context::GetOutboundQueue()
@@ -198,4 +202,5 @@ void Context::ThreadProc()
     {
         std::cerr << e.what() << std::endl;
     }
+    mThreadFinished = true;
 }

@@ -25,6 +25,8 @@ Session::~Session()
 
 void Session::Start()
 {
+    mDone = false;
+    mThreadFinished = false;
     mThreadPool.RunAsync(&Session::ProcessWrite, this);
     mContext.Start();
     DoRead();
@@ -41,6 +43,8 @@ void Session::Stop()
 #ifdef DEBUG_PRINT
     std::cout << "Session::Stop 2, this==" << this << std::endl;
 #endif
+    while (!mThreadFinished.load())
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
 }
 
 void Session::ProcessWrite()
@@ -58,6 +62,7 @@ void Session::ProcessWrite()
     {
         std::cerr << "Exception: " << e.what() << "\n";
     }
+    mThreadFinished = true;
 }
 
 void Session::DoRead()

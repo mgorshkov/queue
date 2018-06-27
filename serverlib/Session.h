@@ -37,4 +37,5 @@ private:
     std::deque<std::string> mWriteMsgs;
     ThreadPool& mThreadPool;
     std::atomic_bool mDone{false};
+    std::atomic_bool mThreadFinished{false};
 };
