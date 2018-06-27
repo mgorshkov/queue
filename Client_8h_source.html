@@ -97,29 +97,31 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00007"></a><span class="lineno"><a class="line" href="classClient.html">    7</a></span>&#160;<span class="keyword">class </span><a class="code" href="classClient.html">Client</a></div>
 <div class="line"><a name="l00008"></a><span class="lineno">    8</span>&#160;{</div>
 <div class="line"><a name="l00009"></a><span class="lineno">    9</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="classClient.html#ae8af4121edf190fb847b62ab4643db64">Client</a>(<span class="keyword">const</span> <a class="code" href="structServerData.html">ServerData</a>&amp; aServerData,</div>
+<div class="line"><a name="l00010"></a><span class="lineno">   10</span>&#160;    <a class="code" href="classClient.html#a981049841ea8a15de009dc25e9bcb4bd">Client</a>(<span class="keyword">const</span> <a class="code" href="structServerData.html">ServerData</a>&amp; aServerData,</div>
 <div class="line"><a name="l00011"></a><span class="lineno">   11</span>&#160;        <a class="code" href="Defines_8h.html#a31fdffffb9171bca4c9897b8b37ded15">ConsumerProducerMode</a> aConsumerProducerMode,</div>
 <div class="line"><a name="l00012"></a><span class="lineno">   12</span>&#160;        <a class="code" href="Defines_8h.html#afa1e7d4f8cec163e0b89401341524112">SyncAsyncMode</a> aSyncAsyncMode,</div>
-<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keywordtype">int</span> aNumber);</div>
-<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;</div>
-<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classClient.html#ac95b4a2a47720fdfd3cf127ece013fa2">Run</a>();</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;</div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;    <span class="keywordtype">void</span> RunConsumerSync();</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> RunConsumerAsync();</div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> RunProducerSync();</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;    <a class="code" href="structServerData.html">ServerData</a> mServerData;</div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="Defines_8h.html#a31fdffffb9171bca4c9897b8b37ded15">ConsumerProducerMode</a> mConsumerProducerMode;</div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="Defines_8h.html#afa1e7d4f8cec163e0b89401341524112">SyncAsyncMode</a> mSyncAsyncMode;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <span class="keywordtype">int</span> mNumber;</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;};</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;</div>
-<div class="ttc" id="classClient_html_ac95b4a2a47720fdfd3cf127ece013fa2"><div class="ttname"><a href="classClient.html#ac95b4a2a47720fdfd3cf127ece013fa2">Client::Run</a></div><div class="ttdeci">void Run()</div><div class="ttdef"><b>Definition:</b> Client.cpp:18</div></div>
+<div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;        <span class="keywordtype">int</span> aNumber,</div>
+<div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;        std::size_t aStartOffset);</div>
+<div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classClient.html#ac95b4a2a47720fdfd3cf127ece013fa2">Run</a>();</div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;    <span class="keywordtype">void</span> RunConsumerSync();</div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;    <span class="keywordtype">void</span> RunConsumerAsync();</div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;    <span class="keywordtype">void</span> RunProducerSync();</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;    <a class="code" href="structServerData.html">ServerData</a> mServerData;</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;    <a class="code" href="Defines_8h.html#a31fdffffb9171bca4c9897b8b37ded15">ConsumerProducerMode</a> mConsumerProducerMode;</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;    <a class="code" href="Defines_8h.html#afa1e7d4f8cec163e0b89401341524112">SyncAsyncMode</a> mSyncAsyncMode;</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;    <span class="keywordtype">int</span> mNumber;</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;    std::size_t mStartOffset;</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;};</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="ttc" id="classClient_html_ac95b4a2a47720fdfd3cf127ece013fa2"><div class="ttname"><a href="classClient.html#ac95b4a2a47720fdfd3cf127ece013fa2">Client::Run</a></div><div class="ttdeci">void Run()</div><div class="ttdef"><b>Definition:</b> Client.cpp:20</div></div>
 <div class="ttc" id="Defines_8h_html_afa1e7d4f8cec163e0b89401341524112"><div class="ttname"><a href="Defines_8h.html#afa1e7d4f8cec163e0b89401341524112">SyncAsyncMode</a></div><div class="ttdeci">SyncAsyncMode</div><div class="ttdef"><b>Definition:</b> Defines.h:62</div></div>
 <div class="ttc" id="Defines_8h_html"><div class="ttname"><a href="Defines_8h.html">Defines.h</a></div></div>
-<div class="ttc" id="classClient_html_ae8af4121edf190fb847b62ab4643db64"><div class="ttname"><a href="classClient.html#ae8af4121edf190fb847b62ab4643db64">Client::Client</a></div><div class="ttdeci">Client(const ServerData &amp;aServerData, ConsumerProducerMode aConsumerProducerMode, SyncAsyncMode aSyncAsyncMode, int aNumber)</div><div class="ttdef"><b>Definition:</b> Client.cpp:7</div></div>
 <div class="ttc" id="Defines_8h_html_a31fdffffb9171bca4c9897b8b37ded15"><div class="ttname"><a href="Defines_8h.html#a31fdffffb9171bca4c9897b8b37ded15">ConsumerProducerMode</a></div><div class="ttdeci">ConsumerProducerMode</div><div class="ttdef"><b>Definition:</b> Defines.h:84</div></div>
+<div class="ttc" id="classClient_html_a981049841ea8a15de009dc25e9bcb4bd"><div class="ttname"><a href="classClient.html#a981049841ea8a15de009dc25e9bcb4bd">Client::Client</a></div><div class="ttdeci">Client(const ServerData &amp;aServerData, ConsumerProducerMode aConsumerProducerMode, SyncAsyncMode aSyncAsyncMode, int aNumber, std::size_t aStartOffset)</div><div class="ttdef"><b>Definition:</b> Client.cpp:7</div></div>
 <div class="ttc" id="classClient_html"><div class="ttname"><a href="classClient.html">Client</a></div><div class="ttdef"><b>Definition:</b> Client.h:7</div></div>
 <div class="ttc" id="structServerData_html"><div class="ttname"><a href="structServerData.html">ServerData</a></div><div class="ttdef"><b>Definition:</b> Defines.h:56</div></div>
 </div><!-- fragment --></div><!-- contents -->
