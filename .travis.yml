@@ -36,7 +36,6 @@ script:
   - cd ${BUILD_DIR}
   - cmake .. -DBOOST_ROOT=~/boost_1_67_0 -DBOOST_INCLUDEDIR=~/boost_1_67_0 -DBOOST_LIBRARYDIR=~/boost_1_67_0/stage/lib
   - cmake --build .
-  - cmake --build . --target test
   - cmake --build . --target package
 after_success:
   # Generate the docs only if master, and the TRAVIS_BUILD_DOCS is not zero
