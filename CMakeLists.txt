@@ -51,6 +51,8 @@ add_subdirectory(serverlib)
 
 add_subdirectory(server)
 
+enable_testing()
+
 add_subdirectory(tests)
 
 set(CPACK_GENERATOR DEB)
@@ -63,4 +65,3 @@ set(CPACK_PACKAGE_CONTACT mikhail.gorshkov@gmail.com)
 
 include(CPack)
 
-enable_testing()
