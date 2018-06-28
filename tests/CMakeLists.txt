@@ -24,5 +24,4 @@ target_link_libraries(queue_server_test
     server
 )
 
-add_test(queue_server_test, queue_integration_test)
-add_test(queue_server_test, queue_map_test)
+add_test(queue_server_test, queue_server_test)

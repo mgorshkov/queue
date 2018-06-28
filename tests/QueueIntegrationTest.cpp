@@ -16,20 +16,30 @@ BOOST_AUTO_TEST_CASE(test_integration)
 
     const int port = 9000;
 
-    // server
-    std::async(std::launch::async, [port]()
-        {
-            ba::ip::tcp::endpoint endPoint(ba::ip::tcp::v4(), port);
-            ba::io_service ioService;
+    ba::ip::tcp::endpoint endPoint(ba::ip::tcp::v4(), port);
+    ba::io_service ioService;
 
-            Server server(ioService, endPoint);
+    boost::filesystem::path storageFileNameData("storage/TestQueue/0000000000000000.data");
+    boost::filesystem::path storageFileNameIndex("storage/TestQueue/0000000000000000.index");
+
+    boost::filesystem::remove(storageFileNameData);
+    boost::filesystem::remove(storageFileNameIndex);
+
+    boost::filesystem::remove("storage/TestQueue");
+    boost::filesystem::remove("storage");
+
+    Server server(ioService, endPoint);
+
+    // server
+    std::thread threadServer([&server]()
+        {
             server.Run();
         });
 
     // producer
-    std::async(std::launch::async, [port]()
+    std::thread threadProducer([port]()
         {
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
             using namespace QueueApiProducerSync;
 
@@ -42,16 +52,19 @@ BOOST_AUTO_TEST_CASE(test_integration)
             StartQueueSession(handle, "TestQueue");
 
             for (int i = 0; i < 100; ++i)
-                Enqueue(handle, (std::string("string") + std::to_string(i)).c_str());
+            {
+                auto str = std::string("string") + std::to_string(i);
+                Enqueue(handle, str.c_str());
+            }
 
             Disconnect(handle);
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
        });
 
     // Sync consumer
-    std::async(std::launch::async, [port]()
+    std::thread threadSyncConsumer([port]()
         {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
             using namespace QueueApiConsumerSync;
 
             ServerData serverData{"127.0.0.1", port};
@@ -60,32 +73,46 @@ BOOST_AUTO_TEST_CASE(test_integration)
 
             BOOST_CHECK(handle);
 
-            std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
             char* queueList;
             std::size_t queueListLength = GetQueueList(handle, &queueList);
-            std::cout << queueListLength << std::endl;
-            std::cout << "Queues:" << std::endl;
-            for (char* ptr = queueList; queueList + queueListLength <= ptr; ptr += strlen(ptr) + 1)
+
+            BOOST_CHECK_EQUAL(queueListLength, 10);
+            BOOST_CHECK(!strcmp(queueList, "TestQueue"));
+
+            for (char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
             {
                 std::string queueName(ptr);
-                std::cout << queueName << std::endl;
 
                 StartQueueSession(handle, ptr);
 
-                char* str;
-                std::size_t offset;
-                Dequeue(handle, &str, &offset);
+                int i = 0;
+                while (true)
+                {
+                    char* str;
+                    std::size_t offset;
+                    if (!Dequeue(handle, &str, &offset))
+                        break;
+                    auto sample = std::string("string") + std::to_string(i);
 
-                std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+                    BOOST_CHECK_EQUAL(offset, i);
+                    BOOST_CHECK_EQUAL(sample, str);
+
+                    delete [] str;
+
+                    i++;
+                }
             }
+
+            delete [] queueList;
 
             Disconnect(handle);
        });
 
     // Async consumer
-    std::async(std::launch::async, [port]()
+    std::thread threadAsyncConsumer([port]()
         {
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+
             using namespace QueueApiConsumerAsync;
 
             ServerData serverData{"127.0.0.1", port};
@@ -93,36 +120,44 @@ BOOST_AUTO_TEST_CASE(test_integration)
             Handle handle = Connect(serverData.mHost.c_str(), serverData.mPort,
                 [&handle](bool ok, char* errorMessage)
                 {
-                    std::this_thread::sleep_for(std::chrono::milliseconds(500));
-
                     GetQueueList(handle,
                         [handle](const char* queueList, std::size_t queueListLength)
                         {
-                            std::cout << queueListLength << std::endl;
-                            std::cout << "Queues:" << std::endl;
-                            for (const char* ptr = queueList; queueList + queueListLength <= ptr; ptr += strlen(ptr) + 1)
+                            BOOST_CHECK_EQUAL(queueListLength, 10);
+                            BOOST_CHECK(!strcmp(queueList, "TestQueue"));
+                            
+                            for (const char* ptr = queueList; ptr < queueList + queueListLength; ptr += strlen(ptr) + 1)
                             {
-                                std::string queueName(ptr);
-                                std::cout << queueName << std::endl;
-
                                 StartQueueSession(handle,
                                     [handle, ptr]
                                     {
                                         Dequeue(handle, 
                                             [handle](const char* str, std::size_t offset)
                                             {
-                                                std::cout << "Item:" << str << ", offset:" << offset << std::endl;
+                                                int i = 0;
+                                                auto sample = std::string("string") + std::to_string(i);
+
+                                                BOOST_CHECK_EQUAL(offset, i);
+                                                BOOST_CHECK_EQUAL(sample, str);
+
+                                                delete [] str;
 
                                                 Disconnect(handle);
 
                                             });
-                                    }, ptr, -1);
+                                    }, ptr);
                             }
                         });
                 });
             Run(handle);
        });
 
+    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+    server.Stop();
+    threadProducer.join();
+    threadSyncConsumer.join();
+    threadAsyncConsumer.join();
+    threadServer.join();
 }
 
 }
