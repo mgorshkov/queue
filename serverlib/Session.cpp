@@ -21,6 +21,7 @@ Session::~Session()
 #ifdef DEBUG_PRINT
     std::cout << "Session::~Session, this==" << this << std::endl;
 #endif
+    Stop();
 }
 
 void Session::Start()

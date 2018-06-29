@@ -37,6 +37,7 @@ public:
     void Disconnect();
 
     void Run();
+    void Stop();
 
 private:
     std::function<void(const boost::system::error_code& error)> mConnectCallback;

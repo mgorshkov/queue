@@ -33,6 +33,8 @@ namespace QueueApiConsumerAsync
     void Disconnect(Handle handle);
 
     void Run(Handle handle);
+
+    void Stop(Handle handle);
 }
 
 // Sync Api, producer

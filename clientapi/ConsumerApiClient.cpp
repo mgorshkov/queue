@@ -308,3 +308,8 @@ void ConsumerApiClientAsync::Run()
 {
     mIoService.run();
 }
+
+void ConsumerApiClientAsync::Stop()
+{
+    mIoService.stop();
+}

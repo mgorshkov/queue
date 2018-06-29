@@ -190,6 +190,14 @@ namespace QueueApiConsumerAsync
 
         client->Run();
     }
+
+    void Stop(Handle handle)
+    {
+        auto client = dynamic_cast<ConsumerApiClientAsync*>(handle);
+        assert(client);
+
+        client->Stop();
+    }
 }
 
 namespace QueueApiProducerSync
