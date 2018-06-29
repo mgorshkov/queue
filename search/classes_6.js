@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['queuelistmessage',['QueueListMessage',['../structQueueListMessage.html',1,'']]]
+  ['protocolserializer',['ProtocolSerializer',['../classProtocolSerializer.html',1,'']]]
 ];

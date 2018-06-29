@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['run',['Run',['../classClient.html#ac95b4a2a47720fdfd3cf127ece013fa2',1,'Client']]]
+  ['queuelistmessage',['QueueListMessage',['../structQueueListMessage.html#ac96a9197dc47e2c8285c391b16f8986a',1,'QueueListMessage']]]
 ];

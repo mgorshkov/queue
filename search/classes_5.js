@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['protocolserializer',['ProtocolSerializer',['../classProtocolSerializer.html',1,'']]]
+  ['message',['Message',['../structMessage.html',1,'']]]
 ];

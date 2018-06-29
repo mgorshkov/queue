@@ -1,5 +1,22 @@
 var searchData=
 [
-  ['operator_3c_3c',['operator&lt;&lt;',['../structItem.html#ab51d72ac6aa9443ed2929eea63b9a00b',1,'Item::operator&lt;&lt;()'],['../structQueueListMessage.html#a15c389a67df98348165cb9cb40710748',1,'QueueListMessage::operator&lt;&lt;()'],['../structStartQueueSessionMessage.html#a74b5a354e8c823e1afdef7611c5c73e8',1,'StartQueueSessionMessage::operator&lt;&lt;()'],['../structDequeueMessage.html#abe128c15f067c20bafe750b7206c7a8d',1,'DequeueMessage::operator&lt;&lt;()'],['../structEnqueueMessage.html#acc4ff3f9ea49437bd5484189323cb0de',1,'EnqueueMessage::operator&lt;&lt;()'],['../Defines_8h.html#a331a277a4cf59308f0fd4ac7d5c48929',1,'operator&lt;&lt;(std::ostream &amp;aStream, const SyncAsyncMode &amp;aMode):&#160;Defines.h'],['../Defines_8h.html#acff996e41465433cddf4a8936585c41a',1,'operator&lt;&lt;(std::ostream &amp;aStream, const ConsumerProducerMode &amp;aMode):&#160;Defines.h']]],
-  ['operator_3e_3e',['operator&gt;&gt;',['../structItem.html#ade9b1b77ca0f100738f8d73eb1dd5eba',1,'Item::operator&gt;&gt;()'],['../structQueueListMessage.html#a72b112d1fbd126a6dfa9bdce441afd56',1,'QueueListMessage::operator&gt;&gt;()'],['../structStartQueueSessionMessage.html#adfeda519d4c048eeef32bc95718789ba',1,'StartQueueSessionMessage::operator&gt;&gt;()'],['../structDequeueMessage.html#a1cddca1efc69bb2eb6aae7e3e8c94c54',1,'DequeueMessage::operator&gt;&gt;()'],['../structEnqueueMessage.html#ab0c2e1470ee73b3d46ae9e187b3461da',1,'EnqueueMessage::operator&gt;&gt;()'],['../Defines_8h.html#ab7063923a0affe3c96d40276ef7b80c3',1,'operator&gt;&gt;(std::istream &amp;aStream, SyncAsyncMode &amp;aMode):&#160;Defines.h'],['../Defines_8h.html#ad9b9d13e72d8fa5883bcf761aa982612',1,'operator&gt;&gt;(std::istream &amp;aStream, ConsumerProducerMode &amp;aMode):&#160;Defines.h']]]
+  ['main',['main',['../ClientMain_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;ClientMain.cpp'],['../ServerMain_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97',1,'main(int argc, char *argv[]):&#160;ServerMain.cpp']]],
+  ['main_2ecpp',['Main.cpp',['../Main_8cpp.html',1,'']]],
+  ['maxmessagesize',['MaxMessageSize',['../Defines_8h.html#a295461c32df42e9f0dcc8d42ffd35762',1,'Defines.h']]],
+  ['mdata',['mData',['../structItem.html#a9305296deb75ecb55755f02694a305a6',1,'Item::mData()'],['../structEnqueueMessage.html#aba1fd0fe15e8daeeac582b2d0bd3a298',1,'EnqueueMessage::mData()']]],
+  ['mendpoint',['mEndPoint',['../structFixture.html#a52fb2741549228e852666e2fe9d7edb0',1,'Fixture']]],
+  ['message',['Message',['../structMessage.html',1,'']]],
+  ['message_2ecpp',['Message.cpp',['../Message_8cpp.html',1,'']]],
+  ['message_2eh',['Message.h',['../Message_8h.html',1,'']]],
+  ['messageptr',['MessagePtr',['../Message_8h.html#a75ca04502a92d996a6b63dfeec4f8319',1,'Message.h']]],
+  ['messageptrs',['MessagePtrs',['../Message_8h.html#ab9f75116c1a83f83bd71b3a9c41df196',1,'Message.h']]],
+  ['messagetype',['MessageType',['../Message_8h.html#ac6606ebe91c8ac66a2c314c79f5ab013',1,'Message.h']]],
+  ['mhost',['mHost',['../structServerData.html#ae14f0f98e3e72c5ad30b4c6d6123f788',1,'ServerData']]],
+  ['mioservice',['mIoService',['../structFixture.html#a2aecd0aeb30837f0ee83c73e6f05b2a0',1,'Fixture']]],
+  ['mitem',['mItem',['../structDequeueMessage.html#aa8da6446fc07da65001c6a942fc0d0ce',1,'DequeueMessage']]],
+  ['moffset',['mOffset',['../structItem.html#a72ca0879d4379d25b33cd300a7fc170e',1,'Item::mOffset()'],['../structStartQueueSessionMessage.html#a9fdb2818b30f9b01be9977a67110c946',1,'StartQueueSessionMessage::mOffset()']]],
+  ['mport',['mPort',['../structServerData.html#a0deb38ff4d3117be6ceee8d1be28679d',1,'ServerData::mPort()'],['../structFixture.html#a67935dfa07f178d574c25cc3d9d9880b',1,'Fixture::mPort()']]],
+  ['mqueuelist',['mQueueList',['../structQueueListMessage.html#a4c7c4e301e4620e83f4451260085f423',1,'QueueListMessage']]],
+  ['mqueuename',['mQueueName',['../structStartQueueSessionMessage.html#aebd29729f38b8c868b0107dbae304a55',1,'StartQueueSessionMessage']]],
+  ['mserver',['mServer',['../structFixture.html#aea4adf1321e2878c2c6cb7de989a0fbc',1,'Fixture']]]
 ];
